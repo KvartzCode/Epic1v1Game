@@ -23,10 +23,11 @@ public class CameraWaterCheck : MonoBehaviour {
     public bool IsUnderwater () {
         
         foreach (Collider trigger in triggers) {
-
-            if (trigger.GetComponentInParent<Water> ())
-                return true;
-
+            if(trigger != null)
+            {
+                if (trigger.GetComponentInParent<Water>())
+                    return true;
+            }
         }
 
         return false;
