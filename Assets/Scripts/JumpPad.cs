@@ -8,7 +8,6 @@ public class JumpPad : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Is here");
             other.GetComponent<Fragsurf.Movement.SurfCharacter>().AddVelocity(transform.up, 10);
         }
     }
