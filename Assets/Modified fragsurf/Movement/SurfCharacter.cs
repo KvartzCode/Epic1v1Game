@@ -70,6 +70,8 @@ namespace Fragsurf.Movement
         private int numberOfTriggers = 0;
 
         private bool underwater = false;
+        private bool addedVelocity = false;
+        private Vector3 newVelocity;
 
         ///// Properties /////
 
@@ -177,10 +179,15 @@ namespace Fragsurf.Movement
 
                     _collider = _colliderObject.AddComponent<BoxCollider>();
 
+
                     var boxc = (BoxCollider)_collider;
                     boxc.size = colliderSize;
 
                     defaultHeight = boxc.size.y;
+
+                    gameObject.AddComponent<BoxCollider>();
+                    gameObject.GetComponent<BoxCollider>().size = colliderSize;
+
 
                     break;
 
@@ -265,13 +272,22 @@ namespace Fragsurf.Movement
             if (allowCrouch)
                 _controller.Crouch(this, movementConfig, Time.deltaTime);
 
-            _controller.ProcessMovement(this, movementConfig, Time.deltaTime);
+            UpdateMovement();
+
+        }
+
+
+        void UpdateMovement()
+        {
+            _controller.ProcessMovement(this, movementConfig, Time.deltaTime, newVelocity);
+
+            if (newVelocity != Vector3.zero)
+                newVelocity = Vector3.zero;
 
             transform.position = moveData.origin;
             prevPosition = transform.position;
 
             _colliderObject.transform.rotation = Quaternion.identity;
-
         }
 
         private void UpdateTestBinds()
@@ -284,7 +300,10 @@ namespace Fragsurf.Movement
 
         public void AddVelocity(Vector3 dir, float force)
         {
-            moveData.velocity += dir.normalized * force;
+            newVelocity = dir.normalized * force;
+
+            UpdateMovement();
+
         }
 
         private void ResetPosition()
@@ -301,7 +320,7 @@ namespace Fragsurf.Movement
             _moveData.verticalAxis = Input.GetAxisRaw("Vertical");
             _moveData.horizontalAxis = Input.GetAxisRaw("Horizontal");
 
-            _moveData.sprinting = Input.GetButton ("Sprint");
+            _moveData.sprinting = Input.GetButton("Sprint");
 
             if (Input.GetButtonDown("Crouch"))
                 _moveData.crouching = true;
