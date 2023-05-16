@@ -156,7 +156,7 @@ namespace Fragsurf.Movement
                         wasSliding = false;
 
                         if (_addVelocity != Vector3.zero)
-                            _surfer.moveData.velocity = new Vector3(_surfer.moveData.velocity.x + _addVelocity.x, _addVelocity.y, _surfer.moveData.velocity.z + _addVelocity.z);
+                            _surfer.moveData.velocity = new Vector3(_surfer.moveData.velocity.x + _addVelocity.x, _surfer.moveData.velocity.y + _addVelocity.y, _surfer.moveData.velocity.z + _addVelocity.z);
 
                         // apply movement from input
                         _surfer.moveData.velocity += AirInputMovement();
