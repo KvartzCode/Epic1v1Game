@@ -24,8 +24,32 @@ public class GameManager : MonoBehaviour
             _instance = this;
     }
 
+    private void Start()
+    {
+        Multiplayer.Instance.RoomLeft.AddListener(EnableMouse);
+    }
+
+    private void EnableMouse(Multiplayer m)
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+
     public void SetUser(User user)
     {
         this.user = user;
+    }
+
+    public static void LeaveRoom()
+    {
+        if (Multiplayer.Instance.Me.Index == Multiplayer.Instance.GetHost())
+        Multiplayer.Instance.CurrentRoom?.Leave();
+    }
+
+
+    private void OnDestroy()
+    {
+        Multiplayer.Instance.RoomLeft.RemoveListener(EnableMouse);
     }
 }

@@ -1,7 +1,5 @@
-using System;
 using Alteruna;
 using UnityEngine;
-using UnityEngine.Events;
 
 [RequireComponent(typeof(Alteruna.Avatar))]
 public class PlayerController : AttributesSync
@@ -29,30 +27,26 @@ public class PlayerController : AttributesSync
             return;
         }
 
-        //avatar.OnPossessed.AddListener(Init);
-        //Multiplayer.Instance.RoomJoined.AddListener(Init);
         GameManager.Instance.SetUser(avatar.Possessor);
         Init();
-        //Invoke(nameof(Init), .1f);
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F) && avatar.IsMe)
+        if (Input.GetKeyDown(KeyCode.F))
             ClientRequestHostLogic();
         if (Input.GetKeyDown(KeyCode.R))
         {
             Debug.Log(GameManager.Instance.user.Index);
             Debug.Log("Host ID = " + Multiplayer.Instance.GetUser(Multiplayer.Instance.LowestUserIndex).Index);
         }
+        if (Input.GetKeyDown(KeyCode.Q))
+            CloseRoom();
     }
 
 
-    void Init(/*Multiplayer m, Room r, User u*/)
+    void Init()
     {
-        //GameManager.Instance.SetUser(u);
-        //Multiplayer.Instance.RoomJoined.RemoveListener(Init);
-
         originalCameraStats = new OriginalCameraStats(Camera.main.transform);
         Camera.main.transform.SetParent(cameraHolder);
         Camera.main.transform.localPosition = Vector3.zero;
@@ -91,6 +85,14 @@ public class PlayerController : AttributesSync
     void AllClientsRecieveThis(int recievedInformation)
     {
         Debug.Log($"All clients recieve this information: {recievedInformation} // This was calculated only on the earliest client");
+    }
+
+    void CloseRoom()
+    {
+        if (!avatar.IsMe || Multiplayer.Instance.Me.Index != Multiplayer.GetHost().Index)
+            return;
+
+        Multiplayer.CurrentRoom.Destroy();
     }
 
     #endregion
