@@ -28,4 +28,10 @@ public class GameManager : MonoBehaviour
     {
         this.user = user;
     }
+
+    public static void LeaveRoom()
+    {
+        if (Multiplayer.Instance.Me.Index == Multiplayer.Instance.GetHost())
+        Multiplayer.Instance.CurrentRoom?.Leave();
+    }
 }
