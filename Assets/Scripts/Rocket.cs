@@ -6,6 +6,7 @@ public class Rocket : MonoBehaviour
 {
     public int playerID = 0;
     [SerializeField] float speed = 3;
+    [SerializeField] ParticleSystem particles;
 
     Rigidbody rbdy;
 
@@ -24,6 +25,9 @@ public class Rocket : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         ExplosionHandler.Instance.SpawnExplosion(10, 600, 7, 0, transform.position);
+        particles.transform.parent = null;
+        particles.Stop();
+        Destroy(particles.gameObject, 5);
         Destroy(gameObject);
     }
 }
