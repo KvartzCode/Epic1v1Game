@@ -1,19 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Alteruna;
 
 public class Launcher : MonoBehaviour
 {
+    [SerializeField] public Fragsurf.Movement.SurfCharacter player;
     public Transform directionTransform;
     public GameObject projectilePrefab;
     public float launchPower = 20f;
     public float gravity = 15;
     public List<Projectile> currentGrenades;
-    [SerializeField] ExplosionHandler explo;
-
     //debug
     bool hasshot;
-
+    
     private void Awake()
     {
         currentGrenades = new List<Projectile>();
@@ -25,19 +25,19 @@ public class Launcher : MonoBehaviour
         {
             if (hasshot)
             {
-                Explode(0);
+                ExplodeGrenade(Multiplayer.Instance.Me.Index);
                 hasshot = false;
             }
             else
             {
-                Launch(0, 0, directionTransform.position, directionTransform.rotation.eulerAngles);
+                LaunchGrenade(Multiplayer.Instance.Me.Index, 0, directionTransform.position, directionTransform.rotation.eulerAngles,player.moveData.velocity);
                 hasshot = true;
             }
 
         }
     }
 
-    public void Launch(int playerID, int explosionType, Vector3 position, Vector3 direction)
+    public void LaunchGrenade(int playerID, int explosionType, Vector3 position, Vector3 direction,Vector3 PlayerVeclocity)
     {
 
         GameObject projectileInstance = Instantiate(projectilePrefab, directionTransform.position, directionTransform.rotation);
@@ -47,7 +47,7 @@ public class Launcher : MonoBehaviour
         if (projectileScript != null)
         {
             projectileScript.gravity = gravity;
-            Vector3 launchVelocity = directionTransform.forward * launchPower;
+            Vector3 launchVelocity = directionTransform.forward * launchPower + PlayerVeclocity;
             projectileScript.Launch(playerID, explosionType, launchVelocity);
             currentGrenades.Add(projectileScript);
         }
@@ -57,16 +57,16 @@ public class Launcher : MonoBehaviour
         }
     }
 
-    public void Explode(int playerID)
+    public void ExplodeGrenade(int playerID)
     {
 
         for (int i = currentGrenades.Count - 1; i >= 0; i--)
         {
 
-            //if (playerID == realplayerID)
-            //{
-            ExplosionHandler.Instance.SpawnExplosion(30, 800, 7, currentGrenades[i].explosionType, currentGrenades[i].transform.position);
-            //}
+            if (playerID == Multiplayer.Instance.Me.Index)
+            {
+                ExplosionHandler.Instance.SpawnExplosion(30, 800, 7, currentGrenades[i].explosionType, currentGrenades[i].transform.position);
+            }
 
             if (playerID == currentGrenades[i].playerID)
             {
