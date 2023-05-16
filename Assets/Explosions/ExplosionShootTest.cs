@@ -22,7 +22,7 @@ public class ExplosionShootTest : MonoBehaviour
     void Update()
     {
         timer += Time.deltaTime;
-        if (Input.GetKeyDown(KeyCode.Mouse0) && timer > cooldown)
+        if (Input.GetKey(KeyCode.Mouse0) && timer > cooldown)
         {
             timer = 0;
             rocketLauncherAnim.SetTrigger("Fire");
