@@ -41,7 +41,8 @@ public class PlayerController : AttributesSync
             Debug.Log("Host ID = " + Multiplayer.Instance.GetUser(Multiplayer.Instance.LowestUserIndex).Index);
         }
         if (Input.GetKeyDown(KeyCode.Q))
-            CloseRoom();
+            GameManager.LeaveRoom();
+            //CloseRoom();
     }
 
 
@@ -72,7 +73,7 @@ public class PlayerController : AttributesSync
 
     void ClientRequestHostLogic()
     {
-        InvokeRemoteMethod(nameof(CallHost), Multiplayer.GetHost(), clientInfo1, clientInfo2);
+        InvokeRemoteMethod(nameof(CallHost), Multiplayer.Instance.GetHost(), clientInfo1, clientInfo2);
     }
 
     [SynchronizableMethod]
@@ -85,14 +86,6 @@ public class PlayerController : AttributesSync
     void AllClientsRecieveThis(int recievedInformation)
     {
         Debug.Log($"All clients recieve this information: {recievedInformation} // This was calculated only on the earliest client");
-    }
-
-    void CloseRoom()
-    {
-        if (!avatar.IsMe || Multiplayer.Instance.Me.Index != Multiplayer.GetHost().Index)
-            return;
-
-        Multiplayer.CurrentRoom.Destroy();
     }
 
     #endregion

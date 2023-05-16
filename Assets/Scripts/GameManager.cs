@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Alteruna;
 using UnityEngine;
 
@@ -41,11 +39,18 @@ public class GameManager : MonoBehaviour
         this.user = user;
     }
 
+
+    #region Host Logic
+
     public static void LeaveRoom()
     {
-        if (Multiplayer.Instance.Me.Index == Multiplayer.Instance.GetHost())
-        Multiplayer.Instance.CurrentRoom?.Leave();
+        if (Multiplayer.Instance.Me.Index != Multiplayer.Instance.GetHost())
+            Multiplayer.Instance.CurrentRoom?.Leave();
+        else
+            Multiplayer.Instance.CurrentRoom?.Destroy();
     }
+
+    #endregion
 
 
     private void OnDestroy()
