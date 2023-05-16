@@ -40,7 +40,6 @@ public class Explosion : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("ColliderFound");
 
         if (other.GetComponent<Fragsurf.Movement.SurfCharacter>() != null)
         {
@@ -62,8 +61,7 @@ public class Explosion : MonoBehaviour
         }
 
         if (other.GetComponent<Rigidbody>() != null)
-        {
-            Debug.Log(other + " has rigidbody");
+        {;
             Rigidbody riggy = other.GetComponent<Rigidbody>();
 
             Vector3 direction = other.transform.position - transform.position; // calculate the vector between the two positions
@@ -78,12 +76,11 @@ public class Explosion : MonoBehaviour
             float forceScale = 1 - Mathf.Clamp01(distance / explosionRadius);
 
             riggy.AddForce(direction * explosionPower * forceScale); // apply the force
-            Debug.Log("Applied force");
             return;
         }
         else
         {
-            Debug.Log(other + " does not have rigidbody");
+
         }
         //Use this space for the player calculations
         //No clue how to do that yet though...
