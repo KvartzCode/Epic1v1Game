@@ -9,6 +9,8 @@ public class Projectile : MonoBehaviour
     public bool sentByOwner;
     private Vector3 velocity;
     private Rigidbody rb;
+    public int playerID;
+    public int explosionType;
 
     private void Awake()
     {
@@ -16,10 +18,12 @@ public class Projectile : MonoBehaviour
         rb.useGravity = false;
     }
 
-    public void Launch(Vector3 initialVelocity)
+    public void Launch(int playerID,int explosionType,Vector3 initialVelocity)
     {
         velocity = initialVelocity;
         enabled = true;
+        this.playerID = playerID;
+        this.explosionType = explosionType;
     }
 
     private void FixedUpdate()
@@ -41,14 +45,13 @@ public class Projectile : MonoBehaviour
             return;
         }
 
-        enabled = false;
+        gameObject.GetComponent<SphereCollider>().enabled = false;
         rb.constraints = RigidbodyConstraints.FreezeAll;
-        gameObject.transform.SetParent(other.transform);
     }
 
-    private void ExplodeAndDelete() //Make sure it explodes the one the player put
+    public void Delete() //Make sure it explodes the one the player put
     {
-
+        Destroy(gameObject);
     }
 }
 
