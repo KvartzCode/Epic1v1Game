@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodyTransform: {fileID: 3311345932941765915}
+  avatar: {fileID: 8083094481384188769}
   sensitivityMultiplier: 1
   horizontalSensitivity: 1
   verticalSensitivity: 1
