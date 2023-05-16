@@ -6,6 +6,7 @@ public class ExplosionShootTest : MonoBehaviour
 {
     //[SerializeField] ExplosionHandler explo;
     [SerializeField] Animator rocketLauncherAnim;
+    [SerializeField] Fragsurf.Movement.SurfCharacter player;
     [SerializeField] Transform spawnPos;
     [SerializeField] AudioClip clip;
     [SerializeField] float raycastDistance = 100f; // Set the distance of the raycast
@@ -16,6 +17,12 @@ public class ExplosionShootTest : MonoBehaviour
 
     private void Start()
     {
+        if (!player.GetAvatar().IsMe)
+        {
+            enabled = false;
+            return;
+        }
+
         source = GetComponent<AudioSource>();
     }
 

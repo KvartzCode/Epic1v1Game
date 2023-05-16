@@ -4,6 +4,7 @@ public class PlayerAiming : MonoBehaviour
 {
     [Header("References")]
     public Transform bodyTransform;
+    public Fragsurf.Movement.SurfCharacter player;
 
     [Header("Sensitivity")]
     public float sensitivityMultiplier = 1f;
@@ -32,6 +33,12 @@ public class PlayerAiming : MonoBehaviour
 
     private void Start()
     {
+        if (!player.GetAvatar().IsMe)
+        {
+            enabled = false;
+            return;
+        }
+
         LockMouse(true);
     }
 

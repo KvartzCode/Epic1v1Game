@@ -79,6 +79,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodyTransform: {fileID: 8272961778350456351}
+  player: {fileID: 8272961778350456348}
   sensitivityMultiplier: 1
   horizontalSensitivity: 1
   verticalSensitivity: 1
@@ -197,6 +198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rocketLauncherAnim: {fileID: 4112002198342636209}
+  player: {fileID: 8272961778350456348}
   spawnPos: {fileID: 4112002198428636212}
   clip: {fileID: 8300000, guid: 67203f654f397e1489cc72e5fc29e3c9, type: 3}
   raycastDistance: 100

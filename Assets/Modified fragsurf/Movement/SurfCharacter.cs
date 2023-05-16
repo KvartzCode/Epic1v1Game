@@ -73,6 +73,8 @@ namespace Fragsurf.Movement
         private bool addedVelocity = false;
         private Vector3 newVelocity;
 
+        Alteruna.Avatar _avatar;
+
         ///// Properties /////
 
         public MoveType moveType { get { return MoveType.Walk; } }
@@ -104,8 +106,16 @@ namespace Fragsurf.Movement
             Gizmos.DrawWireCube(transform.position, colliderSize);
         }
 
+
+        public Alteruna.Avatar GetAvatar()
+        {
+            return _avatar;
+        }
+
         private void Awake()
         {
+
+            _avatar = GetComponent<Alteruna.Avatar>();
 
             _controller.playerTransform = playerRotationTransform;
 
@@ -121,6 +131,12 @@ namespace Fragsurf.Movement
 
         private void Start()
         {
+
+            if (!_avatar.IsMe)
+            {
+                enabled = false;
+                return;
+            }
 
             _colliderObject = new GameObject("PlayerCollider");
             _colliderObject.layer = gameObject.layer;
