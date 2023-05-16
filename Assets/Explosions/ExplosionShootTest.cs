@@ -20,7 +20,7 @@ public class ExplosionShootTest : MonoBehaviour
             if (Physics.Raycast(ray, out hit, raycastDistance, layerMask))
             {
                 Vector3 hitPosition = hit.point;
-                explo.SpawnExplosion(10, 3000, 20, 0, hitPosition);
+                explo.SpawnExplosion(10, 600, 7, 0, hitPosition);
             }
             else //if the raycast doesn't hit anything, the explosion will happen at the end of the raycast distance
             {

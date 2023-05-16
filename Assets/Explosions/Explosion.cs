@@ -42,6 +42,25 @@ public class Explosion : MonoBehaviour
     {
         Debug.Log("ColliderFound");
 
+        if (other.GetComponent<Fragsurf.Movement.SurfCharacter>() != null)
+        {
+            Vector3 direction = (other.transform.position+new Vector3(0,1,0)) - transform.position; // calculate the vector between the two positions
+            float distance = direction.magnitude; // calculate the distance
+
+            // Normalize the vector to get the direction and add 0.2f to the Y component
+            direction = direction.normalized;
+            direction.y += 0;
+
+            // Scale the force by the inverse of the ratio of the distance to the explosionRadius
+            // The force will be maximum when the distance is 0 and minimum when the distance equals explosionRadius
+            float forceScale = 1 - Mathf.Clamp01(distance / explosionRadius);
+
+            //(direction * explosionPower * forceScale) * //Playerhealth;
+            other.GetComponent<Fragsurf.Movement.SurfCharacter>().AddVelocity(direction ,explosionPower * forceScale * 0.05f);
+
+            return;
+        }
+
         if (other.GetComponent<Rigidbody>() != null)
         {
             Debug.Log(other + " has rigidbody");
@@ -60,14 +79,19 @@ public class Explosion : MonoBehaviour
 
             riggy.AddForce(direction * explosionPower * forceScale); // apply the force
             Debug.Log("Applied force");
+            return;
         }
         else
         {
             Debug.Log(other + " does not have rigidbody");
         }
-
         //Use this space for the player calculations
         //No clue how to do that yet though...
+
+    }
+
+    public void GetDir()
+    {
 
     }
 
