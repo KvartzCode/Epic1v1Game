@@ -41,7 +41,10 @@ public class PlayerController : AttributesSync
         if (Input.GetKeyDown(KeyCode.F) && avatar.IsMe)
             ClientRequestHostLogic();
         if (Input.GetKeyDown(KeyCode.R))
+        {
             Debug.Log(GameManager.Instance.user.Index);
+            Debug.Log("Host ID = " + Multiplayer.Instance.GetUser(Multiplayer.Instance.LowestUserIndex).Index);
+        }
     }
 
 
