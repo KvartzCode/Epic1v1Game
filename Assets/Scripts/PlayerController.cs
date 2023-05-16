@@ -63,9 +63,10 @@ public class PlayerController : AttributesSync
         Camera.main.transform.rotation = originalCameraStats.rotation;
     }
 
-    private void OnDisable()
+    private new void OnDestroy()
     {
         Multiplayer.Instance.RoomLeft.RemoveListener(RevertCamera);
+        base.OnDestroy();
     }
 
 
