@@ -1,18 +1,20 @@
 using Alteruna;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : AttributesSync
 {
     private static GameManager _instance;
-    public static GameManager Instance { 
+    public static GameManager Instance
+    {
         get
-        { 
+        {
             return _instance;
         }
     }
 
     public User user;
-
+    public UserIdHolder idHolder;
+    public Fragsurf.Movement.SurfCharacter player;
 
     private void Awake()
     {
@@ -33,6 +35,16 @@ public class GameManager : MonoBehaviour
         Cursor.visible = true;
     }
 
+    public void UpdateIdHolder()
+    {
+        InvokeRemoteMethod(nameof(SynchedUpdateIdHolder), UserId.AllInclusive);
+    }
+
+    [SynchronizableMethod]
+    void SynchedUpdateIdHolder()
+    {
+        idHolder.SetUserId(user.Index);
+    }
 
     public void SetUser(User user)
     {

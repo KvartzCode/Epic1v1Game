@@ -15,6 +15,8 @@ public class Explosion : MonoBehaviour
     private SphereCollider sphereCol;
     private Rigidbody rg;
 
+    int _userID;
+
     public enum ExplosionType
     {
         Small,
@@ -24,8 +26,9 @@ public class Explosion : MonoBehaviour
     [Tooltip("What particle/audio prefab to use for the explosion")]
     public ExplosionType ExplType;
 
-    public void InitiateExpo(float explosionDamage, float explosionPower, float explosionRadius)
+    public void InitiateExpo(float explosionDamage, float explosionPower, float explosionRadius, int userId)
     {
+        _userID = userId;
         this.explosionDamage = explosionDamage;
         this.explosionPower = explosionPower;
         this.explosionRadius = explosionRadius;
@@ -43,7 +46,7 @@ public class Explosion : MonoBehaviour
 
         if (other.GetComponent<Fragsurf.Movement.SurfCharacter>() != null)
         {
-            Vector3 direction = (other.transform.position+new Vector3(0,1,0)) - transform.position; // calculate the vector between the two positions
+            Vector3 direction = (other.transform.position + new Vector3(0, 1, 0)) - transform.position; // calculate the vector between the two positions
             float distance = direction.magnitude; // calculate the distance
 
             // Normalize the vector to get the direction and add 0.2f to the Y component
@@ -54,14 +57,19 @@ public class Explosion : MonoBehaviour
             // The force will be maximum when the distance is 0 and minimum when the distance equals explosionRadius
             float forceScale = 1 - Mathf.Clamp01(distance / explosionRadius);
 
+            //Deal damage
+            if (_userID != GameManager.Instance.user.Index)
+                other.GetComponent<Fragsurf.Movement.SurfCharacter>().AddDamage(10);
+
             //(direction * explosionPower * forceScale) * //Playerhealth;
-            other.GetComponent<Fragsurf.Movement.SurfCharacter>().AddVelocity(direction ,explosionPower * forceScale * 0.05f);
+            other.GetComponent<Fragsurf.Movement.SurfCharacter>().AddVelocity(direction, explosionPower * forceScale * 0.05f, _userID == GameManager.Instance.user.Index ? false : true);
 
             return;
         }
 
         if (other.GetComponent<Rigidbody>() != null)
-        {;
+        {
+            ;
             Rigidbody riggy = other.GetComponent<Rigidbody>();
 
             Vector3 direction = other.transform.position - transform.position; // calculate the vector between the two positions

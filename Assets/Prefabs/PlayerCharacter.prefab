@@ -216,6 +216,7 @@ GameObject:
   - component: {fileID: 5406116820061069759}
   - component: {fileID: 2331365567194251138}
   - component: {fileID: 6697983922509652227}
+  - component: {fileID: 36605492413922713}
   m_Layer: 3
   m_Name: PlayerCharacter
   m_TagString: Player
@@ -299,6 +300,8 @@ MonoBehaviour:
     underwaterFriction: 2
     underwaterGravity: 6
     underwaterVelocityDampening: 2
+  playerModel: {fileID: 1123359847126093585}
+  shadowcasterMat: {fileID: 2100000, guid: aa4e84b60e5db2c4786846499e20fa81, type: 2}
 --- !u!114 &5406116820061069759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -389,6 +392,22 @@ MonoBehaviour:
     RealtimeString: Realtime
   UseGlobalPosition: 0
   SyncInFixedUpdate: 1
+--- !u!114 &36605492413922713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8272961778350456350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 809402c611a08e840b620550b982a09f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Multiplayer: {fileID: 0}
+  _uidString: a41ccc6e-615c-4444-b11a-d664295f5a5e
+  Reliability: 1
+  LocalMethodBehavior: 1
 --- !u!1001 &240819459037491776
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -491,6 +510,12 @@ PrefabInstance:
 --- !u!4 &350481945006904747 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3b4c74e3c7239fc44b87f5f76db3f972,
+    type: 3}
+  m_PrefabInstance: {fileID: 240819459037491776}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1123359847126093585 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 3b4c74e3c7239fc44b87f5f76db3f972,
     type: 3}
   m_PrefabInstance: {fileID: 240819459037491776}
   m_PrefabAsset: {fileID: 0}

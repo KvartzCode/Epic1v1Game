@@ -52,6 +52,10 @@ namespace Fragsurf.Movement
         [SerializeField]
         public MovementConfig movementConfig;
 
+        [Header("PlayerModel")]
+        public GameObject playerModel;
+        public Material shadowcasterMat;
+
         private GameObject _groundObject;
         private Vector3 _baseVelocity;
         private Collider _collider;
@@ -72,6 +76,8 @@ namespace Fragsurf.Movement
         private bool underwater = false;
         private bool addedVelocity = false;
         private Vector3 newVelocity;
+
+        float multiplier = 0;
 
         Alteruna.Avatar _avatar;
 
@@ -137,6 +143,20 @@ namespace Fragsurf.Movement
                 enabled = false;
                 return;
             }
+
+            if (playerModel != null && shadowcasterMat != null)
+            {
+                Material[] mats = playerModel.GetComponent<MeshRenderer>().materials;
+                for (int i = 0; i < mats.Length; i++)
+                {
+                    mats[i] = shadowcasterMat;
+                }
+                playerModel.GetComponent<MeshRenderer>().materials = mats;
+            }
+
+            GameManager.Instance.player = this;
+            GameManager.Instance.idHolder = gameObject.GetComponent<UserIdHolder>();
+            GameManager.Instance.UpdateIdHolder();
 
             _colliderObject = new GameObject("PlayerCollider");
             _colliderObject.layer = gameObject.layer;
@@ -314,9 +334,16 @@ namespace Fragsurf.Movement
 
         }
 
-        public void AddVelocity(Vector3 dir, float force)
+        public void AddDamage(float damagePercentile)
         {
-            newVelocity = dir.normalized * force;
+            multiplier = ((multiplier * 100f) + damagePercentile) * 0.01f;
+        }
+
+        public void AddVelocity(Vector3 dir, float force,bool useMultiplier)
+        {
+            float multi = useMultiplier ? multiplier : 1;
+
+            newVelocity = (dir.normalized * force) * multi;
 
             UpdateMovement();
 

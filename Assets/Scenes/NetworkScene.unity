@@ -676,7 +676,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 191
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -1119,7 +1119,7 @@ MonoBehaviour:
   m_Script: {fileID: 1777794829, guid: 0ae8d181602a00248a82f64a684a1c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _applicationId: 92eef378-0e99-4e72-92f1-51442e64aeb1
+  _applicationId: 8c90955f-c7dc-4178-b098-22694a32d010
   LogLevel: 4
   Buckets:
   - Name: Min
@@ -1253,6 +1253,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba6cfaad042733c43a1132015e99624b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
 --- !u!4 &1647607412
 Transform:
   m_ObjectHideFlags: 0

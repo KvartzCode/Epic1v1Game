@@ -65,7 +65,7 @@ public class Launcher : MonoBehaviour
 
             if (playerID == Multiplayer.Instance.Me.Index)
             {
-                ExplosionHandler.Instance.SpawnExplosion(30, 800, 7, currentGrenades[i].explosionType, currentGrenades[i].transform.position);
+                ExplosionHandler.Instance.SpawnExplosion(30, 800, 7, currentGrenades[i].explosionType, currentGrenades[i].transform.position,playerID);
             }
 
             if (playerID == currentGrenades[i].playerID)

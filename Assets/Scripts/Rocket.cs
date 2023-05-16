@@ -22,16 +22,19 @@ public class Rocket : MonoBehaviour
         rbdy.velocity = transform.forward * speed;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public void Explode()
     {
-        Debug.Log("Col");
-
         if (playerID == GameManager.Instance.user.Index)
-            ExplosionHandler.Instance.SpawnExplosion(10, 600, 7, 0, transform.position);
+            ExplosionHandler.Instance.SpawnExplosion(10, 600, 7, 0, transform.position,playerID);
 
         particles.transform.parent = null;
         particles.Stop();
         Destroy(particles.gameObject, 2.5f);
         Destroy(gameObject);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Explode();
     }
 }

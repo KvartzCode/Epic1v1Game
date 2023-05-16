@@ -35,7 +35,7 @@ public class ExplosionHandler : AttributesSync
 
         if (Input.GetKeyDown(KeyCode.H))
         {
-            SpawnExplosion(5, 500, 10, 0, ExploSpawner.position);
+            SpawnExplosion(5, 500, 10, 0, ExploSpawner.position, user.Index);
         }
     }
 
@@ -57,23 +57,23 @@ public class ExplosionHandler : AttributesSync
 
     }
 
-    public void SpawnExplosion(float explosionDamage, float knockbackPower, float explosionRadius, int explosionType, Vector3 PositionInWorldSpace)
+    public void SpawnExplosion(float explosionDamage, float knockbackPower, float explosionRadius, int explosionType, Vector3 PositionInWorldSpace, int userID)
     {
         if (user == null)
             Initialize();
 
-        InvokeRemoteMethod(nameof(SpawnExplosionSynchronizable), UserId.AllInclusive, explosionDamage, knockbackPower, explosionRadius, explosionType, PositionInWorldSpace);
+        InvokeRemoteMethod(nameof(SpawnExplosionSynchronizable), UserId.AllInclusive, explosionDamage, knockbackPower, explosionRadius, explosionType, PositionInWorldSpace, userID);
         //SpawnExplosionSynchronizable(explosionDamage, knockbackPower, explosionRadius, explosionType, PositionInWorldSpace);
     }
 
 
     [SynchronizableMethod]
-    void SpawnExplosionSynchronizable(float explosionDamage, float knockbackPower, float explosionRadius, int explosionType, Vector3 PositionInWorldSpace)
+    void SpawnExplosionSynchronizable(float explosionDamage, float knockbackPower, float explosionRadius, int explosionType, Vector3 PositionInWorldSpace, int userID)
     {
         Debug.Log("Explosion");
         ExploSpawner.position = PositionInWorldSpace;
         exploObject = Instantiate(Explo, ExploSpawner);
-        exploObject.GetComponent<Explosion>().InitiateExpo(explosionDamage, knockbackPower, explosionRadius);
+        exploObject.GetComponent<Explosion>().InitiateExpo(explosionDamage, knockbackPower, explosionRadius, userID);
 
 
         exploObject = Instantiate(ExplosionVariations[explosionType], ExploSpawner);

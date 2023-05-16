@@ -274,9 +274,8 @@ public class RoomMenu : CommunicationBridge
 				_refreshTime = RefreshInterval;
 			});
 			
-			LeaveButton.onClick.AddListener(() => {
-				//Multiplayer.CurrentRoom?.Leave();
-				GameManager.LeaveRoom();
+			LeaveButton.onClick.AddListener(() => { 
+				Multiplayer.CurrentRoom?.Leave();
 				_refreshTime = RefreshInterval;
 			});
 			
