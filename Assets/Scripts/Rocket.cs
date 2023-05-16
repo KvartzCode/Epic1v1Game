@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Rocket : MonoBehaviour
 {
+    public int playerID = 0;
     [SerializeField] float speed = 3;
 
     Rigidbody rbdy;
