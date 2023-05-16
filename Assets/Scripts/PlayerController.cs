@@ -45,6 +45,8 @@ public class PlayerController : AttributesSync
             Debug.Log(GameManager.Instance.user.Index);
             Debug.Log("Host ID = " + Multiplayer.Instance.GetUser(Multiplayer.Instance.LowestUserIndex).Index);
         }
+        if (Input.GetKeyDown(KeyCode.Q))
+            CloseRoom();
     }
 
 
@@ -75,6 +77,14 @@ public class PlayerController : AttributesSync
 
 
     #region Host Logic
+
+    void CloseRoom()
+    {
+        if (!avatar.IsMe || Multiplayer.Instance.Me.Index != Multiplayer.GetHost().Index)
+            return;
+
+        Multiplayer.CurrentRoom.Destroy();
+    }
 
     void ClientRequestHostLogic()
     {
