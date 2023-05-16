@@ -44,8 +44,8 @@ public class ExplosionHandler : AttributesSync
         if (user == null)
             Initialize();
 
-        //InvokeRemoteMethod(nameof(SpawnRocketSynchronizable), UserId.AllInclusive, PositionInWorldSpace, dir);
-        SpawnRocketSynchronizable(PositionInWorldSpace, dir);
+        InvokeRemoteMethod(nameof(SpawnRocketSynchronizable), UserId.AllInclusive, PositionInWorldSpace, dir);
+        //SpawnRocketSynchronizable(PositionInWorldSpace, dir);
     }
 
     [SynchronizableMethod]
@@ -62,8 +62,8 @@ public class ExplosionHandler : AttributesSync
         if (user == null)
             Initialize();
 
-        //InvokeRemoteMethod(nameof(SpawnExplosionSynchronizable), UserId.AllInclusive, explosionDamage, knockbackPower, explosionRadius, explosionType, PositionInWorldSpace);
-        SpawnExplosionSynchronizable(explosionDamage, knockbackPower, explosionRadius, explosionType, PositionInWorldSpace);
+        InvokeRemoteMethod(nameof(SpawnExplosionSynchronizable), UserId.AllInclusive, explosionDamage, knockbackPower, explosionRadius, explosionType, PositionInWorldSpace);
+        //SpawnExplosionSynchronizable(explosionDamage, knockbackPower, explosionRadius, explosionType, PositionInWorldSpace);
     }
 
 
