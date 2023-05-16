@@ -45,7 +45,7 @@ public class PlayerAiming : MonoBehaviour
     private void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.F1))
             LockMouse(Cursor.visible);
 
         // Fix pausing
