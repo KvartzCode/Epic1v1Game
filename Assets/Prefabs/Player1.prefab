@@ -146,7 +146,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d56a92efda257dc4eb9e15def615c74a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraTransform: {fileID: 711133805}
+  Multiplayer: {fileID: 0}
+  _uidString: 751c5454-b892-4bbe-ae01-14736181292b
+  Reliability: 1
+  LocalMethodBehavior: 1
+  cameraHolder: {fileID: 711133805}
 --- !u!143 &1724157141284971982
 CharacterController:
   m_ObjectHideFlags: 0
