@@ -11,22 +11,25 @@ public class ExplosionShootTest : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            Ray ray = new Ray(transform.position, transform.forward);
-            RaycastHit hit;
 
-            int layerMask = 1 << LayerMask.NameToLayer("Player");
-            layerMask = ~layerMask;
+            explo.SpawnRocket(transform.position, transform.forward);
+            
+            //Ray ray = new Ray(transform.position, transform.forward);
+            //RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, raycastDistance, layerMask))
-            {
-                Vector3 hitPosition = hit.point;
-                explo.SpawnExplosion(10, 600, 7, 0, hitPosition);
-            }
-            else //if the raycast doesn't hit anything, the explosion will happen at the end of the raycast distance
-            {
-                Vector3 endRayPosition = ray.GetPoint(raycastDistance);
-                explo.SpawnExplosion(10, 500, 10, 0, endRayPosition);
-            }
+            //int layerMask = 1 << LayerMask.NameToLayer("Player");
+            //layerMask = ~layerMask;
+
+            //if (Physics.Raycast(ray, out hit, raycastDistance, layerMask))
+            //{
+            //    Vector3 hitPosition = hit.point;
+            //    explo.SpawnExplosion(10, 600, 7, 0, hitPosition);
+            //}
+            //else //if the raycast doesn't hit anything, the explosion will happen at the end of the raycast distance
+            //{
+            //    Vector3 endRayPosition = ray.GetPoint(raycastDistance);
+            //    explo.SpawnExplosion(10, 500, 10, 0, endRayPosition);
         }
     }
 }
+
