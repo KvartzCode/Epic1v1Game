@@ -5,15 +5,30 @@ using UnityEngine;
 public class ExplosionShootTest : MonoBehaviour
 {
     [SerializeField] ExplosionHandler explo;
+    [SerializeField] Animator rocketLauncherAnim;
+    [SerializeField] Transform spawnPos;
+    [SerializeField] AudioClip clip;
     [SerializeField] float raycastDistance = 100f; // Set the distance of the raycast
+    [SerializeField] float cooldown = 0.4f;
+
+    AudioSource source;
+    float timer;
+
+    private void Start()
+    {
+        source = GetComponent<AudioSource>();
+    }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        timer += Time.deltaTime;
+        if (Input.GetKeyDown(KeyCode.Mouse0) && timer > cooldown)
         {
+            timer = 0;
+            rocketLauncherAnim.SetTrigger("Fire");
+            source.PlayOneShot(clip);
+            explo.SpawnRocket(spawnPos.position, transform.forward);
 
-            explo.SpawnRocket(transform.position, transform.forward);
-            
             //Ray ray = new Ray(transform.position, transform.forward);
             //RaycastHit hit;
 
