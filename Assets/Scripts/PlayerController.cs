@@ -1,4 +1,5 @@
 using Alteruna;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Alteruna.Avatar))]
@@ -62,10 +63,9 @@ public class PlayerController : AttributesSync
         Camera.main.transform.rotation = originalCameraStats.rotation;
     }
 
-    private new void OnDestroy()
+    private void OnDisable()
     {
         Multiplayer.Instance.RoomLeft.RemoveListener(RevertCamera);
-        base.OnDestroy();
     }
 
 

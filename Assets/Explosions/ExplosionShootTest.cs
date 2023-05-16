@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ExplosionShootTest : MonoBehaviour
 {
-    [SerializeField] ExplosionHandler explo;
+    //[SerializeField] ExplosionHandler explo;
     [SerializeField] Animator rocketLauncherAnim;
     [SerializeField] Transform spawnPos;
     [SerializeField] AudioClip clip;
@@ -27,7 +27,7 @@ public class ExplosionShootTest : MonoBehaviour
             timer = 0;
             rocketLauncherAnim.SetTrigger("Fire");
             source.PlayOneShot(clip);
-            explo.SpawnRocket(spawnPos.position, transform.forward);
+            ExplosionHandler.Instance.SpawnRocket(spawnPos.position, transform.forward);
 
             //Ray ray = new Ray(transform.position, transform.forward);
             //RaycastHit hit;
