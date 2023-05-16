@@ -44,21 +44,21 @@ public class ExplosionHandler : AttributesSync
         if (user == null)
             Initialize();
 
-        InvokeRemoteMethod(nameof(SpawnRocketSynchronizable), UserId.AllInclusive, PositionInWorldSpace, dir);
+        InvokeRemoteMethod(nameof(SpawnRocketSynchronizable), UserId.AllInclusive, PositionInWorldSpace, dir, user.Index);
         //SpawnRocketSynchronizable(PositionInWorldSpace, dir);
     }
 
     [SynchronizableMethod]
-    void SpawnRocketSynchronizable(Vector3 PositionInWorldSpace, Vector3 dir)
+    void SpawnRocketSynchronizable(Vector3 PositionInWorldSpace, Vector3 dir, int playerId)
     {
         var rocketObj = Instantiate(Rocket, PositionInWorldSpace, Rocket.transform.rotation);
         rocketObj.transform.forward = dir;
+        rocketObj.GetComponent<Rocket>().playerID = playerId;
 
     }
 
     public void SpawnExplosion(float explosionDamage, float knockbackPower, float explosionRadius, int explosionType, Vector3 PositionInWorldSpace)
     {
-
         if (user == null)
             Initialize();
 
@@ -70,6 +70,7 @@ public class ExplosionHandler : AttributesSync
     [SynchronizableMethod]
     void SpawnExplosionSynchronizable(float explosionDamage, float knockbackPower, float explosionRadius, int explosionType, Vector3 PositionInWorldSpace)
     {
+        Debug.Log("Explosion");
         ExploSpawner.position = PositionInWorldSpace;
         exploObject = Instantiate(Explo, ExploSpawner);
         exploObject.GetComponent<Explosion>().InitiateExpo(explosionDamage, knockbackPower, explosionRadius);

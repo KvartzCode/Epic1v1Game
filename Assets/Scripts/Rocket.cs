@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Rocket : MonoBehaviour
 {
-    public int playerID = 0;
+    public int playerID = -10;
     [SerializeField] float speed = 3;
     [SerializeField] ParticleSystem particles;
 
@@ -24,10 +24,14 @@ public class Rocket : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        ExplosionHandler.Instance.SpawnExplosion(10, 600, 7, 0, transform.position);
+        Debug.Log("Col");
+
+        if (playerID == GameManager.Instance.user.Index)
+            ExplosionHandler.Instance.SpawnExplosion(10, 600, 7, 0, transform.position);
+
         particles.transform.parent = null;
         particles.Stop();
-        Destroy(particles.gameObject, 5);
+        Destroy(particles.gameObject, 2.5f);
         Destroy(gameObject);
     }
 }
