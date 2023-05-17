@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 171796183967126539}
   m_Layer: 3
   m_Name: Camera holder
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -79,6 +79,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodyTransform: {fileID: 5313655376521423395}
+  player: {fileID: 0}
   sensitivityMultiplier: 1
   horizontalSensitivity: 1
   verticalSensitivity: 1
@@ -196,8 +197,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc2059c5bb928e542abbef652141b894, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explo: {fileID: 0}
   rocketLauncherAnim: {fileID: 171796184472979085}
+  player: {fileID: 0}
   spawnPos: {fileID: 171796184357650440}
   clip: {fileID: 8300000, guid: 67203f654f397e1489cc72e5fc29e3c9, type: 3}
   raycastDistance: 100
@@ -216,7 +217,7 @@ GameObject:
   - component: {fileID: 171796184174357598}
   m_Layer: 3
   m_Name: Camera
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -333,7 +334,7 @@ GameObject:
   - component: {fileID: 5313655376521423392}
   m_Layer: 3
   m_Name: Player
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -413,6 +414,8 @@ MonoBehaviour:
     underwaterFriction: 2
     underwaterGravity: 6
     underwaterVelocityDampening: 2
+  playerModel: {fileID: 0}
+  shadowcasterMat: {fileID: 0}
 --- !u!1001 &7074154702195023364
 PrefabInstance:
   m_ObjectHideFlags: 0

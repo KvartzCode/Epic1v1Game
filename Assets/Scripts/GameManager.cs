@@ -13,7 +13,6 @@ public class GameManager : AttributesSync
     }
 
     public User user;
-    public UserIdHolder idHolder;
     public Fragsurf.Movement.SurfCharacter player;
 
     private void Awake()
@@ -37,13 +36,14 @@ public class GameManager : AttributesSync
 
     public void UpdateIdHolder()
     {
-        InvokeRemoteMethod(nameof(SynchedUpdateIdHolder), UserId.AllInclusive);
+        InvokeRemoteMethod(nameof(SynchedUpdateIdHolder), UserId.AllInclusive, user.Index);
     }
 
     [SynchronizableMethod]
-    void SynchedUpdateIdHolder()
+    void SynchedUpdateIdHolder(int id)
     {
-        idHolder.SetUserId(user.Index);
+        UserIdHolder idHolder = GameObject.FindWithTag("Player").GetComponent<UserIdHolder>();
+        idHolder.SetUserId(id);
     }
 
     public void SetUser(User user)

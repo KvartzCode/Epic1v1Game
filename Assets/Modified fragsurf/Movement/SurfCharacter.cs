@@ -144,6 +144,8 @@ namespace Fragsurf.Movement
                 return;
             }
 
+            gameObject.tag = "Player";
+
             if (playerModel != null && shadowcasterMat != null)
             {
                 Material[] mats = playerModel.GetComponent<MeshRenderer>().materials;
@@ -154,9 +156,7 @@ namespace Fragsurf.Movement
                 playerModel.GetComponent<MeshRenderer>().materials = mats;
             }
 
-            GameManager.Instance.player = this;
-            GameManager.Instance.idHolder = gameObject.GetComponent<UserIdHolder>();
-            GameManager.Instance.UpdateIdHolder();
+
 
             _colliderObject = new GameObject("PlayerCollider");
             _colliderObject.layer = gameObject.layer;
@@ -265,7 +265,18 @@ namespace Fragsurf.Movement
             _moveData.useStepOffset = useStepOffset;
             _moveData.stepOffset = stepOffset;
 
+
+            StartCoroutine(Initialize());
+
         }
+
+        IEnumerator Initialize()
+        {
+            yield return null;
+            GameManager.Instance.player = this;
+            GameManager.Instance.UpdateIdHolder();
+        }
+
 
         private void Update()
         {
@@ -339,7 +350,7 @@ namespace Fragsurf.Movement
             multiplier = ((multiplier * 100f) + damagePercentile) * 0.01f;
         }
 
-        public void AddVelocity(Vector3 dir, float force,bool useMultiplier)
+        public void AddVelocity(Vector3 dir, float force, bool useMultiplier)
         {
             float multi = useMultiplier ? multiplier : 1;
 

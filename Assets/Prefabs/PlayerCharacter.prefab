@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 4112002198843539511}
   m_Layer: 3
   m_Name: Camera holder
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -219,7 +219,7 @@ GameObject:
   - component: {fileID: 36605492413922713}
   m_Layer: 3
   m_Name: PlayerCharacter
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
