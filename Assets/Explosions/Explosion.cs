@@ -59,7 +59,10 @@ public class Explosion : MonoBehaviour
 
             //Deal damage
             if (_userID != GameManager.Instance.user.Index)
-                other.GetComponent<Fragsurf.Movement.SurfCharacter>().AddDamage(10);
+            {
+
+                other.GetComponent<Fragsurf.Movement.SurfCharacter>().AddDamage(10 - Vector3.Distance(transform.position, other.transform.position) / 2);
+            }
 
             //(direction * explosionPower * forceScale) * //Playerhealth;
             other.GetComponent<Fragsurf.Movement.SurfCharacter>().AddVelocity(direction, explosionPower * forceScale * 0.05f, _userID == GameManager.Instance.user.Index ? false : true);

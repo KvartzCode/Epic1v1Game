@@ -34,8 +34,14 @@ public class GameManager : AttributesSync
         Cursor.visible = true;
     }
 
+    public void UpdateMultiplier()
+    {
+        InvokeRemoteMethod(nameof(SynchedUpdateMultiplier), UserId.AllInclusive, player.GetMultiplier());
+    }
+
     public void UpdateIdHolder()
     {
+
         InvokeRemoteMethod(nameof(SynchedUpdateIdHolder), UserId.AllInclusive, user.Index);
     }
 
@@ -44,6 +50,13 @@ public class GameManager : AttributesSync
     {
         UserIdHolder idHolder = GameObject.FindWithTag("Player").GetComponent<UserIdHolder>();
         idHolder.SetUserId(id);
+    }
+
+    [SynchronizableMethod]
+    void SynchedUpdateMultiplier(float multiplier)
+    {
+        UserIdHolder idHolder = GameObject.FindWithTag("Player").GetComponent<UserIdHolder>();
+        idHolder.SetMultiplier(multiplier);
     }
 
     public void SetUser(User user)

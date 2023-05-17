@@ -10,10 +10,19 @@ public class RocketTrigger : MonoBehaviour
     {
         if (other.gameObject.layer == 3)
         {
-            UserIdHolder idHolder = other.gameObject.GetComponent<UserIdHolder>();
-            if (idHolder != null)
-                if (idHolder.GetUserId() != rocket.playerID)
-                    rocket.Explode();
+            PlayerCol col = other.GetComponent<PlayerCol>();
+
+            if (col != null)
+            {
+                UserIdHolder idHolder = col.player.gameObject.GetComponent<UserIdHolder>();
+                if (idHolder != null)
+                {
+                    if (idHolder.GetUserId() != rocket.playerID)
+                        rocket.Explode();
+
+                }
+
+            }
         }
     }
 }
