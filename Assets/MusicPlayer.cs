@@ -10,6 +10,7 @@ public class MusicPlayer : AttributesSync
     private void Awake()
     {
         musicPlayer = GetComponent<AudioSource>();
+        SynchAll();
 
     }
     private void Update()
@@ -21,6 +22,24 @@ public class MusicPlayer : AttributesSync
         }
     }
 
+
+
+    public void SynchAll()
+    {
+        InvokeRemoteMethod(nameof(GetLowestSynch), Multiplayer.LowestUserIndex);
+    }
+
+    [SynchronizableMethod]
+    void GetLowestSynch()
+    {
+        InvokeRemoteMethod(nameof(GetLowestSynch), UserId.All, musicPlayer.time);
+    }
+
+    [SynchronizableMethod]
+    void SyncPlayback(float pos)
+    {
+        musicPlayer.time = pos;
+    }
 
     [SynchronizableMethod]
     public void ChangeSong(int ID)
