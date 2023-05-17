@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(Alteruna.Avatar))]
 public class PlayerController : AttributesSync
 {
+    public int Stocks { get; private set; } = 4;
+
     private Alteruna.Avatar avatar;
 
     [SerializeField] Transform cameraHolder;
@@ -12,6 +14,8 @@ public class PlayerController : AttributesSync
 
     private int clientInfo1 = 3, clientInfo2 = 5;
     private Spawner spawner;
+
+    [SerializeField] PlayerHud hud;
 
 
     void Awake()
@@ -61,6 +65,29 @@ public class PlayerController : AttributesSync
         Camera.main.transform.parent = null;
         Camera.main.transform.localPosition = originalCameraStats.position;
         Camera.main.transform.rotation = originalCameraStats.rotation;
+    }
+
+
+    private void TriggerDeath()
+    {
+        if (Stocks > 0)
+        {
+            Stocks--;
+            hud.SetStocks(Stocks);
+        }
+        else
+        {
+
+        }
+    }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!other.CompareTag("DeathZone"))
+            return;
+
+
     }
 
     private new void OnDestroy()

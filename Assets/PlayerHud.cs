@@ -63,27 +63,34 @@ public class PlayerHud : MonoBehaviour
         Procentile.text = currentPercent + "%";
     }
 
-    public void LoseStock()
+    public void SetStocks(int stocks)
     {
-        if (stock3.sprite != null)
+        switch (stocks)
         {
-            stock3.sprite = null;
-            return;
-        }
-        else if (stock2.sprite != null)
-        {
-            stock2.sprite = null;
-            return;
-        }
-        else if (stock1.sprite != null)
-        {
-            stock1.sprite = null;
-            return;
-        }
-        else if (stock1.sprite == null)
-        {
-            Debug.Log("Game over!");
-            return;
+            case 4:
+                stock1.enabled = true;
+                stock2.enabled = true;
+                stock3.enabled = true;
+                break;
+            case 3:
+                stock1.enabled = true;
+                stock2.enabled = true;
+                stock3.enabled = false;
+                break;
+            case 2:
+                stock1.enabled = true;
+                stock2.enabled = false;
+                stock3.enabled = false;
+                break;
+            case 1:
+                stock1.enabled = false;
+                stock2.enabled = false;
+                stock3.enabled = false;
+                break;
+            case 0:
+            default:
+                Debug.Log("Game over!");
+                break;
         }
     }
 }
