@@ -12,6 +12,10 @@ public class MusicPlayer : AttributesSync
         musicPlayer = GetComponent<AudioSource>();
 
     }
+    private void Update()
+    {
+       
+    }
 
 
     [SynchronizableMethod]
