@@ -14,8 +14,7 @@ public class PlayerController : AttributesSync
     [SerializeField] Transform cameraHolder;
     private OriginalCameraStats originalCameraStats;
 
-    [SerializeField] GameObject PlayerHudToSpawn;
-    [SerializeField] PlayerHud hud;
+    //[SerializeField] PlayerHud hud;
     [SerializeField] List<Component> componentsToHide;
 
     bool isDead = false;
@@ -58,7 +57,7 @@ public class PlayerController : AttributesSync
         Camera.main.transform.rotation = cameraHolder.rotation;
         Multiplayer.Instance.RoomLeft.AddListener(RevertCamera);
 
-        hud = Instantiate(PlayerHudToSpawn).GetComponent<PlayerHud>();
+        //hud = Instantiate(PlayerHudToSpawn).GetComponent<PlayerHud>();
     }
 
     public void RevertCamera(Multiplayer multiplayer)
@@ -90,7 +89,7 @@ public class PlayerController : AttributesSync
         if (Stocks > 0)
         {
             Stocks--;
-            hud.SetStocks(Stocks);
+            GameManager.Instance.hud.SetStocks(Stocks);
             HidePlayer(true);
 
             yield return new WaitForSeconds(5);
