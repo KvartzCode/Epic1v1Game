@@ -10,6 +10,7 @@ public class UserIdHolder : AttributesSync
     private int _multiplier;
     [SerializeField] TextMeshPro text;
     bool uptadeText = true;
+    bool hasChangedColor;
     bool haveCheckedISPlayer;
 
     public void SetUserId(int id)
@@ -31,6 +32,9 @@ public class UserIdHolder : AttributesSync
 
     public void SetMultiplier(float multiplier, int id)
     {
+        if (!hasChangedColor)
+            text.color = GameManager.Instance.hud.GetColor(id);
+
         InvokeRemoteMethod(nameof(UpdateMultiplier), UserId.AllInclusive, multiplier, id);
     }
 
@@ -38,7 +42,6 @@ public class UserIdHolder : AttributesSync
     [SynchronizableMethod]
     private void UpdateMultiplier(float multiplier, int id)
     {
-
         if (userId == id)
         {
             var multi = multiplier * 100f;

@@ -53,6 +53,28 @@ public class PlayerHud : MonoBehaviour
         stock3.sprite = Life;
     }
 
+    public Color GetColor(int userId)
+    {
+        color = (TeamColor)userId;
+        switch (color)
+        {
+            case TeamColor.Red:
+                return Color.red;
+            case TeamColor.Blue:
+                return Color.blue;
+
+            case TeamColor.Green:
+                return Color.green;
+
+            case TeamColor.Purple:
+                return new Color(195, 0, 255);
+            default:
+                Debug.Log("Undefined TeamColor!");
+                break;
+        }
+        return Color.white;
+    }
+
     public void UpdatePercent(int currentPercent)
     {
         Debug.Log(" TEXT SOULD BE: " + currentPercent + "%");
