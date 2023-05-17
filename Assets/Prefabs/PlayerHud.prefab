@@ -431,7 +431,9 @@ MonoBehaviour:
   stock3: {fileID: 4487063609367686528}
   Procentile: {fileID: 4487063610114878833}
   color: 0
-  hudHolder: {fileID: 0}
+  hudObj:
+  - {fileID: 4487063608885126154}
+  - {fileID: 2494539792786890543}
 --- !u!1 &4487063610114878831
 GameObject:
   m_ObjectHideFlags: 0
