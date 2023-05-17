@@ -190,6 +190,7 @@ namespace Fragsurf.Movement
                 return;
             }
 
+            GameManager.Instance.hud.StartRound();
 
 
             gameObject.tag = "Player";

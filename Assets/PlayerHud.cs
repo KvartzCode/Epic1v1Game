@@ -25,12 +25,6 @@ public class PlayerHud : MonoBehaviour
     [SerializeField] private Image stock3;
     [SerializeField] private TextMeshProUGUI Procentile;
     public TeamColor color;
-    // Start is called before the first frame update
-
-    private void Start()
-    {
-        StartRound();
-    }
 
     public void StartRound()
     {
