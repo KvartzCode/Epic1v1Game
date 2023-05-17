@@ -135,14 +135,62 @@ namespace Fragsurf.Movement
 
         }
 
+        private void InitializeColIfNotClient()
+        {
+
+            _colliderObject = new GameObject("PlayerCollider");
+            _colliderObject.layer = gameObject.layer;
+            _colliderObject.transform.SetParent(transform);
+            _colliderObject.transform.rotation = Quaternion.identity;
+            _colliderObject.transform.localPosition = Vector3.zero;
+            _colliderObject.transform.SetSiblingIndex(0);
+
+            switch (collisionType)
+            {
+
+                // Box collider
+                case ColliderType.Box:
+
+                    _collider = _colliderObject.AddComponent<BoxCollider>();
+
+
+                    var boxc = (BoxCollider)_collider;
+                    boxc.size = colliderSize;
+
+                    defaultHeight = boxc.size.y;
+
+                    _colliderObject.AddComponent<PlayerCol>();
+                    _colliderObject.GetComponent<PlayerCol>().player = this;
+
+                    break;
+
+                // Capsule collider
+                case ColliderType.Capsule:
+
+                    _collider = _colliderObject.AddComponent<CapsuleCollider>();
+
+                    var capc = (CapsuleCollider)_collider;
+                    capc.height = colliderSize.y;
+                    capc.radius = colliderSize.x / 2f;
+
+                    defaultHeight = capc.height;
+
+                    break;
+
+            }
+        }
+
         private void Start()
         {
 
             if (!_avatar.IsMe)
             {
+                InitializeColIfNotClient();
                 enabled = false;
                 return;
             }
+
+
 
             gameObject.tag = "Player";
 
@@ -190,8 +238,8 @@ namespace Fragsurf.Movement
 
             _collider = gameObject.GetComponent<Collider>();
 
-            //if (_collider != null)
-            //    GameObject.Destroy(_collider);
+            if (_collider != null)
+                GameObject.Destroy(_collider);
 
             // rigidbody is required to collide with triggers
             rb = gameObject.GetComponent<Rigidbody>();
@@ -221,9 +269,10 @@ namespace Fragsurf.Movement
 
                     defaultHeight = boxc.size.y;
 
+                    _colliderObject.AddComponent<PlayerCol>();
+                    _colliderObject.GetComponent<PlayerCol>().player = this;
                     gameObject.AddComponent<BoxCollider>();
                     gameObject.GetComponent<BoxCollider>().size = colliderSize;
-
 
                     break;
 
@@ -277,6 +326,10 @@ namespace Fragsurf.Movement
             GameManager.Instance.UpdateIdHolder();
         }
 
+        public float GetMultiplier()
+        {
+            return multiplier;
+        }
 
         private void Update()
         {
@@ -348,6 +401,7 @@ namespace Fragsurf.Movement
         public void AddDamage(float damagePercentile)
         {
             multiplier = ((multiplier * 100f) + damagePercentile) * 0.01f;
+            GameManager.Instance.UpdateMultiplier();
         }
 
         public void AddVelocity(Vector3 dir, float force, bool useMultiplier)
