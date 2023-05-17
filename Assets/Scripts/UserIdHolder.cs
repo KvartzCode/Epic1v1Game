@@ -32,9 +32,6 @@ public class UserIdHolder : AttributesSync
 
     public void SetMultiplier(float multiplier, int id)
     {
-        if (!hasChangedColor)
-            text.color = GameManager.Instance.hud.GetColor(id);
-
         InvokeRemoteMethod(nameof(UpdateMultiplier), UserId.AllInclusive, multiplier, id);
     }
 
@@ -42,8 +39,15 @@ public class UserIdHolder : AttributesSync
     [SynchronizableMethod]
     private void UpdateMultiplier(float multiplier, int id)
     {
+
         if (userId == id)
         {
+            if (!hasChangedColor)
+            {
+                text.color = GameManager.Instance.hud.GetColor(id);
+                hasChangedColor = true;
+            }
+
             var multi = multiplier * 100f;
             _multiplier = Mathf.FloorToInt(multi);
             text.text = _multiplier + "%";
