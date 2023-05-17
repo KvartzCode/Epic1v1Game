@@ -39,7 +39,9 @@ public class GameManager : AttributesSync
 
     public void UpdateMultiplier()
     {
-        InvokeRemoteMethod(nameof(SynchedUpdateMultiplier), UserId.AllInclusive, player.GetMultiplier(),user.Index);
+        var multi = Mathf.FloorToInt(multiplier * 100f);
+        hud.UpdatePercent(multi);
+        InvokeRemoteMethod(nameof(SynchedUpdateMultiplier), UserId.AllInclusive, player.GetMultiplier(), user.Index);
     }
 
     public void UpdateIdHolder()
@@ -58,7 +60,7 @@ public class GameManager : AttributesSync
     void SynchedUpdateMultiplier(float multiplier, int id)
     {
         UserIdHolder idHolder = GameObject.FindWithTag("Player").GetComponent<UserIdHolder>();
-        idHolder.SetMultiplier(multiplier,id);
+        idHolder.SetMultiplier(multiplier, id);
     }
 
     public void SetUser(User user)
