@@ -7,12 +7,20 @@ public class MusicPlayer : AttributesSync
 {
     public AudioSource musicPlayer;
     public List<AudioClip> songs;
+
+    int id;
+
     private void Awake()
     {
         musicPlayer = GetComponent<AudioSource>();
-        SynchAll();
 
     }
+
+    private void Start()
+    {
+        SynchAll();
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
@@ -34,13 +42,16 @@ public class MusicPlayer : AttributesSync
     [SynchronizableMethod]
     void GetLowestSynch()
     {
-        InvokeRemoteMethod(nameof(GetLowestSynch), UserId.All, musicPlayer.time);
+        InvokeRemoteMethod(nameof(SyncPlayback), UserId.AllInclusive, musicPlayer.time, id);
     }
 
     [SynchronizableMethod]
-    void SyncPlayback(float pos)
+    void SyncPlayback(float pos, int id)
     {
+        musicPlayer.clip = songs[id];
+        musicPlayer.Play();
         musicPlayer.time = pos;
+
     }
 
     [SynchronizableMethod]
@@ -56,5 +67,6 @@ public class MusicPlayer : AttributesSync
 
         musicPlayer.clip = songs[ID];
         musicPlayer.Play();
+        id = ID;
     }
 }
