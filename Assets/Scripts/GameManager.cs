@@ -15,6 +15,8 @@ public class GameManager : AttributesSync
     public User user;
     public Fragsurf.Movement.SurfCharacter player;
 
+    float multiplier;
+
     private void Awake()
     {
         if (_instance != null && _instance != this)
@@ -36,7 +38,7 @@ public class GameManager : AttributesSync
 
     public void UpdateMultiplier()
     {
-        InvokeRemoteMethod(nameof(SynchedUpdateMultiplier), UserId.AllInclusive, player.GetMultiplier());
+        InvokeRemoteMethod(nameof(SynchedUpdateMultiplier), UserId.AllInclusive, player.GetMultiplier(),user.Index);
     }
 
     public void UpdateIdHolder()
@@ -52,10 +54,10 @@ public class GameManager : AttributesSync
     }
 
     [SynchronizableMethod]
-    void SynchedUpdateMultiplier(float multiplier)
+    void SynchedUpdateMultiplier(float multiplier, int id)
     {
         UserIdHolder idHolder = GameObject.FindWithTag("Player").GetComponent<UserIdHolder>();
-        idHolder.SetMultiplier(multiplier);
+        idHolder.SetMultiplier(multiplier,id);
     }
 
     public void SetUser(User user)

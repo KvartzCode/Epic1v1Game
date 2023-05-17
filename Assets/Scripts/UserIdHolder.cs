@@ -29,18 +29,21 @@ public class UserIdHolder : AttributesSync
             text.gameObject.transform.LookAt(Camera.main.transform);
     }
 
-    public void SetMultiplier(float multiplier)
+    public void SetMultiplier(float multiplier, int id)
     {
-        InvokeRemoteMethod(nameof(UpdateMultiplier), UserId.AllInclusive, multiplier);
+        InvokeRemoteMethod(nameof(UpdateMultiplier), UserId.AllInclusive, multiplier,id);
     }
 
 
     [SynchronizableMethod]
-    private void UpdateMultiplier(float multiplier)
+    private void UpdateMultiplier(float multiplier, int id)
     {
-        var multi = multiplier * 100f;
-        _multiplier = Mathf.FloorToInt(multi);
-        text.text = _multiplier + "%";
+        if (userId == id)
+        {
+            var multi = multiplier * 100f;
+            _multiplier = Mathf.FloorToInt(multi);
+            text.text = _multiplier + "%";
+        }
     }
     public int GetUserId()
     {
