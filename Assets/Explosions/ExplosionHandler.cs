@@ -11,6 +11,7 @@ public class ExplosionHandler : AttributesSync
     public GameObject ExploCosmetic;
     private GameObject exploObject;
     [SerializeField] private List<GameObject> ExplosionVariations;
+    [SerializeField] private List<AudioClip> Sfx;
     public static ExplosionHandler Instance;
     public User user;
     // Start is called before the first frame update
@@ -66,6 +67,11 @@ public class ExplosionHandler : AttributesSync
         //SpawnExplosionSynchronizable(explosionDamage, knockbackPower, explosionRadius, explosionType, PositionInWorldSpace);
     }
 
+    public void SpawnSFX(Vector3 PositionInWorldSpace)
+    {
+        InvokeRemoteMethod(nameof(SpawnSFXSync), UserId.AllInclusive, Random.Range(0, Sfx.Count), PositionInWorldSpace);
+    }
+
 
     [SynchronizableMethod]
     void SpawnExplosionSynchronizable(float explosionDamage, float knockbackPower, float explosionRadius, int explosionType, Vector3 PositionInWorldSpace, int userID)
@@ -76,5 +82,12 @@ public class ExplosionHandler : AttributesSync
         exploObject.GetComponent<Explosion>().InitiateExpo(explosionDamage, knockbackPower, explosionRadius, userID);
 
         Instantiate(ExplosionVariations[explosionType], PositionInWorldSpace, ExplosionVariations[explosionType].transform.rotation, ExploSpawner);
+    }
+
+    [SynchronizableMethod]
+
+     void SpawnSFXSync(int SfxID, Vector3 pos)
+    {
+        AudioSource.PlayClipAtPoint(Sfx[SfxID], pos);
     }
 }
