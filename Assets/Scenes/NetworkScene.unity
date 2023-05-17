@@ -3867,8 +3867,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 872017642}
-  - component: {fileID: 872017639}
   - component: {fileID: 872017641}
+  - component: {fileID: 872017639}
   - component: {fileID: 872017640}
   m_Layer: 8
   m_Name: DeathCamera
