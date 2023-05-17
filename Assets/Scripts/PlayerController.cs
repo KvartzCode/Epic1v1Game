@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using Alteruna;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -12,16 +14,16 @@ public class PlayerController : AttributesSync
     [SerializeField] Transform cameraHolder;
     private OriginalCameraStats originalCameraStats;
 
-    private int clientInfo1 = 3, clientInfo2 = 5;
-    private Spawner spawner;
-
+    [SerializeField] GameObject PlayerHudToSpawn;
     [SerializeField] PlayerHud hud;
+    [SerializeField] List<Component> componentsToHide;
+
+    bool isDead = false;
 
 
     void Awake()
     {
         avatar = GetComponent<Alteruna.Avatar>();
-        spawner = FindObjectOfType<Spawner>();
     }
 
     void Start()
@@ -38,16 +40,13 @@ public class PlayerController : AttributesSync
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))
-            ClientRequestHostLogic();
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Debug.Log(GameManager.Instance.user.Index);
-            Debug.Log("Host ID = " + Multiplayer.Instance.GetUser(Multiplayer.Instance.LowestUserIndex).Index);
-        }
-        if (Input.GetKeyDown(KeyCode.Q))
-            GameManager.LeaveRoom();
-            //CloseRoom();
+        //if (Input.GetKeyDown(KeyCode.R))
+        //{
+        //    Debug.Log(GameManager.Instance.user.Index);
+        //    Debug.Log("Host ID = " + Multiplayer.Instance.GetUser(Multiplayer.Instance.LowestUserIndex).Index);
+        //}
+        //if (Input.GetKeyDown(KeyCode.Q))
+        //    GameManager.LeaveRoom();
     }
 
 
@@ -58,6 +57,8 @@ public class PlayerController : AttributesSync
         Camera.main.transform.localPosition = Vector3.zero;
         Camera.main.transform.rotation = cameraHolder.rotation;
         Multiplayer.Instance.RoomLeft.AddListener(RevertCamera);
+
+        hud = Instantiate(PlayerHudToSpawn).GetComponent<PlayerHud>();
     }
 
     public void RevertCamera(Multiplayer multiplayer)
@@ -68,26 +69,48 @@ public class PlayerController : AttributesSync
     }
 
 
-    private void TriggerDeath()
+    private void Respawn()
     {
+        //TODO: Disable player velocity
+        gameObject.transform.position = Multiplayer.AvatarSpawnLocation.position;
+    }
+
+    private void HidePlayer(bool hide)
+    {
+        foreach (var c in componentsToHide)
+        {
+            //c.enabled = !hide;
+        }
+    }
+
+    private IEnumerator TriggerDeath()
+    {
+        isDead = true;
+
         if (Stocks > 0)
         {
             Stocks--;
             hud.SetStocks(Stocks);
+            HidePlayer(true);
+
+            yield return new WaitForSeconds(5);
+
+            HidePlayer(false);
+            Respawn();
+            isDead = false;
         }
         else
         {
-
+            HidePlayer(true);
+            //TODO: DEATH
         }
     }
 
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("DeathZone"))
-            return;
-
-
+        if (other.CompareTag("DeathZone") && !isDead)
+            StartCoroutine(TriggerDeath());
     }
 
     private new void OnDestroy()
@@ -95,28 +118,6 @@ public class PlayerController : AttributesSync
         Multiplayer.Instance.RoomLeft.RemoveListener(RevertCamera);
         base.OnDestroy();
     }
-
-
-    #region Host Logic
-
-    void ClientRequestHostLogic()
-    {
-        InvokeRemoteMethod(nameof(CallHost), Multiplayer.Instance.GetHost(), clientInfo1, clientInfo2);
-    }
-
-    [SynchronizableMethod]
-    void CallHost(int userInformation, int moreUserInformation)
-    {
-        InvokeRemoteMethod(nameof(AllClientsRecieveThis), UserId.AllInclusive, userInformation + moreUserInformation);
-    }
-
-    [SynchronizableMethod]
-    void AllClientsRecieveThis(int recievedInformation)
-    {
-        Debug.Log($"All clients recieve this information: {recievedInformation} // This was calculated only on the earliest client");
-    }
-
-    #endregion
 
 
     private class OriginalCameraStats
