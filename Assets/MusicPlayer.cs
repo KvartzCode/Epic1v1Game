@@ -16,6 +16,7 @@ public class MusicPlayer : AttributesSync
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
+            Debug.Log("Playing new song...");
             InvokeRemoteMethod(nameof(ChangeSong), UserId.AllInclusive, Random.Range(0, songs.Count));
         }
     }
@@ -24,12 +25,15 @@ public class MusicPlayer : AttributesSync
     [SynchronizableMethod]
     public void ChangeSong(int ID)
     {
+        Debug.Log("Changed new song to: " + ID);
         if (ID == -1)
         {
             musicPlayer.clip = null;
+            musicPlayer.Play();
             return;
         }
 
         musicPlayer.clip = songs[ID];
+        musicPlayer.Play();
     }
 }
