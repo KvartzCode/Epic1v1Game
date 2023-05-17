@@ -19,8 +19,7 @@ public class RocketTrigger : MonoBehaviour
                 {
                     if (idHolder.GetUserId() != rocket.playerID)
                     {
-                        Debug.Log("Boom" + idHolder.GetUserId() + " rocket id: " + rocket.playerID);
-                        //rocket.Explode();
+                        rocket.Explode();
                     }
 
                 }
