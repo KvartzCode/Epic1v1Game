@@ -416,6 +416,11 @@ namespace Fragsurf.Movement
 
         }
 
+        public void SetVelocity(Vector3 velocity)
+        {
+            moveData.velocity = velocity;
+        }
+
         private void ResetPosition()
         {
 
