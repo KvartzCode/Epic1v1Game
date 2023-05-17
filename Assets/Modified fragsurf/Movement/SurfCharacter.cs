@@ -403,6 +403,7 @@ namespace Fragsurf.Movement
         public void AddDamage(float damagePercentile)
         {
             multiplier = ((multiplier * 100f) + damagePercentile) * 0.01f;
+            ExplosionHandler.Instance.SpawnSFX(transform.position);
             GameManager.Instance.UpdateMultiplier();
         }
 
