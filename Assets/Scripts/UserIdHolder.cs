@@ -9,6 +9,7 @@ public class UserIdHolder : AttributesSync
     private int userId;
     private int _multiplier;
     [SerializeField] TextMeshPro text;
+    GameObject camObj;
     bool uptadeText = true;
     bool hasChangedColor;
     bool haveCheckedISPlayer;
@@ -24,10 +25,15 @@ public class UserIdHolder : AttributesSync
         uptadeText = false;
     }
 
+    private void Start()
+    {
+        camObj = Camera.main.transform.gameObject;
+    }
+
     private void Update()
     {
         if (uptadeText)
-            text.gameObject.transform.LookAt(transform);
+            text.gameObject.transform.LookAt(camObj.transform);
     }
 
     public void SetMultiplier(float multiplier, int id)
