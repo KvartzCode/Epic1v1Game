@@ -190,7 +190,6 @@ namespace Fragsurf.Movement
                 return;
             }
 
-            GameManager.Instance.hud.StartRound();
 
 
             gameObject.tag = "Player";
@@ -325,6 +324,7 @@ namespace Fragsurf.Movement
             yield return null;
             GameManager.Instance.player = this;
             GameManager.Instance.UpdateIdHolder();
+            GameManager.Instance.hud.StartRound();
         }
 
         public float GetMultiplier()
