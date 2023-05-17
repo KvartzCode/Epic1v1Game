@@ -8,7 +8,6 @@ public class Rocket : MonoBehaviour
     [SerializeField] float speed = 3;
     [SerializeField] ParticleSystem particles;
 
-    GameObject hitObj;
 
     Rigidbody rbdy;
 
@@ -26,7 +25,7 @@ public class Rocket : MonoBehaviour
 
     public void Explode()
     {
-        Debug.Log("Rocket id: " + playerID + " has hit: " + hitObj.name, hitObj);
+      
 
         if (playerID == GameManager.Instance.user.Index)
             ExplosionHandler.Instance.SpawnExplosion(10, 600, 7, 0, transform.position, playerID);
@@ -39,7 +38,6 @@ public class Rocket : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        hitObj = collision.gameObject;
         Explode();
     }
 }
