@@ -31,6 +31,7 @@ public class PlayerAiming : MonoBehaviour
     [HideInInspector]
     public Vector2 punchAngleVel;
 
+
     private void Start()
     {
         if (!player.GetAvatar().IsMe)
@@ -38,23 +39,10 @@ public class PlayerAiming : MonoBehaviour
             enabled = false;
             return;
         }
-
-        LockMouse(true);
-    }
-
-    void LockMouse(bool isLocked)
-    {
-        // Lock the mouse
-        Cursor.lockState = isLocked ? CursorLockMode.Locked : CursorLockMode.None;
-        Cursor.visible = !isLocked;
     }
 
     private void Update()
     {
-
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.F1))
-            LockMouse(Cursor.visible);
-
         // Fix pausing
         if (Mathf.Abs(Time.timeScale) <= 0)
             return;

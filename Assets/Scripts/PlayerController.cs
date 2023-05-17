@@ -16,6 +16,7 @@ public class PlayerController : AttributesSync
     private OriginalCameraStats originalCameraStats;
 
     [SerializeField] SurfCharacter surfCharacter;
+    GameObject lobbyCanvas;
 
     bool isDead = false;
 
@@ -35,10 +36,14 @@ public class PlayerController : AttributesSync
 
         GameManager.Instance.SetUser(avatar.Possessor);
         Init();
+        LockMouse(true);
     }
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.F1))
+            LockMouse(Cursor.visible);
+
         //if (Input.GetKeyDown(KeyCode.R))
         //{
         //    Debug.Log(GameManager.Instance.user.Index);
@@ -57,6 +62,8 @@ public class PlayerController : AttributesSync
         Camera.main.transform.rotation = cameraHolder.rotation;
         Multiplayer.Instance.RoomLeft.AddListener(RevertCamera);
 
+        lobbyCanvas = FindObjectOfType<RoomMenu>().gameObject;
+        lobbyCanvas.SetActive(false);
         //hud = Instantiate(PlayerHudToSpawn).GetComponent<PlayerHud>();
     }
 
@@ -67,6 +74,13 @@ public class PlayerController : AttributesSync
         Camera.main.transform.rotation = originalCameraStats.rotation;
     }
 
+
+    private void LockMouse(bool isLocked)
+    {
+        lobbyCanvas.SetActive(!isLocked);
+        Cursor.lockState = isLocked ? CursorLockMode.Locked : CursorLockMode.None;
+        Cursor.visible = !isLocked;
+    }
 
     private void Respawn()
     {
