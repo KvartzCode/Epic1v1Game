@@ -8,10 +8,12 @@ public class RocketTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.layer == 3)
         {
-            if (other.gameObject.GetComponent<UserIdHolder>().GetUserId() != rocket.playerID)
-                rocket.Explode();
+            UserIdHolder idHolder = other.gameObject.GetComponent<UserIdHolder>();
+            if (idHolder != null)
+                if (idHolder.GetUserId() != rocket.playerID)
+                    rocket.Explode();
         }
     }
 }
