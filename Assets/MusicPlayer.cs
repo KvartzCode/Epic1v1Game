@@ -14,7 +14,10 @@ public class MusicPlayer : AttributesSync
     }
     private void Update()
     {
-       
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            InvokeRemoteMethod(nameof(ChangeSong), UserId.AllInclusive, Random.Range(0, songs.Count));
+        }
     }
 
 
