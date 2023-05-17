@@ -19,6 +19,7 @@ public class PlayerController : AttributesSync
     GameObject lobbyCanvas;
 
     bool isDead = false;
+    Camera mainCamera;
 
 
     void Awake()
@@ -56,10 +57,11 @@ public class PlayerController : AttributesSync
 
     void Init()
     {
-        originalCameraStats = new OriginalCameraStats(Camera.main.transform);
-        Camera.main.transform.SetParent(cameraHolder);
-        Camera.main.transform.localPosition = Vector3.zero;
-        Camera.main.transform.rotation = cameraHolder.rotation;
+        mainCamera = Camera.main;
+        originalCameraStats = new OriginalCameraStats(mainCamera.transform);
+        mainCamera.transform.SetParent(cameraHolder);
+        mainCamera.transform.localPosition = Vector3.zero;
+        mainCamera.transform.rotation = cameraHolder.rotation;
         Multiplayer.Instance.RoomLeft.AddListener(RevertCamera);
 
         lobbyCanvas = FindObjectOfType<RoomMenu>().gameObject;
@@ -69,9 +71,9 @@ public class PlayerController : AttributesSync
 
     public void RevertCamera(Multiplayer multiplayer)
     {
-        Camera.main.transform.parent = null;
-        Camera.main.transform.localPosition = originalCameraStats.position;
-        Camera.main.transform.rotation = originalCameraStats.rotation;
+        mainCamera.transform.parent = null;
+        mainCamera.transform.localPosition = originalCameraStats.position;
+        mainCamera.transform.rotation = originalCameraStats.rotation;
     }
 
 
@@ -94,6 +96,9 @@ public class PlayerController : AttributesSync
 
     private void HidePlayer(bool hide)
     {
+        mainCamera.enabled = !hide;
+        GameManager.Instance.deathCamera.enabled = hide;
+
         //foreach (var c in componentsToHide)
         //{
         //    //c.enabled = !hide;
