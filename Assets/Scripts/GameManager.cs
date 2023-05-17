@@ -39,8 +39,6 @@ public class GameManager : AttributesSync
 
     public void UpdateMultiplier()
     {
-        var multi = Mathf.FloorToInt(multiplier * 100f);
-        hud.UpdatePercent(multi);
         InvokeRemoteMethod(nameof(SynchedUpdateMultiplier), UserId.AllInclusive, player.GetMultiplier(), user.Index);
     }
 
