@@ -190,8 +190,8 @@ namespace Fragsurf.Movement
 
             _collider = gameObject.GetComponent<Collider>();
 
-            if (_collider != null)
-                GameObject.Destroy(_collider);
+            //if (_collider != null)
+            //    GameObject.Destroy(_collider);
 
             // rigidbody is required to collide with triggers
             rb = gameObject.GetComponent<Rigidbody>();
