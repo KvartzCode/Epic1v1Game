@@ -76,8 +76,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74df9a91df1da7542a357f3564c89332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Multiplayer: {fileID: 0}
+  _uidString: 5b606a3f-0fbf-433e-b1ad-354a8cde1ad5
+  Reliability: 1
+  LocalMethodBehavior: 1
   ExploSpawner: {fileID: 2726488505702758593}
-  Explo: {fileID: 7916238607143238687, guid: bc309e7118220fb4bb75666a9b12c15c, type: 3}
+  Explo: {fileID: 8945710356868823875, guid: d0f7a986f9d819244be82774e6ade158, type: 3}
   Rocket: {fileID: 1296420899736869664, guid: c95ae95ea42eec64398c346f9fdc2be8, type: 3}
   ExploCosmetic: {fileID: 0}
   ExplosionVariations:

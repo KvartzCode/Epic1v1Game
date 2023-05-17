@@ -71,11 +71,10 @@ public class ExplosionHandler : AttributesSync
     void SpawnExplosionSynchronizable(float explosionDamage, float knockbackPower, float explosionRadius, int explosionType, Vector3 PositionInWorldSpace, int userID)
     {
         Debug.Log("Explosion");
-        ExploSpawner.position = PositionInWorldSpace;
-        exploObject = Instantiate(Explo, ExploSpawner);
+        //ExploSpawner.position = PositionInWorldSpace;
+        exploObject = Instantiate(Explo, PositionInWorldSpace, Explo.transform.rotation, ExploSpawner);
         exploObject.GetComponent<Explosion>().InitiateExpo(explosionDamage, knockbackPower, explosionRadius, userID);
 
-
-        exploObject = Instantiate(ExplosionVariations[explosionType], ExploSpawner);
+        Instantiate(ExplosionVariations[explosionType], PositionInWorldSpace, ExplosionVariations[explosionType].transform.rotation, ExploSpawner);
     }
 }

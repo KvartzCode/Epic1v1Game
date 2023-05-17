@@ -34,6 +34,7 @@ public class PlayerHud : MonoBehaviour
 
     public void StartRound()
     {
+        color = (TeamColor)GameManager.Instance.user.Index;
         switch (color)
         {
             case TeamColor.Red:
