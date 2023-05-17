@@ -27,7 +27,7 @@ public class UserIdHolder : AttributesSync
     private void Update()
     {
         if (uptadeText)
-            text.gameObject.transform.LookAt(Camera.main.transform);
+            text.gameObject.transform.LookAt(transform);
     }
 
     public void SetMultiplier(float multiplier, int id)
