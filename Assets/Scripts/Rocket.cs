@@ -24,8 +24,10 @@ public class Rocket : MonoBehaviour
 
     public void Explode()
     {
+        Debug.Log("Rocket id: " + playerID);
+
         if (playerID == GameManager.Instance.user.Index)
-            ExplosionHandler.Instance.SpawnExplosion(10, 600, 7, 0, transform.position,playerID);
+            ExplosionHandler.Instance.SpawnExplosion(10, 600, 7, 0, transform.position, playerID);
 
         particles.transform.parent = null;
         particles.Stop();

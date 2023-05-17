@@ -12,6 +12,8 @@ public class RocketTrigger : MonoBehaviour
         {
             PlayerCol col = other.GetComponent<PlayerCol>();
 
+            Debug.Log("Ontrigger");
+
             if (col != null)
             {
                 UserIdHolder idHolder = col.player.gameObject.GetComponent<UserIdHolder>();
