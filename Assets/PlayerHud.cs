@@ -55,6 +55,7 @@ public class PlayerHud : MonoBehaviour
 
     public void UpdatePercent(int currentPercent)
     {
+        Debug.Log(" TEXT SOULD BE: " + currentPercent + "%");
         Procentile.text = currentPercent + "%";
     }
 

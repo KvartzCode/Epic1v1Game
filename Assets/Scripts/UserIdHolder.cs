@@ -31,18 +31,24 @@ public class UserIdHolder : AttributesSync
 
     public void SetMultiplier(float multiplier, int id)
     {
-        InvokeRemoteMethod(nameof(UpdateMultiplier), UserId.AllInclusive, multiplier,id);
+        InvokeRemoteMethod(nameof(UpdateMultiplier), UserId.AllInclusive, multiplier, id);
     }
 
 
     [SynchronizableMethod]
     private void UpdateMultiplier(float multiplier, int id)
     {
+
         if (userId == id)
         {
             var multi = multiplier * 100f;
             _multiplier = Mathf.FloorToInt(multi);
             text.text = _multiplier + "%";
+
+            if (userId == GameManager.Instance.user.Index)
+            {
+                GameManager.Instance.hud.UpdatePercent(_multiplier);
+            }
         }
     }
     public int GetUserId()
