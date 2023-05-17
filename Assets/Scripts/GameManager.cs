@@ -16,7 +16,8 @@ public class GameManager : AttributesSync
     public Fragsurf.Movement.SurfCharacter player;
     public PlayerHud hud;
 
-    float multiplier;
+    public Camera deathCamera;
+
 
     private void Awake()
     {
