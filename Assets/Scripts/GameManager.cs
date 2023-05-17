@@ -41,7 +41,6 @@ public class GameManager : AttributesSync
 
     public void UpdateIdHolder()
     {
-
         InvokeRemoteMethod(nameof(SynchedUpdateIdHolder), UserId.AllInclusive, user.Index);
     }
 
@@ -49,7 +48,7 @@ public class GameManager : AttributesSync
     void SynchedUpdateIdHolder(int id)
     {
         UserIdHolder idHolder = GameObject.FindWithTag("Player").GetComponent<UserIdHolder>();
-        idHolder.SetUserId(id);
+        idHolder.SetUserId(user.Index);
     }
 
     [SynchronizableMethod]

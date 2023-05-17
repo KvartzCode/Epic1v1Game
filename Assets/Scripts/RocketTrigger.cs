@@ -12,15 +12,16 @@ public class RocketTrigger : MonoBehaviour
         {
             PlayerCol col = other.GetComponent<PlayerCol>();
 
-            Debug.Log("Ontrigger");
-
             if (col != null)
             {
                 UserIdHolder idHolder = col.player.gameObject.GetComponent<UserIdHolder>();
                 if (idHolder != null)
                 {
                     if (idHolder.GetUserId() != rocket.playerID)
-                        rocket.Explode();
+                    {
+                        Debug.Log("Boom" + idHolder.GetUserId() + " rocket id: " + rocket.playerID);
+                        //rocket.Explode();
+                    }
 
                 }
 

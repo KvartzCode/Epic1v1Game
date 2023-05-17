@@ -50,8 +50,10 @@ public class UserIdHolder : AttributesSync
     [SynchronizableMethod]
     private void UpdateUserId(int id)
     {
+        Debug.Log("I WANT TO CHANGE to id:  " + id, this); ;
         userId = id;
-        
+        Debug.Log("Changed to " + userId);
+
         if (!haveCheckedISPlayer)
         {
             haveCheckedISPlayer = true;
