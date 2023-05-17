@@ -515,11 +515,7 @@ MonoBehaviour:
   Reliability: 1
   LocalMethodBehavior: 1
   cameraHolder: {fileID: 8272961777276335226}
-  PlayerHudToSpawn: {fileID: 4487063609659591639, guid: 34169a0d26aeb0a44a979dc84faed8e7,
-    type: 3}
-  hud: {fileID: 0}
-  componentsToHide:
-  - {fileID: 0}
+  surfCharacter: {fileID: 8272961778350456348}
 --- !u!114 &6697983922509652227
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -478,6 +478,12 @@ namespace Fragsurf.Movement
 
         }
 
+        public void SetMultiplier(float value)
+        {
+            multiplier = value;
+            GameManager.Instance.UpdateMultiplier();
+        }
+
         /// <summary>
         /// 
         /// </summary>

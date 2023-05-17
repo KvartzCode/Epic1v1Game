@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Alteruna;
+using Fragsurf.Movement;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -14,8 +15,7 @@ public class PlayerController : AttributesSync
     [SerializeField] Transform cameraHolder;
     private OriginalCameraStats originalCameraStats;
 
-    //[SerializeField] PlayerHud hud;
-    [SerializeField] List<Component> componentsToHide;
+    [SerializeField] SurfCharacter surfCharacter;
 
     bool isDead = false;
 
@@ -71,15 +71,16 @@ public class PlayerController : AttributesSync
     private void Respawn()
     {
         //TODO: Disable player velocity
+        surfCharacter.SetMultiplier(0);
         gameObject.transform.position = Multiplayer.AvatarSpawnLocation.position;
     }
 
     private void HidePlayer(bool hide)
     {
-        foreach (var c in componentsToHide)
-        {
-            //c.enabled = !hide;
-        }
+        //foreach (var c in componentsToHide)
+        //{
+        //    //c.enabled = !hide;
+        //}
     }
 
     private IEnumerator TriggerDeath()
@@ -97,6 +98,7 @@ public class PlayerController : AttributesSync
             HidePlayer(false);
             Respawn();
             isDead = false;
+            
         //}
         //else
         //{
