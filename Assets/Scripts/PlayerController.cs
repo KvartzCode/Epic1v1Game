@@ -86,7 +86,10 @@ public class PlayerController : AttributesSync
     {
         //TODO: Disable player velocity
         surfCharacter.SetMultiplier(0);
-        gameObject.transform.position = Multiplayer.AvatarSpawnLocation.position;
+        surfCharacter.SetVelocity(Vector3.zero);
+
+        var spawnPositions = Multiplayer.AvatarSpawnLocations;
+        gameObject.transform.position = spawnPositions[Random.Range(0, spawnPositions.Count)].position;
     }
 
     private void HidePlayer(bool hide)
@@ -104,7 +107,7 @@ public class PlayerController : AttributesSync
         //if (Stocks > 0) //TODO: Uncomment when we fix this
         //{
             Stocks--;
-            GameManager.Instance.hud.SetStocks(Stocks);
+            //GameManager.Instance.hud.SetStocks(Stocks);
             HidePlayer(true);
 
             yield return new WaitForSeconds(5);
