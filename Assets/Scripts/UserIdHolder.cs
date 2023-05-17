@@ -70,8 +70,18 @@ public class UserIdHolder : AttributesSync
         userId = id;
         Debug.Log("Changed to " + userId);
 
+
+
         if (!haveCheckedISPlayer)
         {
+
+            if (!hasChangedColor)
+            {
+                text.color = GameManager.Instance.hud.GetColor(id);
+                hasChangedColor = true;
+                GameManager.Instance.UpdateAllMultipliers();
+            }
+
             haveCheckedISPlayer = true;
             if (userId == GameManager.Instance.user.Index)
             {

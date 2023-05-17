@@ -47,6 +47,17 @@ public class GameManager : AttributesSync
         InvokeRemoteMethod(nameof(SynchedUpdateIdHolder), UserId.AllInclusive, user.Index);
     }
 
+    public void UpdateAllMultipliers()
+    {
+        InvokeRemoteMethod(nameof(SynchedUpdateAllMultipliers), UserId.AllInclusive);
+    }
+
+    [SynchronizableMethod]
+    public void SynchedUpdateAllMultipliers()
+    {
+        UpdateMultiplier();
+    }
+
     [SynchronizableMethod]
     void SynchedUpdateIdHolder(int id)
     {
