@@ -25,9 +25,16 @@ public class PlayerHud : MonoBehaviour
     [SerializeField] private Image stock3;
     [SerializeField] private TextMeshProUGUI Procentile;
     public TeamColor color;
+    public GameObject hudHolder;
+
+    private void Awake()
+    {
+        hudHolder.SetActive(false);
+    }
 
     public void StartRound()
     {
+        hudHolder.SetActive(true);
         color = (TeamColor)GameManager.Instance.user.Index;
         switch (color)
         {

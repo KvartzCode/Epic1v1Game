@@ -14,6 +14,7 @@ public class Rocket : MonoBehaviour
     private void Start()
     {
         AddForceToRocket();
+        Destroy(gameObject, 10);
     }
 
     public void AddForceToRocket()
@@ -25,7 +26,7 @@ public class Rocket : MonoBehaviour
 
     public void Explode()
     {
-      
+
 
         if (playerID == GameManager.Instance.user.Index)
             ExplosionHandler.Instance.SpawnExplosion(10, 600, 7, 0, transform.position, playerID);
