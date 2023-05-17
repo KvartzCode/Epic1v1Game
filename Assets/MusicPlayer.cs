@@ -27,6 +27,8 @@ public class MusicPlayer : AttributesSync
     public void SynchAll()
     {
         InvokeRemoteMethod(nameof(GetLowestSynch), Multiplayer.LowestUserIndex);
+        if (!musicPlayer.isPlaying)
+            musicPlayer.Play();
     }
 
     [SynchronizableMethod]
