@@ -86,8 +86,8 @@ public class PlayerController : AttributesSync
     {
         isDead = true;
 
-        if (Stocks > 0)
-        {
+        //if (Stocks > 0) //TODO: Uncomment when we fix this
+        //{
             Stocks--;
             GameManager.Instance.hud.SetStocks(Stocks);
             HidePlayer(true);
@@ -97,12 +97,12 @@ public class PlayerController : AttributesSync
             HidePlayer(false);
             Respawn();
             isDead = false;
-        }
-        else
-        {
-            HidePlayer(true);
-            //TODO: DEATH
-        }
+        //}
+        //else
+        //{
+        //    HidePlayer(true);
+        //    //TODO: DEATH
+        //}
     }
 
 
