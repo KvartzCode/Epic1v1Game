@@ -11,6 +11,8 @@ public class CosmeticManager : MonoBehaviour
     [SerializeField] Material player4Mat;
     [SerializeField] GameObject[] hats;
 
+    private int currentHat = 0;
+
     private static CosmeticManager _instance;
     public static CosmeticManager Instance
     {
@@ -26,6 +28,22 @@ public class CosmeticManager : MonoBehaviour
             Debug.LogError("More than one cosmetic manager in scene");
         else
             _instance = this;
+    }
+
+    public int GetHatAmount()
+    {
+        return hats.Length;
+    }
+
+    public void UpdateCurrentHat(int index)
+    {
+        currentHat = index;
+        GameManager.Instance.UpdateHats();
+    }
+
+    public int GetCurrentHat()
+    {
+        return currentHat;
     }
 
     public Material GetPlayerMat(int id)

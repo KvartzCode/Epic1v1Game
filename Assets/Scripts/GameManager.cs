@@ -18,6 +18,7 @@ public class GameManager : AttributesSync
 
     public Camera deathCamera;
 
+    bool Initialized;
 
     private void Awake()
     {
@@ -48,13 +49,28 @@ public class GameManager : AttributesSync
         InvokeRemoteMethod(nameof(SynchedUpdateIdHolder), UserId.AllInclusive, user.Index);
     }
 
+    public void UpdateHats()
+    {
+        if(Multiplayer.Instance.InRoom)
+        {
+            InvokeRemoteMethod(nameof(SynchedUpdateHats), UserId.AllInclusive);
+        }
+    }
+
     public void UpdateAllMultipliers()
     {
         InvokeRemoteMethod(nameof(SynchedUpdateAllMultipliers), UserId.AllInclusive);
     }
 
     [SynchronizableMethod]
-    public void SynchedUpdateAllMultipliers()
+    void SynchedUpdateHats()
+    {
+        UserIdHolder idHolder = GameObject.FindWithTag("Player").GetComponent<UserIdHolder>();
+        idHolder.SetHat(CosmeticManager.Instance.GetCurrentHat());
+    }
+
+    [SynchronizableMethod]
+    void SynchedUpdateAllMultipliers()
     {
         UpdateMultiplier();
     }
