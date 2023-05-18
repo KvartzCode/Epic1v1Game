@@ -9,12 +9,14 @@ public class UserIdHolder : AttributesSync
     [SerializeField] TextMeshPro text;
     [Header("PlayerModel")]
     public GameObject playerModel;
+    public GameObject hatPos;
     public Material shadowcasterMat;
 
 
     private int userId;
     private int _multiplier;
     GameObject camObj;
+    GameObject currentHat;
     bool updateText;
     bool hasChangedColor;
     bool haveCheckedISPlayer;
@@ -27,11 +29,54 @@ public class UserIdHolder : AttributesSync
         InvokeRemoteMethod(nameof(UpdateUserId), UserId.AllInclusive, id);
     }
 
+    public void SetHat(int hatID)
+    {
+        InvokeRemoteMethod(nameof(UpdateHat), UserId.AllInclusive, hatID);
+    }
+
+    [SynchronizableMethod]
+    void UpdateHat(int hatID)
+    {
+        if (currentHat != null)
+            Destroy(currentHat);
+
+        currentHat = Instantiate(CosmeticManager.Instance.GetHat(hatID), hatPos.transform);
+
+        if (userId == GameManager.Instance.user.Index)
+        {
+            MeshRenderer renderer = currentHat.GetComponentInChildren<MeshRenderer>();
+            if (renderer != null)
+            {
+                Material[] mats = renderer.materials;
+                for (int i = 0; i < mats.Length; i++)
+                {
+                    mats[i] = shadowcasterMat;
+                }
+                renderer.materials = mats;
+            }
+            else
+            {
+                SkinnedMeshRenderer sRenderer = currentHat.GetComponentInChildren<SkinnedMeshRenderer>();
+                if(sRenderer != null)
+                {
+                    Material[] mats = sRenderer.materials;
+                    for (int i = 0; i < mats.Length; i++)
+                    {
+                        mats[i] = shadowcasterMat;
+                    }
+                    sRenderer.materials = mats;
+                }
+            }
+
+
+        }
+
+    }
+
     public void UpdatePlayerMat()
     {
         if (userId != GameManager.Instance.user.Index)
         {
-            Debug.Log("Is here");
             Material[] mat = playerModel.GetComponent<MeshRenderer>().materials;
             mat[0] = CosmeticManager.Instance.GetPlayerMat(userId);
             playerModel.GetComponent<MeshRenderer>().materials = mat;

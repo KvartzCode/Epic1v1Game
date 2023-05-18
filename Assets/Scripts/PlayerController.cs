@@ -17,6 +17,7 @@ public class PlayerController : AttributesSync
 
     [SerializeField] SurfCharacter surfCharacter;
     GameObject lobbyCanvas;
+    GameObject customizeMenu;
 
     bool isDead = false;
     Camera mainCamera;
@@ -66,6 +67,8 @@ public class PlayerController : AttributesSync
 
         lobbyCanvas = FindObjectOfType<RoomMenu>().gameObject;
         lobbyCanvas.SetActive(false);
+        customizeMenu = FindObjectOfType<CustomizeMenu>().gameObject;
+        customizeMenu.SetActive(false);
         //hud = Instantiate(PlayerHudToSpawn).GetComponent<PlayerHud>();
     }
 
@@ -80,6 +83,7 @@ public class PlayerController : AttributesSync
     private void LockMouse(bool isLocked)
     {
         lobbyCanvas.SetActive(!isLocked);
+        customizeMenu.SetActive(!isLocked);
         Cursor.lockState = isLocked ? CursorLockMode.Locked : CursorLockMode.None;
         Cursor.visible = !isLocked;
     }

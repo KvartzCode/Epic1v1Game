@@ -8,7 +8,7 @@ public class MusicPlayer : AttributesSync
     public AudioSource musicPlayer;
     public List<AudioClip> songs;
 
-    int id;
+    int id = -1;
 
     private void Awake()
     {

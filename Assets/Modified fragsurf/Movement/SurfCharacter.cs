@@ -306,6 +306,7 @@ namespace Fragsurf.Movement
             GameManager.Instance.UpdateIdHolder();
             GameManager.Instance.hud.StartRound();
             GameManager.Instance.UpdateMultiplier();
+            GameManager.Instance.UpdateHats();
         }
 
         public float GetMultiplier()
