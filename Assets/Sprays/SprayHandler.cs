@@ -8,7 +8,7 @@ using Alteruna;
 public class SprayHandler : AttributesSync
 {
     [SerializeField] private List<Material> sprayDecals;
-
+    [SerializeField] private string imageURL;
     void Start()
     {
 
@@ -18,7 +18,7 @@ public class SprayHandler : AttributesSync
     {
         if (Input.GetKeyDown(KeyCode.G))
         {
-            InvokeRemoteMethod(nameof(SetUserSpray), UserId.AllInclusive, Multiplayer.Instance.Me.Index, "https://cdn.discordapp.com/attachments/1072154976601772083/1108799510773243915/pepsi.png");
+            InvokeRemoteMethod(nameof(SetUserSpray), UserId.AllInclusive, Multiplayer.Instance.Me.Index, imageURL);
         }
     }
 
@@ -61,7 +61,7 @@ public class SprayHandler : AttributesSync
     [SynchronizableMethod]
     public void CommitTheft(int UserID)
     {
-        InvokeRemoteMethod(nameof(SetUserSpray), UserId.AllInclusive, Multiplayer.Instance.Me.Index, "https://cdn.discordapp.com/attachments/1072154976601772083/1108799510773243915/pepsi.png");
+        InvokeRemoteMethod(nameof(SetUserSpray), UserId.AllInclusive, Multiplayer.Instance.Me.Index, imageURL);
     }
 
 }
