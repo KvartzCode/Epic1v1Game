@@ -52,10 +52,6 @@ namespace Fragsurf.Movement
         [SerializeField]
         public MovementConfig movementConfig;
 
-        [Header("PlayerModel")]
-        public GameObject playerModel;
-        public Material shadowcasterMat;
-
         private GameObject _groundObject;
         private Vector3 _baseVelocity;
         private Collider _collider;
@@ -189,22 +185,6 @@ namespace Fragsurf.Movement
                 enabled = false;
                 return;
             }
-
-
-
-            gameObject.tag = "Player";
-
-            if (playerModel != null && shadowcasterMat != null)
-            {
-                Material[] mats = playerModel.GetComponent<MeshRenderer>().materials;
-                for (int i = 0; i < mats.Length; i++)
-                {
-                    mats[i] = shadowcasterMat;
-                }
-                playerModel.GetComponent<MeshRenderer>().materials = mats;
-            }
-
-
 
             _colliderObject = new GameObject("PlayerCollider");
             _colliderObject.layer = gameObject.layer;

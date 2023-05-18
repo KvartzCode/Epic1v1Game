@@ -6,34 +6,71 @@ using Alteruna;
 
 public class UserIdHolder : AttributesSync
 {
+    [SerializeField] TextMeshPro text;
+    [Header("PlayerModel")]
+    public GameObject playerModel;
+    public Material shadowcasterMat;
+
+
     private int userId;
     private int _multiplier;
-    [SerializeField] TextMeshPro text;
     GameObject camObj;
-    bool uptadeText = true;
+    bool updateText;
     bool hasChangedColor;
     bool haveCheckedISPlayer;
+    bool hasUpdatedMaterial;
+
+    Alteruna.Avatar _avatar;
 
     public void SetUserId(int id)
     {
         InvokeRemoteMethod(nameof(UpdateUserId), UserId.AllInclusive, id);
     }
 
+    public void UpdatePlayerMat()
+    {
+        if (userId != GameManager.Instance.user.Index)
+        {
+            Debug.Log("Is here");
+            Material[] mat = playerModel.GetComponent<MeshRenderer>().materials;
+            mat[0] = CosmeticManager.Instance.GetPlayerMat(userId);
+            playerModel.GetComponent<MeshRenderer>().materials = mat;
+        }
+    }
+
     public void DisableText()
     {
         text.enabled = false;
-        uptadeText = false;
+        updateText = false;
     }
 
     private void Start()
     {
+        _avatar = GetComponent<Alteruna.Avatar>();
+
+        if (_avatar.IsMe)
+        {
+            gameObject.tag = "Player";
+
+            if (playerModel != null && shadowcasterMat != null)
+            {
+                Material[] mats = playerModel.GetComponent<MeshRenderer>().materials;
+                for (int i = 0; i < mats.Length; i++)
+                {
+                    mats[i] = shadowcasterMat;
+                }
+                playerModel.GetComponent<MeshRenderer>().materials = mats;
+            }
+
+        }
+
         camObj = Camera.main.transform.gameObject;
     }
 
     private void Update()
     {
-        if (uptadeText)
-            text.gameObject.transform.LookAt(camObj.transform);
+        if (updateText)
+            text.gameObject.transform.LookAt(GameManager.Instance.player.transform);
     }
 
     public void SetMultiplier(float multiplier, int id)
@@ -72,11 +109,16 @@ public class UserIdHolder : AttributesSync
     [SynchronizableMethod]
     private void UpdateUserId(int id)
     {
+        updateText = true;
         Debug.Log("I WANT TO CHANGE to id:  " + id, this); ;
         userId = id;
         Debug.Log("Changed to " + userId);
 
-
+        if (!hasUpdatedMaterial)
+        {
+            hasUpdatedMaterial = true;
+            UpdatePlayerMat();
+        }
 
         if (!haveCheckedISPlayer)
         {
