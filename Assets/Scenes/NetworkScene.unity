@@ -11048,6 +11048,7 @@ MonoBehaviour:
   - {fileID: 3271805046578237308, guid: 5f2b16e49bb01bb47b34aa2d69949efa, type: 3}
   - {fileID: 3271805046578237308, guid: 7e69a43139fda0740b3a095c8c883e3c, type: 3}
   - {fileID: 3271805046578237308, guid: 655fc7cc35856004d922a82e9a8301e6, type: 3}
+  - {fileID: 3271805046578237308, guid: 227cfffa440d4ef4093648d69a7fe223, type: 3}
 --- !u!43 &1750641602
 Mesh:
   m_ObjectHideFlags: 0
