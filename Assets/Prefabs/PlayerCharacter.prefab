@@ -460,7 +460,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 601d4686cc0b70d45a98271d52094850, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colliderSize: {x: 1, y: 2, z: 1}
+  colliderSize: {x: 1.25, y: 2, z: 1.25}
   weight: 75
   rigidbodyPushForce: 2
   solidCollider: 0
