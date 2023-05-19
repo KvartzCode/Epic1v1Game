@@ -10,15 +10,24 @@ public class MusicPlayer : AttributesSync
 
     int id = -1;
 
-    private void Awake()
+    private static MusicPlayer _instance;
+    public static MusicPlayer Instance
     {
-        musicPlayer = GetComponent<AudioSource>();
-
+        get
+        {
+            return _instance;
+        }
     }
 
-    private void Start()
+    private void Awake()
     {
-        SynchAll();
+        if (_instance != null && _instance != this)
+            Debug.LogError("More than one music player in scene");
+        else
+            _instance = this;
+
+        musicPlayer = GetComponent<AudioSource>();
+
     }
 
     private void Update()

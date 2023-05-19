@@ -57,7 +57,7 @@ public class UserIdHolder : AttributesSync
             else
             {
                 SkinnedMeshRenderer sRenderer = currentHat.GetComponentInChildren<SkinnedMeshRenderer>();
-                if(sRenderer != null)
+                if (sRenderer != null)
                 {
                     Material[] mats = sRenderer.materials;
                     for (int i = 0; i < mats.Length; i++)
@@ -108,6 +108,8 @@ public class UserIdHolder : AttributesSync
             }
 
         }
+
+        MusicPlayer.Instance.SynchAll();
 
         camObj = Camera.main.transform.gameObject;
     }
