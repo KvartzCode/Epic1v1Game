@@ -11,7 +11,8 @@ public class ExplosionHandler : AttributesSync
     public GameObject ExploCosmetic;
     private GameObject exploObject;
     [SerializeField] private List<GameObject> ExplosionVariations;
-    [SerializeField] private List<AudioClip> Sfx;
+    [SerializeField] private List<AudioClip> RandomHitSFX;
+    [SerializeField] private List<AudioClip> SpecificSFX;
     public static ExplosionHandler Instance;
     public User user;
     // Start is called before the first frame update
@@ -40,6 +41,7 @@ public class ExplosionHandler : AttributesSync
         }
     }
 
+
     public void SpawnRocket(Vector3 PositionInWorldSpace, Vector3 dir)
     {
         if (user == null)
@@ -67,9 +69,23 @@ public class ExplosionHandler : AttributesSync
         //SpawnExplosionSynchronizable(explosionDamage, knockbackPower, explosionRadius, explosionType, PositionInWorldSpace);
     }
 
+
+    public void SpawnLocalExplosion(float explosionDamage, float knockbackPower, float explosionRadius, int explosionType, int fireUserID, Vector3 hitOffset, int hitUserID)
+    {
+        if (user == null)
+            Initialize();
+
+        InvokeRemoteMethod(nameof(SpawnLocalExplosionSynchronizable), UserId.AllInclusive, explosionDamage, knockbackPower, explosionRadius, explosionType, fireUserID);
+        //SpawnExplosionSynchronizable(explosionDamage, knockbackPower, explosionRadius, explosionType, PositionInWorldSpace);
+    }
+
     public void SpawnSFX(Vector3 PositionInWorldSpace)
     {
-        InvokeRemoteMethod(nameof(SpawnSFXSync), UserId.AllInclusive, Random.Range(0, Sfx.Count), PositionInWorldSpace);
+        InvokeRemoteMethod(nameof(SpawnSFXSync), UserId.AllInclusive, Random.Range(0, RandomHitSFX.Count), PositionInWorldSpace);
+    }
+    public void SpawnSpecificSFX(Vector3 PositionInWorldSpace, int ID)
+    {
+        InvokeRemoteMethod(nameof(SpawnSpecificSFXSync), UserId.AllInclusive, ID, PositionInWorldSpace);
     }
 
 
@@ -85,9 +101,26 @@ public class ExplosionHandler : AttributesSync
     }
 
     [SynchronizableMethod]
-
-     void SpawnSFXSync(int SfxID, Vector3 pos)
+    void SpawnLocalExplosionSynchronizable(float explosionDamage, float knockbackPower, float explosionRadius, int explosionType, int fireUserID, Vector3 hitOffset, int hitUserID)
     {
-        AudioSource.PlayClipAtPoint(Sfx[SfxID], pos);
+        Debug.Log("Explosion");
+        //exploObject = Instantiate(Explo, hitUserID.position + hitoffset, Explo.transform.rotation, ExploSpawner);
+        exploObject.GetComponent<Explosion>().InitiateExpo(explosionDamage, knockbackPower, explosionRadius, fireUserID);
+
+        //Instantiate(ExplosionVariations[explosionType], hitUserID.position + hitoffset, ExplosionVariations[explosionType].transform.rotation, ExploSpawner);
+    }
+
+    [SynchronizableMethod]
+
+    void SpawnSFXSync(int SfxID, Vector3 pos)
+    {
+        AudioSource.PlayClipAtPoint(RandomHitSFX[SfxID], pos);
+    }
+
+    [SynchronizableMethod]
+
+    void SpawnSpecificSFXSync(int SfxID, Vector3 pos)
+    {
+        AudioSource.PlayClipAtPoint(SpecificSFX[SfxID], pos);
     }
 }

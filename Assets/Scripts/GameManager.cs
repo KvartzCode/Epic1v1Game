@@ -94,6 +94,29 @@ public class GameManager : AttributesSync
         this.user = user;
     }
 
+    public void SetTimeScale(float timeScale, float activeTime, bool isLocal)
+    {
+        if (!isLocal)
+        {
+            InvokeRemoteMethod(nameof(SetAllTimeScale), UserId.AllInclusive,timeScale,activeTime);
+            return;
+        }
+        Time.timeScale = timeScale;
+        Invoke(nameof(ResetTimeScale), activeTime);
+    }
+
+    [SynchronizableMethod]
+    void SetAllTimeScale(float timeScale, float activeTime)
+    {
+        Time.timeScale = timeScale;
+        Invoke(nameof(ResetTimeScale), activeTime);
+    }
+
+    public void ResetTimeScale()
+    {
+        Time.timeScale = 1;
+    }
+
 
     #region Host Logic
 

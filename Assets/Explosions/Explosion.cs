@@ -41,6 +41,54 @@ public class Explosion : MonoBehaviour
         Invoke("deleteSelf", 0.2f);
     }
 
+    private bool CheckKO(Vector3 direction, Collider other, float force)
+    {
+        Debug.Log("Entered CheckKO method.");
+
+        float threshhold = 30;
+        Vector3 pos = other.transform.position;
+        float multiplier = other.GetComponent<Fragsurf.Movement.SurfCharacter>().GetMultiplier();
+
+        Debug.Log("Force multiplier: " + (force * multiplier).ToString());
+
+        if (force * multiplier < threshhold)
+        {
+            Debug.Log("Force times multiplier is less than threshold. Returning false.");
+            return false;
+        }
+        else
+        {
+            int layerMask = 1 << 3;
+            layerMask = ~layerMask; // invert to ignore layer 3
+
+            RaycastHit hit;
+            if (Physics.Raycast(pos, direction, out hit, Mathf.Infinity, layerMask))
+            {
+                Debug.Log("Raycast hit an object: " + hit.collider.gameObject.name);
+                // Check if the first object the raycast hit is a trigger and has the tag "DeathZone"
+                if (hit.collider.isTrigger && hit.collider.tag == "DeathZone")
+                {
+                    Debug.Log("Hit object is a trigger and tagged as 'DeathZone'. Returning true.");
+                    other.GetComponent<Fragsurf.Movement.SurfCharacter>().SetVelocity(Vector3.zero);
+                    ExplosionHandler.Instance.SpawnSpecificSFX(pos, 0);
+                    GameManager.Instance.SetTimeScale(0.01f, 0.01f, true);
+                    return true;
+                }
+                else
+                {
+                    Debug.Log("Hit object is either not a trigger or not tagged as 'DeathZone'. Returning false.");
+                }
+            }
+            else
+            {
+                Debug.Log("No raycast hit detected. Returning false.");
+            }
+        }
+
+        return false;
+    }
+
+
     private void OnTriggerEnter(Collider other)
     {
 
@@ -65,6 +113,11 @@ public class Explosion : MonoBehaviour
             }
 
             //(direction * explosionPower * forceScale) * //Playerhealth;
+            if (CheckKO(direction, other, explosionPower * forceScale * 0.05f))
+            {
+                explosionPower = explosionPower * 3;
+            }
+   
             other.GetComponent<Fragsurf.Movement.SurfCharacter>().AddVelocity(direction, explosionPower * forceScale * 0.05f, _userID == GameManager.Instance.user.Index ? false : true);
 
             return;
@@ -72,7 +125,6 @@ public class Explosion : MonoBehaviour
 
         if (other.GetComponent<Rigidbody>() != null)
         {
-            ;
             Rigidbody riggy = other.GetComponent<Rigidbody>();
 
             Vector3 direction = other.transform.position - transform.position; // calculate the vector between the two positions
@@ -93,8 +145,6 @@ public class Explosion : MonoBehaviour
         {
 
         }
-        //Use this space for the player calculations
-        //No clue how to do that yet though...
 
     }
 
