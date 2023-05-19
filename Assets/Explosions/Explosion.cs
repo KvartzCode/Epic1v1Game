@@ -46,7 +46,7 @@ public class Explosion : MonoBehaviour
     {
         Debug.Log("Entered CheckKO method.");
 
-        float threshhold = 30;
+        float threshhold = 40;
         Vector3 pos = other.transform.position;
         float multiplier = other.GetComponent<Fragsurf.Movement.SurfCharacter>().GetMultiplier();
 
