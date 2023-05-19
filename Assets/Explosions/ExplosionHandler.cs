@@ -75,7 +75,7 @@ public class ExplosionHandler : AttributesSync
         if (user == null)
             Initialize();
 
-        InvokeRemoteMethod(nameof(SpawnLocalExplosionSynchronizable), UserId.AllInclusive, explosionDamage, knockbackPower, explosionRadius, explosionType, fireUserID);
+        InvokeRemoteMethod(nameof(SpawnLocalExplosionSynchronizable), UserId.AllInclusive, explosionDamage, knockbackPower, explosionRadius, explosionType, fireUserID, hitOffset, hitUserID);
         //SpawnExplosionSynchronizable(explosionDamage, knockbackPower, explosionRadius, explosionType, PositionInWorldSpace);
     }
 
@@ -104,10 +104,12 @@ public class ExplosionHandler : AttributesSync
     void SpawnLocalExplosionSynchronizable(float explosionDamage, float knockbackPower, float explosionRadius, int explosionType, int fireUserID, Vector3 hitOffset, int hitUserID)
     {
         Debug.Log("Explosion");
-        //exploObject = Instantiate(Explo, hitUserID.position + hitoffset, Explo.transform.rotation, ExploSpawner);
+        ushort index = System.Convert.ToUInt16(hitUserID);
+        Vector3 pos = Multiplayer.Instance.GetAvatar(index).transform.position + hitOffset;
+        exploObject = Instantiate(Explo, pos, Explo.transform.rotation, ExploSpawner);
         exploObject.GetComponent<Explosion>().InitiateExpo(explosionDamage, knockbackPower, explosionRadius, fireUserID);
 
-        //Instantiate(ExplosionVariations[explosionType], hitUserID.position + hitoffset, ExplosionVariations[explosionType].transform.rotation, ExploSpawner);
+        Instantiate(ExplosionVariations[explosionType], pos, ExplosionVariations[explosionType].transform.rotation, ExploSpawner);
     }
 
     [SynchronizableMethod]

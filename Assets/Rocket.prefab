@@ -81,7 +81,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerID: 0
-  speed: 21.11111
+  speed: 25
   particles: {fileID: 8847333751263271119}
 --- !u!82 &8787197317649825773
 AudioSource:

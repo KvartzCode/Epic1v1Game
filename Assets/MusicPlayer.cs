@@ -57,36 +57,39 @@ public class MusicPlayer : AttributesSync
     [SynchronizableMethod]
     void SyncPlayback(float pos, int datetimeSeconds, int datetimeMilliseconds, int id)
     {
-
-        Debug.LogWarning(datetimeMilliseconds);
-        float milicalc = (float)datetimeMilliseconds / 1000;
-        Debug.LogWarning(milicalc);
-        float then = datetimeSeconds + milicalc;
-        milicalc = (float)System.DateTime.Now.Millisecond / 1000;
-        float now = System.DateTime.Now.Second + milicalc;
-
-        Debug.LogError("___");
-        Debug.Log("now sec: " + System.DateTime.Now.Second + " |then mili" + milicalc);
-        milicalc = datetimeMilliseconds / 1000;
-        Debug.Log("then sec: " + datetimeSeconds + " |then mili" + milicalc);
-        Debug.Log("then: " + then + " | now: " + now);
-        if (then > now)
+        if (id >= 0 && id < songs.Count)
         {
-            Debug.Log("new now: " + now);
-            now += 60;
+
+            Debug.LogWarning(datetimeMilliseconds);
+            float milicalc = (float)datetimeMilliseconds / 1000;
+            Debug.LogWarning(milicalc);
+            float then = datetimeSeconds + milicalc;
+            milicalc = (float)System.DateTime.Now.Millisecond / 1000;
+            float now = System.DateTime.Now.Second + milicalc;
+
+            Debug.LogError("___");
+            Debug.Log("now sec: " + System.DateTime.Now.Second + " |then mili" + milicalc);
+            milicalc = datetimeMilliseconds / 1000;
+            Debug.Log("then sec: " + datetimeSeconds + " |then mili" + milicalc);
+            Debug.Log("then: " + then + " | now: " + now);
+            if (then > now)
+            {
+                Debug.Log("new now: " + now);
+                now += 60;
+            }
+
+            Debug.Log("diff: " + (now - then) + " | pos: " + pos);
+            pos += now - then;
+            Debug.Log("Selected pos: " + pos);
+
+            if (pos > songs[id].length)
+                pos -= songs[id].length;
+
+
+            musicPlayer.clip = songs[id];
+            musicPlayer.Play();
+            musicPlayer.time = pos;
         }
-
-        Debug.Log("diff: " + (now - then) + " | pos: " + pos);
-        pos += now - then;
-        Debug.Log("Selected pos: " + pos);
-
-        if (pos > songs[id].length)
-            pos -= songs[id].length;
-
-
-        musicPlayer.clip = songs[id];
-        musicPlayer.Play();
-        musicPlayer.time = pos;
 
     }
 
