@@ -16,6 +16,8 @@ public class PlayerController : AttributesSync
     private OriginalCameraStats originalCameraStats;
 
     [SerializeField] SurfCharacter surfCharacter;
+    [SerializeField] PlayerAiming playerAiming;
+    [SerializeField] ExplosionShootTest shootController;
     GameObject lobbyCanvas;
     GameObject customizeMenu;
 
@@ -84,6 +86,8 @@ public class PlayerController : AttributesSync
     {
         lobbyCanvas.SetActive(!isLocked);
         customizeMenu.SetActive(!isLocked);
+        shootController.SetCanShoot(isLocked);
+        playerAiming.SetCanAim(isLocked);
         Cursor.lockState = isLocked ? CursorLockMode.Locked : CursorLockMode.None;
         Cursor.visible = !isLocked;
     }

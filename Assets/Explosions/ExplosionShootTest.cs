@@ -9,11 +9,12 @@ public class ExplosionShootTest : MonoBehaviour
     [SerializeField] Fragsurf.Movement.SurfCharacter player;
     [SerializeField] Transform spawnPos;
     [SerializeField] AudioClip clip;
-    [SerializeField] float raycastDistance = 100f; // Set the distance of the raycast
     [SerializeField] float cooldown = 0.4f;
+    [SerializeField] float sprayDistance = 2f; // Set the distance of the raycast
 
     AudioSource source;
     float timer;
+    bool canShoot = true;
 
     private void Start()
     {
@@ -26,31 +27,58 @@ public class ExplosionShootTest : MonoBehaviour
         source = GetComponent<AudioSource>();
     }
 
+    public void SetCanShoot(bool value)
+    {
+        canShoot = value;
+    }
+
     void Update()
     {
         timer += Time.deltaTime;
-        if (Input.GetKey(KeyCode.Mouse0) && timer > cooldown)
+        if (canShoot)
         {
-            timer = 0;
-            rocketLauncherAnim.SetTrigger("Fire");
-            source.PlayOneShot(clip);
-            ExplosionHandler.Instance.SpawnRocket(spawnPos.position, transform.forward);
 
-            //Ray ray = new Ray(transform.position, transform.forward);
-            //RaycastHit hit;
+            if (Input.GetKey(KeyCode.Mouse0) && timer > cooldown)
+            {
+                timer = 0;
+                rocketLauncherAnim.SetTrigger("Fire");
+                source.PlayOneShot(clip);
+                ExplosionHandler.Instance.SpawnRocket(spawnPos.position, transform.forward);
 
-            //int layerMask = 1 << LayerMask.NameToLayer("Player");
-            //layerMask = ~layerMask;
+                //Ray ray = new Ray(transform.position, transform.forward);
+                //RaycastHit hit;
 
-            //if (Physics.Raycast(ray, out hit, raycastDistance, layerMask))
-            //{
-            //    Vector3 hitPosition = hit.point;
-            //    explo.SpawnExplosion(10, 600, 7, 0, hitPosition);
-            //}
-            //else //if the raycast doesn't hit anything, the explosion will happen at the end of the raycast distance
-            //{
-            //    Vector3 endRayPosition = ray.GetPoint(raycastDistance);
-            //    explo.SpawnExplosion(10, 500, 10, 0, endRayPosition);
+                //int layerMask = 1 << LayerMask.NameToLayer("Player");
+                //layerMask = ~layerMask;
+
+                //if (Physics.Raycast(ray, out hit, raycastDistance, layerMask))
+                //{
+                //    Vector3 hitPosition = hit.point;
+                //    explo.SpawnExplosion(10, 600, 7, 0, hitPosition);
+                //}
+                //else //if the raycast doesn't hit anything, the explosion will happen at the end of the raycast distance
+                //{
+                //    Vector3 endRayPosition = ray.GetPoint(raycastDistance);
+                //    explo.SpawnExplosion(10, 500, 10, 0, endRayPosition);
+            }
+
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+
+                Ray ray = new Ray(transform.position, transform.forward);
+                RaycastHit hit;
+
+                int layerMask = 1 << LayerMask.NameToLayer("Player");
+                layerMask = ~layerMask;
+
+                if (Physics.Raycast(ray, out hit, sprayDistance, layerMask))
+                {
+
+                    SprayHandler.Instance.Spray(GameManager.Instance.user.Index, hit.point, -hit.normal);
+                }
+
+
+            }
         }
     }
 }

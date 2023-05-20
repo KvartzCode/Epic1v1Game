@@ -8,22 +8,89 @@ using Alteruna;
 public class SprayHandler : AttributesSync
 {
     [SerializeField] private List<Material> sprayDecals;
-    [SerializeField] private string imageURL;
-    void Start()
+    [SerializeField] private GameObject[] sprayObjects;
+    [SerializeField] private Texture2D defaultSpray;
+    [SerializeField] private string localImageURL = "";
+    private static SprayHandler _instance;
+    public static SprayHandler Instance
     {
-
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.G))
+        get
         {
-            InvokeRemoteMethod(nameof(SetUserSpray), UserId.AllInclusive, Multiplayer.Instance.Me.Index, imageURL);
+            return _instance;
         }
     }
 
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+            Debug.LogError("More than one spray handler in scene");
+        else
+            _instance = this;
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            //InvokeRemoteMethod(nameof(SynchedSetUserSpray), UserId.AllInclusive, Multiplayer.Instance.Me.Index, localImageURL);
+        }
+    }
+
+    public void UpdatePosAll()
+    {
+        InvokeRemoteMethod(nameof(SynchedUpdatePosAll), UserId.AllInclusive);
+    }
+
     [SynchronizableMethod]
-    public void SetUserSpray(int userID, string url)
+    void SynchedUpdatePosAll()
+    {
+        int index = GameManager.Instance.user.Index;
+        Spray(index, sprayObjects[index].transform.position, sprayObjects[index].transform.forward);
+    }
+
+
+
+    public void Spray(int userId, Vector3 pos, Vector3 reverseForward)
+    {
+        InvokeRemoteMethod(nameof(SynchedSpray), UserId.AllInclusive, userId, pos, reverseForward);
+    }
+
+    [SynchronizableMethod]
+    void SynchedSpray(int userId, Vector3 pos, Vector3 reverseForward)
+    {
+        if (userId >= 0 && userId < sprayObjects.Length)
+        {
+            sprayObjects[userId].transform.position = pos;
+            sprayObjects[userId].transform.forward = reverseForward;
+        }
+        else
+            Debug.LogError("WAS SENT A USERID OUTSIDE OF RANGE OF SPRAYOBJECTS RANGE");
+    }
+
+    public void UpdateUserSpray()
+    {
+        InvokeRemoteMethod(nameof(SynchedSetUserSpray), UserId.AllInclusive, GameManager.Instance.user.Index, localImageURL);
+    }
+
+    public void GetAllSprays()
+    {
+        InvokeRemoteMethod(nameof(GiveSpray), UserId.All, GameManager.Instance.user.Index);
+    }
+    [SynchronizableMethod]
+    void GiveSpray(int userId)
+    {
+        InvokeRemoteMethod(nameof(SynchedSetUserSpray), System.Convert.ToUInt16(userId), GameManager.Instance.user.Index, localImageURL);
+    }
+
+    public void SetSpray(string imageUrl)
+    {
+        localImageURL = imageUrl;
+
+        if (Multiplayer.Instance.InRoom)
+            UpdateUserSpray();
+    }
+
+    [SynchronizableMethod]
+    void SynchedSetUserSpray(int userID, string url)
     {
         Debug.Log("Set user " + userID + "'s spray");
         StartCoroutine(LoadTextureFromURL(userID, url));
@@ -37,6 +104,8 @@ public class SprayHandler : AttributesSync
         if (www.result != UnityWebRequest.Result.Success)
         {
             Debug.Log("Web request error: " + www.error);
+            if (sprayDecals[userID].GetTexture("Base_Map") == null)
+                sprayDecals[userID].SetTexture("Base_Map", defaultSpray);
         }
         else
         {
@@ -49,19 +118,21 @@ public class SprayHandler : AttributesSync
             else
             {
                 Debug.Log("Failed to load texture from " + url);
+                if(sprayDecals[userID].GetTexture("Base_Map") == null)
+                    sprayDecals[userID].SetTexture("Base_Map", defaultSpray);
             }
         }
     }
 
     public void ReloadSprays()
     {
-        InvokeRemoteMethod(nameof(SetUserSpray), UserId.All, Multiplayer.Instance.Me.Index);
+        InvokeRemoteMethod(nameof(SynchedSetUserSpray), UserId.All, Multiplayer.Instance.Me.Index);
     }
 
     [SynchronizableMethod]
     public void CommitTheft(int UserID)
     {
-        InvokeRemoteMethod(nameof(SetUserSpray), UserId.AllInclusive, Multiplayer.Instance.Me.Index, imageURL);
+        InvokeRemoteMethod(nameof(SynchedSetUserSpray), UserId.AllInclusive, Multiplayer.Instance.Me.Index, localImageURL);
     }
 
 }
