@@ -4141,7 +4141,7 @@ PrefabInstance:
     - target: {fileID: 2726488506283206980, guid: 544d6e16e46e1fb4d98d278540f942cf,
         type: 3}
       propertyPath: SpecificSFX.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2726488506283206980, guid: 544d6e16e46e1fb4d98d278540f942cf,
         type: 3}
@@ -4153,6 +4153,11 @@ PrefabInstance:
       propertyPath: SpecificSFX.Array.data[0]
       value: 
       objectReference: {fileID: 8300000, guid: 55bf13d7d96790c4e9eb64de17ad94a4, type: 3}
+    - target: {fileID: 2726488506283206980, guid: 544d6e16e46e1fb4d98d278540f942cf,
+        type: 3}
+      propertyPath: SpecificSFX.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: d3a07df54df13184f90ec841e6a9ea5f, type: 3}
     - target: {fileID: 2726488506283206980, guid: 544d6e16e46e1fb4d98d278540f942cf,
         type: 3}
       propertyPath: RandomHitSFX.Array.data[0]

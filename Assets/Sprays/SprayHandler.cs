@@ -51,7 +51,9 @@ public class SprayHandler : AttributesSync
 
     public void Spray(int userId, Vector3 pos, Vector3 reverseForward)
     {
+
         InvokeRemoteMethod(nameof(SynchedSpray), UserId.AllInclusive, userId, pos, reverseForward);
+        ExplosionHandler.Instance.SpawnSpecificSFX(pos, 1);
     }
 
     [SynchronizableMethod]
