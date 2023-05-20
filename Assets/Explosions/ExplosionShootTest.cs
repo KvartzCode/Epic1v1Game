@@ -13,8 +13,11 @@ public class ExplosionShootTest : MonoBehaviour
     [SerializeField] float sprayDistance = 2f; // Set the distance of the raycast
 
     AudioSource source;
+    Vector3 localSpawnPos;
     float timer;
     bool canShoot = true;
+
+    GameObject debug;
 
     private void Start()
     {
@@ -24,7 +27,11 @@ public class ExplosionShootTest : MonoBehaviour
             return;
         }
 
+        debug = new GameObject("DEBUG");
+        debug.transform.parent = transform;
+
         source = GetComponent<AudioSource>();
+        localSpawnPos = spawnPos.transform.localPosition;
     }
 
     public void SetCanShoot(bool value)
@@ -43,7 +50,28 @@ public class ExplosionShootTest : MonoBehaviour
                 timer = 0;
                 rocketLauncherAnim.SetTrigger("Fire");
                 source.PlayOneShot(clip);
-                ExplosionHandler.Instance.SpawnRocket(spawnPos.position, transform.forward);
+
+
+                Ray ray = new Ray(transform.position, transform.forward);
+                RaycastHit hit;
+
+                int layerMask = 1 << LayerMask.NameToLayer("UI");
+                layerMask = ~layerMask;
+                Vector3 endRayPosition;
+                if (Physics.Raycast(ray, out hit, 1000, layerMask))
+                {
+                    endRayPosition = hit.point;
+                }
+                else //if the raycast doesn't hit anything, the explosion will happen at the end of the raycast distance
+                {
+                    endRayPosition = ray.GetPoint(1000);
+                }
+
+
+
+                debug.transform.localPosition = (transform.forward * 10);
+                Vector3 dir = Vector3.Distance(transform.position, endRayPosition) >= 2f ? (endRayPosition - spawnPos.position) : transform.forward;
+                ExplosionHandler.Instance.SpawnRocket(spawnPos.position, dir);
 
                 //Ray ray = new Ray(transform.position, transform.forward);
                 //RaycastHit hit;
