@@ -33,7 +33,7 @@ public class TextToSpeech : AttributesSync
         if (Input.GetKeyDown(KeyCode.Y))
         {
             Debug.Log("Y key pressed. Speaking...");
-            InvokeRemoteMethod(nameof(Speak), UserId.All, message);
+            InvokeRemoteMethod(nameof(Speak), UserId.AllInclusive, message);
         }
     }
 
