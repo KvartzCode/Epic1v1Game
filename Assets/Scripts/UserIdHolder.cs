@@ -44,28 +44,29 @@ public class UserIdHolder : AttributesSync
 
         if (userId == GameManager.Instance.user.Index)
         {
-            MeshRenderer renderer = currentHat.GetComponentInChildren<MeshRenderer>();
-            if (renderer != null)
+            MeshRenderer[] renderers = currentHat.GetComponentsInChildren<MeshRenderer>();
+            for (int x = 0; x < renderers.Length; x++)
             {
-                Material[] mats = renderer.materials;
+
+                Material[] mats = renderers[x].materials;
                 for (int i = 0; i < mats.Length; i++)
                 {
                     mats[i] = shadowcasterMat;
                 }
-                renderer.materials = mats;
+                renderers[x].materials = mats;
             }
-            else
+
+            SkinnedMeshRenderer[] sRenderer = currentHat.GetComponentsInChildren<SkinnedMeshRenderer>();
+            for (int x = 0; x < sRenderer.Length; x++)
             {
-                SkinnedMeshRenderer sRenderer = currentHat.GetComponentInChildren<SkinnedMeshRenderer>();
-                if (sRenderer != null)
+                Material[] mats = sRenderer[x].materials;
+                for (int i = 0; i < mats.Length; i++)
                 {
-                    Material[] mats = sRenderer.materials;
-                    for (int i = 0; i < mats.Length; i++)
-                    {
-                        mats[i] = shadowcasterMat;
-                    }
-                    sRenderer.materials = mats;
+                    mats[i] = shadowcasterMat;
                 }
+                sRenderer[x].materials = mats;
+
+
             }
 
 
