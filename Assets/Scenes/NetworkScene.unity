@@ -7368,10 +7368,15 @@ MonoBehaviour:
   hats:
   - {fileID: 3271805046578237308, guid: 5f2b16e49bb01bb47b34aa2d69949efa, type: 3}
   - {fileID: 3271805046578237308, guid: 7e69a43139fda0740b3a095c8c883e3c, type: 3}
+  - {fileID: 3271805046578237308, guid: 847800693563b2a49b357789563c3d24, type: 3}
   - {fileID: 3271805046578237308, guid: 655fc7cc35856004d922a82e9a8301e6, type: 3}
-  - {fileID: 3271805046578237308, guid: dae1698fa785aec45b72ff6bdc649514, type: 3}
   - {fileID: 3271805046578237308, guid: 227cfffa440d4ef4093648d69a7fe223, type: 3}
+  - {fileID: 3271805046578237308, guid: dae1698fa785aec45b72ff6bdc649514, type: 3}
   - {fileID: 3271805046578237308, guid: 99c02fa9f439ec047bf4bfb7f87779f6, type: 3}
+  - {fileID: 3271805046578237308, guid: 466f5ef604b536a46ab2b14f25c772e4, type: 3}
+  - {fileID: 3271805046578237308, guid: 3efc91deec161544894c703d3a552b24, type: 3}
+  - {fileID: 3271805046578237308, guid: d1ce14ee85b687f4dab0399262bebae7, type: 3}
+  - {fileID: 3271805046578237308, guid: 4083d96161b36414d9e8ed374b8a2bed, type: 3}
 --- !u!43 &1750641602
 Mesh:
   m_ObjectHideFlags: 0
@@ -8524,7 +8529,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 979682df698e9e346b4e4c9c5e13674f, type: 3}
   - {fileID: 8300000, guid: 9866460cb5a37924e8228aa8ff5e02fc, type: 3}
   - {fileID: 8300000, guid: 9d640a2f328b55143afbfcd43f364521, type: 3}
-  queue: []
+  queue: 
+  shuffle: 0
+  playingMusic: 0
 --- !u!4 &1944867431
 Transform:
   m_ObjectHideFlags: 0
