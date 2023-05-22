@@ -68,9 +68,6 @@ public class ExplosionShootTest : MonoBehaviour
                     endRayPosition = ray.GetPoint(1000);
                 }
 
-
-                Debug.Log(hit.collider.gameObject.name);
-
                 debug.transform.localPosition = (transform.forward * 10);
                 Vector3 dir = Vector3.Distance(transform.position, endRayPosition) >= 1.25f ? (endRayPosition - spawnPos.position) : transform.forward;
                 ExplosionHandler.Instance.SpawnRocket(spawnPos.position, dir);
