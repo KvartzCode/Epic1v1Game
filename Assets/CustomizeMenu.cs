@@ -7,7 +7,9 @@ using TMPro;
 public class CustomizeMenu : MonoBehaviour
 {
     [SerializeField] GameObject hatPos;
+    [SerializeField] GameObject resetButton;
     [SerializeField] TextMeshProUGUI sprayStatusText;
+    [SerializeField] TMP_InputField inputField;
 
     GameObject currentHat;
 
@@ -18,6 +20,14 @@ public class CustomizeMenu : MonoBehaviour
     private void Start()
     {
         hatAmmount = CosmeticManager.Instance.GetHatAmount();
+        if (PlayerPrefs.HasKey("sprayUrl"))
+        {
+            resetButton.SetActive(true);
+            tmpSprayUrl = PlayerPrefs.GetString("sprayUrl");
+            SetSpray();
+        }
+        else
+            resetButton.SetActive(false);
     }
 
     public void UpdateIndex(bool add)
@@ -36,6 +46,15 @@ public class CustomizeMenu : MonoBehaviour
     {
         StartCoroutine(LoadTextureFromURL());
 
+    }
+
+    public void ResetSpray()
+    {
+        resetButton.SetActive(false);
+        tmpSprayUrl = "";
+        inputField.text = "";
+        sprayStatusText.text = "<color=#00ff00ff>Spray Reset!</color>";
+        SprayHandler.Instance.SetSpray(tmpSprayUrl);
     }
 
     private IEnumerator LoadTextureFromURL()
@@ -57,6 +76,8 @@ public class CustomizeMenu : MonoBehaviour
                 Debug.Log("Successfully loaded texture from " + tmpSprayUrl + ", size: " + myTexture.width + "x" + myTexture.height);
                 sprayStatusText.text = "<color=#00ff00ff>Spray Loaded!</color>";
                 SprayHandler.Instance.SetSpray(tmpSprayUrl);
+                resetButton.SetActive(true);
+                PlayerPrefs.SetString("sprayUrl", tmpSprayUrl);
             }
             else
             {

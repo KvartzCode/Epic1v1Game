@@ -95,7 +95,10 @@ public class SprayHandler : AttributesSync
     void SynchedSetUserSpray(int userID, string url)
     {
         Debug.Log("Set user " + userID + "'s spray");
-        StartCoroutine(LoadTextureFromURL(userID, url));
+        if (url == "")
+            sprayDecals[userID].SetTexture("Base_Map", defaultSpray);
+        else
+            StartCoroutine(LoadTextureFromURL(userID, url));
     }
 
     private IEnumerator LoadTextureFromURL(int userID, string url)
@@ -120,7 +123,7 @@ public class SprayHandler : AttributesSync
             else
             {
                 Debug.Log("Failed to load texture from " + url);
-                if(sprayDecals[userID].GetTexture("Base_Map") == null)
+                if (sprayDecals[userID].GetTexture("Base_Map") == null)
                     sprayDecals[userID].SetTexture("Base_Map", defaultSpray);
             }
         }
