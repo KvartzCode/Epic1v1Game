@@ -175,7 +175,7 @@ public class UserIdHolder : AttributesSync
             {
                 text.color = GameManager.Instance.hud.GetColor(id);
                 hasChangedColor = true;
-                GameManager.Instance.UpdateAllMultipliers();
+                GameManager.Instance.SynchedUpdateAllMultipliers();
             }
 
             haveCheckedISPlayer = true;

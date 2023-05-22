@@ -303,10 +303,10 @@ namespace Fragsurf.Movement
         {
             yield return null;
             GameManager.Instance.player = this;
-            GameManager.Instance.UpdateIdHolder();
+            GameManager.Instance.SynchedUpdateIdHolder();
             GameManager.Instance.hud.StartRound();
-            GameManager.Instance.UpdateMultiplier();
-            GameManager.Instance.UpdateHats();
+            GameManager.Instance.SynchedUpdateMultiplier();
+            GameManager.Instance.SynchedUpdateHats();
             SprayHandler.Instance.UpdateUserSpray();
             SprayHandler.Instance.GetAllSprays();
             SprayHandler.Instance.UpdatePosAll();
@@ -388,7 +388,7 @@ namespace Fragsurf.Movement
         {
             multiplier = ((multiplier * 100f) + damagePercentile) * 0.01f;
             ExplosionHandler.Instance.SpawnSFX(transform.position);
-            GameManager.Instance.UpdateMultiplier();
+            GameManager.Instance.SynchedUpdateMultiplier();
         }
 
         public void AddVelocity(Vector3 dir, float force, bool useMultiplier)
@@ -472,7 +472,7 @@ namespace Fragsurf.Movement
         public void SetMultiplier(float value)
         {
             multiplier = value;
-            GameManager.Instance.UpdateMultiplier();
+            GameManager.Instance.SynchedUpdateMultiplier();
         }
 
         /// <summary>

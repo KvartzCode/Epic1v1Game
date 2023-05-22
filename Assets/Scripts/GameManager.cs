@@ -39,60 +39,64 @@ public class GameManager : AttributesSync
         Cursor.visible = true;
     }
 
-    public void UpdateMultiplier()
-    {
-        InvokeRemoteMethod(nameof(SynchedUpdateMultiplier), UserId.AllInclusive, player.GetMultiplier(), user.Index);
-    }
 
-    public void UpdateIdHolder()
-    {
-        InvokeRemoteMethod(nameof(SynchedUpdateIdHolder), UserId.AllInclusive, user.Index);
-    }
+    #region Sync Methods
 
-    public void UpdateHats()
+    public void SynchedUpdateMultiplier()
     {
-        if(Multiplayer.Instance.InRoom)
-        {
-            InvokeRemoteMethod(nameof(SynchedUpdateHats), UserId.AllInclusive);
-        }
-    }
-
-    public void UpdateAllMultipliers()
-    {
-        InvokeRemoteMethod(nameof(SynchedUpdateAllMultipliers), UserId.AllInclusive);
+        InvokeRemoteMethod(nameof(UpdateMultiplier), UserId.AllInclusive, player.GetMultiplier(), user.Index);
     }
 
     [SynchronizableMethod]
-    void SynchedUpdateHats()
-    {
-        UserIdHolder idHolder = GameObject.FindWithTag("Player").GetComponent<UserIdHolder>();
-        idHolder.SetHat(CosmeticManager.Instance.GetCurrentHat());
-    }
-
-    [SynchronizableMethod]
-    void SynchedUpdateAllMultipliers()
-    {
-        UpdateMultiplier();
-    }
-
-    [SynchronizableMethod]
-    void SynchedUpdateIdHolder(int id)
-    {
-        UserIdHolder idHolder = GameObject.FindWithTag("Player").GetComponent<UserIdHolder>();
-        idHolder.SetUserId(user.Index);
-    }
-
-    [SynchronizableMethod]
-    void SynchedUpdateMultiplier(float multiplier, int id)
+    void UpdateMultiplier(float multiplier, int id)
     {
         UserIdHolder idHolder = GameObject.FindWithTag("Player").GetComponent<UserIdHolder>();
         idHolder.SetMultiplier(multiplier, id);
     }
 
-    public void SetUser(User user)
+
+    public void SynchedUpdateIdHolder()
     {
-        this.user = user;
+        InvokeRemoteMethod(nameof(UpdateIdHolder), UserId.AllInclusive, user.Index);
     }
+
+    [SynchronizableMethod]
+    void UpdateIdHolder(int id)
+    {
+        UserIdHolder idHolder = GameObject.FindWithTag("Player").GetComponent<UserIdHolder>();
+        idHolder.SetUserId(user.Index);
+    }
+
+
+    public void SynchedUpdateHats()
+    {
+        if(Multiplayer.Instance.InRoom)
+        {
+            InvokeRemoteMethod(nameof(UpdateHats), UserId.AllInclusive);
+        }
+    }
+
+    [SynchronizableMethod]
+    void UpdateHats()
+    {
+        UserIdHolder idHolder = GameObject.FindWithTag("Player").GetComponent<UserIdHolder>();
+        idHolder.SetHat(CosmeticManager.Instance.GetCurrentHat());
+    }
+
+
+    public void SynchedUpdateAllMultipliers()
+    {
+        InvokeRemoteMethod(nameof(UpdateAllMultipliers), UserId.AllInclusive);
+    }
+
+    [SynchronizableMethod]
+    void UpdateAllMultipliers()
+    {
+        SynchedUpdateMultiplier();
+    }
+
+    #endregion
+
 
     public void SetTimeScale(float timeScale, float activeTime, bool isLocal)
     {
@@ -117,6 +121,11 @@ public class GameManager : AttributesSync
         Time.timeScale = 1;
     }
 
+    public void SetUser(User user)
+    {
+        this.user = user;
+    }
+
 
     #region Host Logic
 
@@ -131,8 +140,9 @@ public class GameManager : AttributesSync
     #endregion
 
 
-    private void OnDestroy()
+    private new void OnDestroy()
     {
         Multiplayer.Instance.RoomLeft.RemoveListener(EnableMouse);
+        base.OnDestroy();
     }
 }

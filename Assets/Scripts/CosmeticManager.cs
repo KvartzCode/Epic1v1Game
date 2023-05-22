@@ -38,7 +38,7 @@ public class CosmeticManager : MonoBehaviour
     public void UpdateCurrentHat(int index)
     {
         currentHat = index;
-        GameManager.Instance.UpdateHats();
+        GameManager.Instance.SynchedUpdateHats();
     }
 
     public int GetCurrentHat()
