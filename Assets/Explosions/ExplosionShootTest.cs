@@ -55,10 +55,11 @@ public class ExplosionShootTest : MonoBehaviour
                 Ray ray = new Ray(transform.position, transform.forward);
                 RaycastHit hit;
 
-                int layerMask = 1 << LayerMask.NameToLayer("UI");
+
+                int layerMask = 1 << LayerMask.NameToLayer("Rocket");
                 layerMask = ~layerMask;
                 Vector3 endRayPosition;
-                if (Physics.Raycast(ray, out hit, 1000, layerMask))
+                if (Physics.Raycast(ray, out hit, 1000, layerMask,QueryTriggerInteraction.Ignore))
                 {
                     endRayPosition = hit.point;
                 }
@@ -68,9 +69,10 @@ public class ExplosionShootTest : MonoBehaviour
                 }
 
 
+                Debug.Log(hit.collider.gameObject.name);
 
                 debug.transform.localPosition = (transform.forward * 10);
-                Vector3 dir = Vector3.Distance(transform.position, endRayPosition) >= 2f ? (endRayPosition - spawnPos.position) : transform.forward;
+                Vector3 dir = Vector3.Distance(transform.position, endRayPosition) >= 1.25f ? (endRayPosition - spawnPos.position) : transform.forward;
                 ExplosionHandler.Instance.SpawnRocket(spawnPos.position, dir);
 
                 //Ray ray = new Ray(transform.position, transform.forward);
