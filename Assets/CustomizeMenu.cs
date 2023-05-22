@@ -20,10 +20,17 @@ public class CustomizeMenu : MonoBehaviour
     private void Start()
     {
         hatAmmount = CosmeticManager.Instance.GetHatAmount();
-        if (PlayerPrefs.HasKey("sprayUrl"))
+
+        if (PlayerPrefs.HasKey(PlayerPrefsHolder.HATKEY))
+        {
+            currentIntex = PlayerPrefs.GetInt(PlayerPrefsHolder.HATKEY);
+            UpdateHat();
+        }
+
+        if (PlayerPrefs.HasKey(PlayerPrefsHolder.SPRAYKEY) && PlayerPrefs.GetString(PlayerPrefsHolder.SPRAYKEY) != "")
         {
             resetButton.SetActive(true);
-            tmpSprayUrl = PlayerPrefs.GetString("sprayUrl");
+            tmpSprayUrl = PlayerPrefs.GetString(PlayerPrefsHolder.SPRAYKEY);
             SetSpray();
         }
         else
@@ -33,6 +40,7 @@ public class CustomizeMenu : MonoBehaviour
     public void UpdateIndex(bool add)
     {
         currentIntex = add ? ((currentIntex + 1) >= hatAmmount ? 0 : currentIntex + 1) : ((currentIntex - 1) < 0 ? hatAmmount - 1 : currentIntex - 1);
+        PlayerPrefs.SetInt(PlayerPrefsHolder.HATKEY, currentIntex);
         UpdateHat();
     }
 
@@ -53,6 +61,7 @@ public class CustomizeMenu : MonoBehaviour
         resetButton.SetActive(false);
         tmpSprayUrl = "";
         inputField.text = "";
+        PlayerPrefs.DeleteKey(PlayerPrefsHolder.SPRAYKEY);
         sprayStatusText.text = "<color=#00ff00ff>Spray Reset!</color>";
         SprayHandler.Instance.SetSpray(tmpSprayUrl);
     }
@@ -77,7 +86,7 @@ public class CustomizeMenu : MonoBehaviour
                 sprayStatusText.text = "<color=#00ff00ff>Spray Loaded!</color>";
                 SprayHandler.Instance.SetSpray(tmpSprayUrl);
                 resetButton.SetActive(true);
-                PlayerPrefs.SetString("sprayUrl", tmpSprayUrl);
+                PlayerPrefs.SetString(PlayerPrefsHolder.SPRAYKEY, tmpSprayUrl);
             }
             else
             {
