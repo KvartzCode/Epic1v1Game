@@ -3652,6 +3652,18 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!114 &745206279 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2093504433423656070, guid: 0d11653250ab33b4e97da89884253b02,
+    type: 3}
+  m_PrefabInstance: {fileID: 2093504434270906035}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1777794829, guid: 0ae8d181602a00248a82f64a684a1c88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &748330075
 GameObject:
   m_ObjectHideFlags: 0
@@ -3964,7 +3976,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Multiplayer: {fileID: 0}
-  _uidString: 2926ba48-745d-48d9-ac99-62fcbf4e4e36
+  _uidString: 1c823ff7-96f3-4b47-aa68-f2a9c7da9f50
   Reliability: 1
   LocalMethodBehavior: 1
   sprayDecals:
@@ -5801,56 +5813,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &1215890517
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1215890519}
-  - component: {fileID: 1215890518}
-  m_Layer: 0
-  m_Name: AudioManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1215890518
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1215890517}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4e7d307f40de5c4784ebfdee4b76ac6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Multiplayer: {fileID: 0}
-  _uidString: 4285882c-2350-4073-aa03-ceb8a183e1e3
-  Reliability: 1
-  LocalMethodBehavior: 1
-  soundEffects: []
-  players: []
---- !u!4 &1215890519
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1215890517}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 18
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1217241664
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7357,6 +7319,7 @@ GameObject:
   - component: {fileID: 1647607412}
   - component: {fileID: 1647607411}
   - component: {fileID: 1647607413}
+  - component: {fileID: 1647607414}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -7377,11 +7340,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Multiplayer: {fileID: 0}
-  _uidString: 4bdcd5a7-dd52-47e3-8bae-5231e6859ecf
+  _uidString: 1ea5eb95-b83d-4499-956f-19f8f8fc89f8
   Reliability: 1
   LocalMethodBehavior: 1
   player: {fileID: 0}
   hud: {fileID: 72895653}
+  audioManager: {fileID: 1647607414}
   deathCamera: {fileID: 872017639}
 --- !u!4 &1647607412
 Transform:
@@ -7427,6 +7391,24 @@ MonoBehaviour:
   - {fileID: 3271805046578237308, guid: 3efc91deec161544894c703d3a552b24, type: 3}
   - {fileID: 3271805046578237308, guid: d1ce14ee85b687f4dab0399262bebae7, type: 3}
   - {fileID: 3271805046578237308, guid: 4083d96161b36414d9e8ed374b8a2bed, type: 3}
+--- !u!114 &1647607414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1647607410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4e7d307f40de5c4784ebfdee4b76ac6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Multiplayer: {fileID: 745206279}
+  _uidString: 622bfef5-be2e-41af-a8ac-2511776cb1aa
+  Reliability: 1
+  LocalMethodBehavior: 1
+  soundEffects: []
+  players: []
 --- !u!43 &1750641602
 Mesh:
   m_ObjectHideFlags: 0
@@ -8531,7 +8513,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Multiplayer: {fileID: 0}
-  _uidString: c6ddf371-4688-478b-969a-8c2778f20c2a
+  _uidString: 3c54da2f-eca4-4529-bad6-b36dda4abb7a
   Reliability: 1
   LocalMethodBehavior: 1
   musicPlayer: {fileID: 1944867429}
@@ -9575,7 +9557,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Multiplayer: {fileID: 0}
-  _uidString: 815922ea-a67c-494a-bff0-7ae4654c3459
+  _uidString: 81a1b634-8693-4050-b343-d02c165ec2b9
   Reliability: 1
   LocalMethodBehavior: 1
   audioSource: {fileID: 2135313723}

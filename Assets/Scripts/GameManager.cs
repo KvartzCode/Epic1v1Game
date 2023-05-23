@@ -15,6 +15,7 @@ public class GameManager : AttributesSync
     public User user;
     public Fragsurf.Movement.SurfCharacter player;
     public PlayerHud hud;
+    public AudioManager audioManager;
 
     public Camera deathCamera;
 
