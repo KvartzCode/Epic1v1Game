@@ -7,16 +7,15 @@ using Alteruna;
 
 public class TextToSpeech : AttributesSync
 {
-    public AudioSource audioSource;
     public string message;
     private string pathToExe;
     private string wavFileName;
     private bool processFinished = false;
+    private int TTSPlayerID;
 
     private void Start()
     {
         pathToExe = Path.Combine(Application.streamingAssetsPath, "dectalk/debug.bat");
-        wavFileName = Path.Combine(Application.streamingAssetsPath, "dectalk/player1.wav");
         Debug.Log($"pathToExe: {pathToExe}");
         Debug.Log($"pathToWav: {wavFileName}");
     }
@@ -38,8 +37,10 @@ public class TextToSpeech : AttributesSync
     }
 
     [SynchronizableMethod]
-    public void Speak(string text)
+    public void Speak(string text,int playerID)
     {
+        TTSPlayerID = playerID;
+        wavFileName = Path.Combine(Application.streamingAssetsPath, "dectalk/player"+playerID+".wav");
         text = "[:phoneme on] " + text;
         Debug.Log($"Speaking: {text}");
 
@@ -77,8 +78,7 @@ public class TextToSpeech : AttributesSync
             if (www.error == null)
             {
                 Debug.Log("Audio clip loaded. Playing...");
-                audioSource.clip = www.GetAudioClip();
-                audioSource.Play();
+                GameManager.Instance.audioManager.PlayGlobalTTSAtPlayerLOCAL(www.GetAudioClip(), TTSPlayerID);
             }
             else
             {

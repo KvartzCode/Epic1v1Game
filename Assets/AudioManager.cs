@@ -3,12 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using Alteruna;
 
+[RequireComponent(typeof(TextToSpeech))]
+[RequireComponent(typeof(GameManager))]
 public class AudioManager : AttributesSync
 {
+    [SerializeField]
+    public TextToSpeech TTS;
     [SerializeField]
     private AudioClip[] soundEffects;
     [SerializeField]
     private GameObject[] players; // Array or list of players
+
+    private void Start()
+    {
+        TTS = GetComponent<TextToSpeech>();
+    }
 
     public void PlayGlobal3DSoundEffect(int soundEffectID, float volume, float radius, Vector3 position)
     {
@@ -16,7 +25,7 @@ public class AudioManager : AttributesSync
         PlayLocal3DSoundEffect(soundEffectID, volume, radius, position);
     }
     [SynchronizableMethod]
-    private void PlayGlobal3DSoundEffectMULT(int soundEffectID, float volume, float radius, Vector3 position)
+     void PlayGlobal3DSoundEffectMULT(int soundEffectID, float volume, float radius, Vector3 position)
     {
         AudioSource source = CreateAudioSource(soundEffectID, volume, radius, position);
         source.spatialBlend = 1f; // 3D sound
@@ -31,7 +40,7 @@ public class AudioManager : AttributesSync
         PlayLocal2DSoundEffect(soundEffectID, volume, radius);
     }
     [SynchronizableMethod]
-    public void PlayGlobal2DSoundEffectMULT(int soundEffectID, float volume, float radius)
+     void PlayGlobal2DSoundEffectMULT(int soundEffectID, float volume, float radius)
     {
         AudioSource source = CreateAudioSource(soundEffectID, volume, radius, Vector3.zero);
         source.spatialBlend = 0f; // 2D sound
@@ -46,9 +55,9 @@ public class AudioManager : AttributesSync
         PlayLocal2DSoundEffect(soundEffectID, volume, radius);
     }
     [SynchronizableMethod]
-    public void PlayGlobal3DSoundEffectAtPlayerMULT(int soundEffectID, float volume, float radius, int playerID)
+     void PlayGlobal3DSoundEffectAtPlayerMULT(int soundEffectID, float volume, float radius, int playerID)
     {
-        GameObject player = players[playerID];
+        GameObject player = Alteruna.Multiplayer.Instance.GetAvatar((ushort)playerID).gameObject;
         AudioSource source = CreateAudioSource(soundEffectID, volume, radius, player.transform.position);
         source.transform.parent = player.transform; // Attach AudioSource to the player
         source.spatialBlend = 1f; // 3D sound
@@ -66,10 +75,10 @@ public class AudioManager : AttributesSync
         }
 
         InvokeRemoteMethod(nameof(Play3DSoundEffectForSpecificPlayerMULT), UserId.All, soundEffectID, volume, radius, position, playerID);
- 
+
     }
     [SynchronizableMethod]
-    public void Play3DSoundEffectForSpecificPlayerMULT(int soundEffectID, float volume, float radius, Vector3 position, int playerID)
+     void Play3DSoundEffectForSpecificPlayerMULT(int soundEffectID, float volume, float radius, Vector3 position, int playerID)
     {
         if (playerID == Multiplayer.Instance.Me.Index)
         {
@@ -89,7 +98,7 @@ public class AudioManager : AttributesSync
 
     }
     [SynchronizableMethod]
-    public void Play2DSoundEffectForSpecificPlayerMULT(int soundEffectID, float volume, float radius, int playerID)
+     void Play2DSoundEffectForSpecificPlayerMULT(int soundEffectID, float volume, float radius, int playerID)
     {
         if (playerID == Multiplayer.Instance.Me.Index)
         {
@@ -105,7 +114,7 @@ public class AudioManager : AttributesSync
         StartCoroutine(DestroyAfterPlaying(source.gameObject));
     }
 
-    public void PlayLocal3DSoundEffect(int soundEffectID, float volume, float radius,Vector3 position)
+    public void PlayLocal3DSoundEffect(int soundEffectID, float volume, float radius, Vector3 position)
     {
         AudioSource source = CreateAudioSource(soundEffectID, volume, radius, position);
         source.spatialBlend = 1f; // 3D sound
@@ -136,5 +145,38 @@ public class AudioManager : AttributesSync
     {
         yield return new WaitForSeconds(obj.GetComponent<AudioSource>().clip.length);
         Destroy(obj);
+    }
+
+
+    public void PlayGlobalTTSAtPlayer(string text, int playerID)
+    {
+        InvokeRemoteMethod(nameof(PlayGlobalTTSAtPlayerMULT), UserId.All, text, playerID);
+        TTS.Speak(text, -1);
+    }
+    [SynchronizableMethod]
+     void PlayGlobalTTSAtPlayerMULT(string text, int playerID)
+    {
+        TTS.Speak(text, playerID);
+    }
+
+    public void PlayGlobalTTSAtPlayerLOCAL(AudioClip TTSclip, int playerID)
+    {
+        GameObject player = Alteruna.Multiplayer.Instance.GetAvatar((ushort)playerID).gameObject;
+
+        GameObject audioObject = new GameObject("AudioSource_" + playerID);
+
+        AudioSource source = audioObject.AddComponent<AudioSource>();
+        source.clip = TTSclip;
+        source.volume = 1;
+        source.spatialBlend = 1;
+
+        // Configure the AudioSource for 3D sound.
+        source.rolloffMode = AudioRolloffMode.Linear;
+        source.dopplerLevel = 1f;
+        source.maxDistance = 500;
+
+        source.transform.parent = player.transform; // Attach AudioSource to the player
+        source.Play();
+        StartCoroutine(DestroyAfterPlaying(source.gameObject));
     }
 }
