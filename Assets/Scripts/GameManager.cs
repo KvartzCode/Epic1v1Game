@@ -1,5 +1,16 @@
 using Alteruna;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+
+
+public enum GameModeType { Sandbox, Stocks }
+
+[System.Serializable]
+public class Gamemodes
+{
+    public StocksGamemode stocks;
+}
 
 public class GameManager : AttributesSync
 {
@@ -14,12 +25,25 @@ public class GameManager : AttributesSync
 
     public User user;
     public Fragsurf.Movement.SurfCharacter player;
+    public PlayerController playerController;
     public PlayerHud hud;
     public AudioManager audioManager;
 
     public Camera deathCamera;
 
+    public GameModeType currentGamemodeType;
+
+    GameMode currentGamemode;
+
+    [SerializeField] Gamemodes gamemodes;
+
     bool Initialized;
+    bool GamemodeStarted;
+    bool createdGame;
+
+    GameObject[] specPos = new GameObject[8];
+    List<int> AvailableSpecPos = new List<int>();
+    GameObject deathcamPos;
 
     private void Awake()
     {
@@ -27,11 +51,16 @@ public class GameManager : AttributesSync
             Destroy(gameObject);
         else
             _instance = this;
+
+
+        //currentGamemode = gamemodes.stocks;
     }
 
     private void Start()
     {
         Multiplayer.Instance.RoomLeft.AddListener(EnableMouse);
+
+
     }
 
     private void EnableMouse(Multiplayer m)
@@ -71,7 +100,7 @@ public class GameManager : AttributesSync
 
     public void SynchedUpdateHats()
     {
-        if(Multiplayer.Instance.InRoom)
+        if (Multiplayer.Instance.InRoom)
         {
             InvokeRemoteMethod(nameof(UpdateHats), UserId.AllInclusive);
         }
@@ -98,12 +127,63 @@ public class GameManager : AttributesSync
 
     #endregion
 
+    #region Spectate Stuff
+
+    public void SetSpecObj(int index, GameObject pos)
+    {
+        if (index >= 0 && 0 < specPos.Length)
+            specPos[index] = pos;
+        else
+            Debug.LogError("INVALID INDEX");
+    }
+
+    void SetUpDeathCameraPos()
+    {
+        if (deathcamPos == null)
+        {
+            deathcamPos = new GameObject("DeathCameraPos");
+            deathcamPos.transform.position = deathCamera.transform.position;
+            deathcamPos.transform.rotation = deathCamera.transform.rotation;
+        }
+        else if (AvailableSpecPos.Count > 0)
+        {
+            specPos[AvailableSpecPos[0]] = null;
+        }
+
+        AvailableSpecPos = new List<int>();
+        AvailableSpecPos.Add(user.Index);
+        specPos[user.Index] = deathcamPos;
+    }
+
+    //synched
+    //update all available spec pos
+
+    //update these when a player is dead
+
+    //synched
+    //set my spec pos as available
+
+    //synched
+    //set my spec pos as unavailable
+
+    #endregion
+    public void PlayerDeath(int id)
+    {
+        if (GamemodeStarted)
+        {
+            currentGamemode.PlayerDeath(id);
+        }
+        else
+        {
+            StartCoroutine(RespawnLogic());
+        }
+    }
 
     public void SetTimeScale(float timeScale, float activeTime, bool isLocal)
     {
         if (!isLocal)
         {
-            InvokeRemoteMethod(nameof(SetAllTimeScale), UserId.AllInclusive,timeScale,activeTime);
+            InvokeRemoteMethod(nameof(SetAllTimeScale), UserId.AllInclusive, timeScale, activeTime);
             return;
         }
         Time.timeScale = timeScale;
@@ -125,6 +205,7 @@ public class GameManager : AttributesSync
     public void SetUser(User user)
     {
         this.user = user;
+        SetUpDeathCameraPos();
     }
 
 
@@ -140,6 +221,113 @@ public class GameManager : AttributesSync
 
     #endregion
 
+
+    public void CreatedGame()
+    {
+        if (currentGamemode == null)
+        {
+            Debug.Log("No gamemode selected");
+            return;
+        }
+        currentGamemode.Initialize();
+        createdGame = true;
+
+    }
+
+    public void JoinedGame()
+    {
+        if (currentGamemode == null)
+        {
+            Debug.Log("No gamemode selected");
+            return;
+        }
+
+
+        if (!createdGame)
+        {
+            currentGamemode.Initialize();
+            Debug.LogWarning(Multiplayer.GetUsers().Count);
+            if (Multiplayer.GetUsers().Count + 1 >= currentGamemode.minimumPlayers)
+            {
+                Debug.LogWarning("IS HERE0");
+                StartCoroutine(WaitForInRoom());
+            }
+        }
+    }
+
+    IEnumerator WaitForInRoom()
+    {
+        while (!Multiplayer.InRoom)
+        {
+            yield return null;
+            Debug.Log("Here");
+        }
+        yield return new WaitForSeconds(1);
+        InvokeRemoteMethod(nameof(SynchedCheckIfGamemodeStarted), Multiplayer.LowestUserIndex, user.Index);
+
+    }
+
+    public void StartGame()
+    {
+        GamemodeStarted = true;
+        currentGamemode.GameModeStart();
+        playerController.Respawn();
+    }
+
+    User FindSeccondLowestUser()
+    {
+        List<User> users = Multiplayer.GetUsers();
+        User lowestUser = user;
+        for (int i = 0; i < users.Count; i++)
+        {
+            if (users[i] != user)
+            {
+                if (lowestUser == user)
+                    lowestUser = users[i];
+                else if (lowestUser.Index > users[i])
+                    lowestUser = users[i];
+            }
+        }
+        return lowestUser;
+    }
+
+
+    [SynchronizableMethod]
+    void SynchedSetGamemodeStarted(bool value)
+    {
+        GamemodeStarted = value;
+        if (GamemodeStarted == true)
+            currentGamemode.GameModeJoin();
+    }
+
+    [SynchronizableMethod]
+    void SynchedStartGame()
+    {
+        StartGame();
+    }
+
+
+    [SynchronizableMethod]
+    void SynchedCheckIfGamemodeStarted(ushort id)
+    {
+        if (GamemodeStarted)
+            InvokeRemoteMethod(nameof(SynchedSetGamemodeStarted), id, GamemodeStarted);
+        else
+            InvokeRemoteMethod(nameof(SynchedStartGame), UserId.AllInclusive);
+    }
+
+
+    private IEnumerator RespawnLogic()
+    {
+        playerController.SetIsDead(true);
+        playerController.HidePlayer(true);
+
+        yield return new WaitForSeconds(5);
+
+        playerController.SetIsDead(false);
+        playerController.HidePlayer(false);
+        playerController.Respawn();
+    }
 
     private new void OnDestroy()
     {

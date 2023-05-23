@@ -44,17 +44,17 @@ public class Explosion : MonoBehaviour
 
     private bool CheckKO(Vector3 direction, Collider other, float force)
     {
-        Debug.Log("Entered CheckKO method.");
+       // Debug.Log("Entered CheckKO method.");
 
         float threshhold = 40;
         Vector3 pos = other.transform.position;
         float multiplier = other.GetComponent<Fragsurf.Movement.SurfCharacter>().GetMultiplier();
 
-        Debug.Log("Force multiplier: " + (force * multiplier).ToString());
+        //Debug.Log("Force multiplier: " + (force * multiplier).ToString());
 
         if (force * multiplier < threshhold)
         {
-            Debug.Log("Force times multiplier is less than threshold. Returning false.");
+           // Debug.Log("Force times multiplier is less than threshold. Returning false.");
             return false;
         }
         else
@@ -65,11 +65,11 @@ public class Explosion : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(pos, direction, out hit, Mathf.Infinity, layerMask))
             {
-                Debug.Log("Raycast hit an object: " + hit.collider.gameObject.name);
+                //Debug.Log("Raycast hit an object: " + hit.collider.gameObject.name);
                 // Check if the first object the raycast hit is a trigger and has the tag "DeathZone"
                 if (hit.collider.isTrigger && hit.collider.tag == "DeathZone")
                 {
-                    Debug.Log("Hit object is a trigger and tagged as 'DeathZone'. Returning true.");
+                   // Debug.Log("Hit object is a trigger and tagged as 'DeathZone'. Returning true.");
                     other.GetComponent<Fragsurf.Movement.SurfCharacter>().SetVelocity(Vector3.zero);
                     GameManager.Instance.audioManager.PlayGlobal3DSoundEffect(0, 1.5f, 10000, transform.position);
                     GameManager.Instance.audioManager.PlayLocal2DSoundEffect(0, 1f, 10000);

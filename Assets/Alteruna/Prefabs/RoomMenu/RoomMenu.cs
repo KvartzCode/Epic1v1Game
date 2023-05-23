@@ -184,6 +184,7 @@ public class RoomMenu : CommunicationBridge
 		{
 			TitleText.text = "In Room " + room.Name;
 		}
+		GameManager.Instance.JoinedGame();
 	}
 
 	private void LeftRoom(Multiplayer multiplayer)
@@ -271,6 +272,7 @@ public class RoomMenu : CommunicationBridge
 			StartButton.onClick.AddListener(() =>
 			{
 				Multiplayer.JoinOnDemandRoom();
+				GameManager.Instance.CreatedGame();
 				_refreshTime = RefreshInterval;
 			});
 			

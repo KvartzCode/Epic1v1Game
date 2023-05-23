@@ -3976,7 +3976,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Multiplayer: {fileID: 0}
-  _uidString: 894659f7-25d5-47cb-96fc-65d73fa23a3a
+  _uidString: b7e73b61-8363-4fea-93d4-140f92e0c305
   Reliability: 1
   LocalMethodBehavior: 1
   sprayDecals:
@@ -7321,6 +7321,7 @@ GameObject:
   - component: {fileID: 1647607413}
   - component: {fileID: 1647607414}
   - component: {fileID: 1647607415}
+  - component: {fileID: 1647607416}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -7341,13 +7342,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Multiplayer: {fileID: 0}
-  _uidString: 67684087-034c-41e7-96ab-ddf101f8a0e1
+  _uidString: e8947108-89b3-4300-aff2-cc078df7c60e
   Reliability: 1
   LocalMethodBehavior: 1
   player: {fileID: 0}
+  playerController: {fileID: 0}
   hud: {fileID: 72895653}
   audioManager: {fileID: 1647607414}
   deathCamera: {fileID: 872017639}
+  currentGamemodeType: 0
+  gamemodes:
+    stocks: {fileID: 1647607416}
 --- !u!4 &1647607412
 Transform:
   m_ObjectHideFlags: 0
@@ -7405,7 +7410,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Multiplayer: {fileID: 745206279}
-  _uidString: 8154df2e-62df-474f-9244-62d4c8cd51d4
+  _uidString: f78a06a8-2896-4f87-b458-113c7c230492
   Reliability: 1
   LocalMethodBehavior: 1
   TTS: {fileID: 1647607415}
@@ -7494,10 +7499,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Multiplayer: {fileID: 745206279}
-  _uidString: e0d20d88-aef3-4fca-b2bf-6f1aa6f7397f
+  _uidString: c6bb6baf-5edb-4dac-be94-7c616d03d67a
   Reliability: 1
   LocalMethodBehavior: 1
   message: 
+--- !u!114 &1647607416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1647607410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 229acc98919589d45abfb47b30d8190e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Multiplayer: {fileID: 745206279}
+  _uidString: dcc461af-f0ed-4b5c-ac4e-a221cabe8636
+  Reliability: 1
+  LocalMethodBehavior: 1
+  minimumPlayers: 0
 --- !u!43 &1750641602
 Mesh:
   m_ObjectHideFlags: 0
@@ -8602,7 +8624,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Multiplayer: {fileID: 0}
-  _uidString: ab51438b-2b21-4e83-b067-0a84f6b4e352
+  _uidString: aeacd11a-bbdf-41d8-93e0-105b97a54565
   Reliability: 1
   LocalMethodBehavior: 1
   musicPlayer: {fileID: 1944867429}

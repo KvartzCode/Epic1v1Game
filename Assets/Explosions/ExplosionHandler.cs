@@ -92,7 +92,6 @@ public class ExplosionHandler : AttributesSync
     [SynchronizableMethod]
     void SpawnExplosionSynchronizable(float explosionDamage, float knockbackPower, float explosionRadius, int explosionType, Vector3 PositionInWorldSpace, int userID)
     {
-        Debug.Log("Explosion");
         //ExploSpawner.position = PositionInWorldSpace;
         exploObject = Instantiate(Explo, PositionInWorldSpace, Explo.transform.rotation, ExploSpawner);
         exploObject.GetComponent<Explosion>().InitiateExpo(explosionDamage, knockbackPower, explosionRadius, userID);
@@ -103,7 +102,6 @@ public class ExplosionHandler : AttributesSync
     [SynchronizableMethod]
     void SpawnLocalExplosionSynchronizable(float explosionDamage, float knockbackPower, float explosionRadius, int explosionType, int fireUserID, Vector3 hitOffset, int hitUserID)
     {
-        Debug.Log("Explosion");
         ushort index = System.Convert.ToUInt16(hitUserID);
         Vector3 pos = Multiplayer.Instance.GetAvatar(index).transform.position + hitOffset;
         exploObject = Instantiate(Explo, pos, Explo.transform.rotation, ExploSpawner);

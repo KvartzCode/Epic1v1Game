@@ -149,6 +149,7 @@ public class UserIdHolder : AttributesSync
             }
         }
     }
+
     public int GetUserId()
     {
         return userId;
