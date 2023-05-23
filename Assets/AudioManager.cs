@@ -12,12 +12,11 @@ public class AudioManager : AttributesSync
     [SerializeField]
     private AudioClip[] soundEffects;
     [SerializeField]
-    private GameObject[] players; // Array or list of players
-
-    private void Start()
-    {
-        TTS = GetComponent<TextToSpeech>();
-    }
+    private AudioClip[] damageSoundEffects;
+    [SerializeField]
+    private AudioClip[] knockoutSoundEffects;
+    [SerializeField]
+    private AudioClip[] deadSoundEffects;
 
     public void PlayGlobal3DSoundEffect(int soundEffectID, float volume, float radius, Vector3 position)
     {
@@ -25,9 +24,37 @@ public class AudioManager : AttributesSync
         PlayLocal3DSoundEffect(soundEffectID, volume, radius, position);
     }
     [SynchronizableMethod]
-     void PlayGlobal3DSoundEffectMULT(int soundEffectID, float volume, float radius, Vector3 position)
+    void PlayGlobal3DSoundEffectMULT(int soundEffectID, float volume, float radius, Vector3 position)
     {
         AudioSource source = CreateAudioSource(soundEffectID, volume, radius, position);
+        source.spatialBlend = 1f; // 3D sound
+        source.Play();
+        StartCoroutine(DestroyAfterPlaying(source.gameObject));
+    }
+
+    public void PlayDamageSound(float volume, float radius, Vector3 position)
+    {
+        int thisClip = Random.Range(0, deadSoundEffects.Length);
+        InvokeRemoteMethod(nameof(PlayDamageSoundMULT), UserId.AllInclusive, thisClip, volume, radius, position);
+    }
+    [SynchronizableMethod]
+    void PlayDamageSoundMULT(int intID, float volume, float radius, Vector3 position)
+    {
+        AudioSource source = CreateAudioSource(damageSoundEffects[intID], volume, radius, position);
+        source.spatialBlend = 1f; // 3D sound
+        source.Play();
+        StartCoroutine(DestroyAfterPlaying(source.gameObject));
+    }
+
+    public void PlayKOSound(float volume, float radius, Vector3 position)
+    {
+        int thisClip = Random.Range(0, knockoutSoundEffects.Length);
+        InvokeRemoteMethod(nameof(PlayKOSoundMULT), UserId.AllInclusive, thisClip, volume, radius, position);
+    }
+    [SynchronizableMethod]
+    void PlayKOSoundMULT(int intID, float volume, float radius, Vector3 position)
+    {
+        AudioSource source = CreateAudioSource(knockoutSoundEffects[intID], volume, radius, position);
         source.spatialBlend = 1f; // 3D sound
         source.Play();
         StartCoroutine(DestroyAfterPlaying(source.gameObject));
@@ -61,6 +88,7 @@ public class AudioManager : AttributesSync
         AudioSource source = CreateAudioSource(soundEffectID, volume, radius, player.transform.position);
         source.transform.parent = player.transform; // Attach AudioSource to the player
         source.spatialBlend = 1f; // 3D sound
+        source.dopplerLevel = 1f;
         source.Play();
         StartCoroutine(DestroyAfterPlaying(source.gameObject));
     }
@@ -114,9 +142,34 @@ public class AudioManager : AttributesSync
         StartCoroutine(DestroyAfterPlaying(source.gameObject));
     }
 
+    public void PlayLocal2DSoundEffect(AudioClip clip, float volume, float radius)
+    {
+        AudioSource source = CreateAudioSource(clip, volume, radius, this.transform.position);
+        source.spatialBlend = 0f; // 2D sound
+        source.Play();
+        StartCoroutine(DestroyAfterPlaying(source.gameObject));
+    }
+
+    public void PlayLocalDeath()
+    {
+        
+        AudioSource source = CreateAudioSource(deadSoundEffects[Random.Range(0, deadSoundEffects.Length)], 1f, 100, this.transform.position);
+        source.spatialBlend = 0f; // 2D sound
+        source.Play();
+        StartCoroutine(DestroyAfterPlaying(source.gameObject));
+    }
+
     public void PlayLocal3DSoundEffect(int soundEffectID, float volume, float radius, Vector3 position)
     {
         AudioSource source = CreateAudioSource(soundEffectID, volume, radius, position);
+        source.spatialBlend = 1f; // 3D sound
+        source.Play();
+        StartCoroutine(DestroyAfterPlaying(source.gameObject));
+    }
+
+    public void PlayLocal3DSoundEffect(AudioClip clip, float volume, float radius, Vector3 position)
+    {
+        AudioSource source = CreateAudioSource(clip, volume, radius, position);
         source.spatialBlend = 1f; // 3D sound
         source.Play();
         StartCoroutine(DestroyAfterPlaying(source.gameObject));
@@ -134,7 +187,25 @@ public class AudioManager : AttributesSync
 
         // Configure the AudioSource for 3D sound.
         source.rolloffMode = AudioRolloffMode.Linear;
-        source.dopplerLevel = 1f;
+        source.dopplerLevel = 0f;
+        source.maxDistance = radius;
+
+        return source;
+    }
+
+    private AudioSource CreateAudioSource(AudioClip clip, float volume, float radius, Vector3 position)
+    {
+        GameObject audioObject = new GameObject("AudioSource_" + clip.name);
+        audioObject.transform.position = position;
+
+        AudioSource source = audioObject.AddComponent<AudioSource>();
+        source.clip = clip;
+        source.volume = volume;
+        source.spatialBlend = radius;
+
+        // Configure the AudioSource for 3D sound.
+        source.rolloffMode = AudioRolloffMode.Linear;
+        source.dopplerLevel = 0f;
         source.maxDistance = radius;
 
         return source;
@@ -172,7 +243,7 @@ public class AudioManager : AttributesSync
 
         // Configure the AudioSource for 3D sound.
         source.rolloffMode = AudioRolloffMode.Linear;
-        source.dopplerLevel = 1f;
+        source.dopplerLevel = 0f;
         source.maxDistance = 500;
 
         source.transform.parent = player.transform; // Attach AudioSource to the player

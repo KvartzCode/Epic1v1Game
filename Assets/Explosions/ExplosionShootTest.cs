@@ -10,7 +10,7 @@ public class ExplosionShootTest : MonoBehaviour
     [SerializeField] Transform spawnPos;
     [SerializeField] AudioClip clip;
     [SerializeField] float cooldown = 0.4f;
-    [SerializeField] float sprayDistance = 2f; // Set the distance of the raycast
+    [SerializeField] float sprayDistance = 4f; // Set the distance of the raycast
 
     AudioSource source;
     Vector3 localSpawnPos;

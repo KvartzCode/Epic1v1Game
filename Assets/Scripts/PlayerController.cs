@@ -94,6 +94,7 @@ public class PlayerController : AttributesSync
 
     private void Respawn()
     {
+        GameManager.Instance.audioManager.PlayLocalDeath();
         //TODO: Disable player velocity
         surfCharacter.SetMultiplier(0);
         surfCharacter.SetVelocity(Vector3.zero);
@@ -116,10 +117,11 @@ public class PlayerController : AttributesSync
     private IEnumerator TriggerDeath()
     {
         isDead = true;
+        GameManager.Instance.audioManager.PlayKOSound(1, 1000, transform.position);
 
         //if (Stocks > 0) //TODO: Uncomment when we fix this
         //{
-            Stocks--;
+        Stocks--;
             //GameManager.Instance.hud.SetStocks(Stocks);
             HidePlayer(true);
 

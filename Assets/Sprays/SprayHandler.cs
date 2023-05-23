@@ -53,7 +53,7 @@ public class SprayHandler : AttributesSync
     {
 
         InvokeRemoteMethod(nameof(SynchedSpray), UserId.AllInclusive, userId, pos, reverseForward);
-        ExplosionHandler.Instance.SpawnSpecificSFX(pos, 1);
+        GameManager.Instance.audioManager.PlayGlobal3DSoundEffectAtPlayer(1,1,200,Multiplayer.Instance.Me.Index);
     }
 
     [SynchronizableMethod]
