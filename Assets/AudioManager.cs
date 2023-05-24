@@ -244,7 +244,7 @@ public class AudioManager : AttributesSync
         // Configure the AudioSource for 3D sound.
         source.rolloffMode = AudioRolloffMode.Linear;
         source.dopplerLevel = 0f;
-        source.maxDistance = 500;
+        source.maxDistance = 83;
 
         source.transform.parent = player.transform; // Attach AudioSource to the player
         source.transform.localPosition = Vector3.zero;
