@@ -107,10 +107,11 @@ public class ExplosionShootTest : MonoBehaviour
 
         if (hit.collider != null)
         {
-            Debug.LogError(hit.collider.gameObject.name, hit.collider);
-            if (hit.collider.CompareTag("Player"))
+            Debug.LogError(hit.collider.gameObject.tag, hit.collider);
+            PlayerCol pCol = hit.collider.GetComponent<PlayerCol>();
+            if (pCol != null)
             {
-                int index = hit.collider.GetComponent<PlayerCol>().player.GetComponent<UserIdHolder>().GetUserId();
+                int index = pCol.player.GetComponent<UserIdHolder>().GetUserId();
 
                 if (GameManager.Instance.CheckKO(dir, hit.collider, 600, false))
                 {
