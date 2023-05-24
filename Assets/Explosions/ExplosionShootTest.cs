@@ -110,14 +110,14 @@ public class ExplosionShootTest : MonoBehaviour
             Debug.LogError(hit.collider.gameObject.name, hit.collider);
             if (hit.collider.CompareTag("Player"))
             {
-                ushort index = hit.collider.GetComponent<Alteruna.Avatar>().Possessor.Index;
+                int index = hit.collider.GetComponent<PlayerCol>().player.GetComponent<UserIdHolder>().GetUserId();
 
                 if (GameManager.Instance.CheckKO(dir, hit.collider, 600, false))
                 {
-                    GameManager.Instance.audioManager.PlayGlobal3DSoundEffectAtPlayer(2, 1, 100, (int)index);
+                    GameManager.Instance.audioManager.PlayGlobal3DSoundEffectAtPlayer(2, 1, 100, index);
                 }
 
-                GameManager.Instance.AddForceOnPlayer(index, dir, 600, true, true);
+                GameManager.Instance.AddForceOnPlayer(System.Convert.ToUInt16(index), dir, 600, true, true);
 
             }
         }
