@@ -5,8 +5,12 @@ using Alteruna;
 
 public class StocksGamemode : GameMode
 {
+    [SerializeField] GameObject endScreen;
+
     bool[] playerDead = new bool[8];
     bool gameIsOver;
+    GameObject spawnedEndscreen;
+    int winner;
 
     public override void Initialize()
     {
@@ -32,14 +36,25 @@ public class StocksGamemode : GameMode
 
     public override void GameOver()
     {
-        Debug.Log("Game over :)");
-        if (GameManager.Instance.user.Index == Multiplayer.LowestUserIndex)
-            Invoke(nameof(CallRestart), 5);
+        if (spawnedEndscreen != null)
+            spawnedEndscreen.SetActive(true);
+        else
+            spawnedEndscreen = Instantiate(endScreen, new Vector3(1000, 1000, 1000), endScreen.transform.rotation);
+
+
+        spawnedEndscreen.GetComponent<StocksEndScreenManager>().SetWinner(winner);
+
+            Invoke(nameof(CallRestart), 10);
     }
 
     void CallRestart()
     {
-        GameManager.Instance.ResetGamemode();
+        if (spawnedEndscreen != null)
+            spawnedEndscreen.SetActive(false);
+
+
+        if (GameManager.Instance.user.Index == Multiplayer.LowestUserIndex)
+            GameManager.Instance.ResetGamemode();
     }
 
     public override void PlayerDeath(int id)
@@ -115,6 +130,7 @@ public class StocksGamemode : GameMode
     {
         gameIsOver = true;
         Debug.Log("Winner is user: " + winnerId);
+        winner = (int)winnerId;
         GameOver();
     }
 
