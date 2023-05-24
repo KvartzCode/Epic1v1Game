@@ -512,10 +512,9 @@ public class GameManager : AttributesSync
     [SynchronizableMethod]
     public void SynchedAddForceOnPlayer(Vector3 dir, float force, bool useMultiplier, bool checkKo = false)
     {
-        Debug.Log("I GOT A VELOCITY CHANGE");
         player.AddVelocity(dir, force, useMultiplier);
-        if (checkKo)
-            CheckKO(dir, player.gameObject, force, true);
+       // if (checkKo)
+            //CheckKO(dir, player.gameObject, force, true);
     }
 
     public bool CheckKO(Vector3 direction, GameObject other, float force, bool applyForce = true)

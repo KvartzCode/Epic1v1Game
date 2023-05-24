@@ -112,10 +112,10 @@ public class ExplosionShootTest : MonoBehaviour
             {
                 int index = pCol.player.GetComponent<UserIdHolder>().GetUserId();
 
-                if (GameManager.Instance.CheckKO(dir, pCol.gameObject, 600, false))
-                {
-                    GameManager.Instance.audioManager.PlayGlobal3DSoundEffectAtPlayer(2, 1, 100, index);
-                }
+                //if (GameManager.Instance.CheckKO(dir, pCol.gameObject, 600, false))
+                //{
+                //    GameManager.Instance.audioManager.PlayGlobal3DSoundEffectAtPlayer(2, 1, 100, index);
+                //}
 
                 GameManager.Instance.AddForceOnPlayer(System.Convert.ToUInt16(index), dir, 600, true, true);
 
