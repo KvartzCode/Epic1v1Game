@@ -41,9 +41,11 @@ public class GameManager : AttributesSync
     bool GamemodeStarted;
     bool createdGame;
 
+    //Specstuffs
     GameObject[] specPos = new GameObject[8];
     List<int> AvailableSpecPos = new List<int>();
     GameObject deathcamPos;
+    int currentSpecIndex;
 
     private void Awake()
     {
@@ -61,6 +63,21 @@ public class GameManager : AttributesSync
         Multiplayer.Instance.RoomLeft.AddListener(EnableMouse);
 
 
+    }
+
+    private void Update()
+    {
+        if (Multiplayer.InRoom)
+        {
+            if (playerController.GetIsDead())
+            {
+                if (specPos[AvailableSpecPos[currentSpecIndex]] != null)
+                {
+                    deathCamera.transform.position = specPos[AvailableSpecPos[currentSpecIndex]].transform.position;
+                    deathCamera.transform.rotation = specPos[AvailableSpecPos[currentSpecIndex]].transform.rotation;
+                }
+            }
+        }
     }
 
     private void EnableMouse(Multiplayer m)
@@ -155,16 +172,60 @@ public class GameManager : AttributesSync
         specPos[user.Index] = deathcamPos;
     }
 
-    //synched
-    //update all available spec pos
+    public void UpdateAllAvailableSpecPos()
+    {
+        InvokeRemoteMethod(nameof(SynchUpdateAllAvailableSpecPos), UserId.AllInclusive);
+    }
 
-    //update these when a player is dead
+    [SynchronizableMethod]
+    void SynchUpdateAllAvailableSpecPos()
+    {
+        if (playerController.GetIsDead())
+            RemoveSpec();
+        else
+            AddSpec();
+    }
 
-    //synched
-    //set my spec pos as available
+    public void AddSpec()
+    {
+        InvokeRemoteMethod(nameof(SynchAddSpec), UserId.All, user.Index);
+    }
 
-    //synched
-    //set my spec pos as unavailable
+
+    public void RemoveSpec()
+    {
+        InvokeRemoteMethod(nameof(SynchRemoveSpec), UserId.All, user.Index);
+    }
+
+    [SynchronizableMethod]
+    void SynchAddSpec(int id)
+    {
+        AvailableSpecPos.Add(id);
+    }
+
+    [SynchronizableMethod]
+    void SynchRemoveSpec(int id)
+    {
+        if (AvailableSpecPos[currentSpecIndex] == id)
+            ForceMoveSpecCam(0);
+
+        AvailableSpecPos.Remove(id);
+    }
+
+    public void MoveSpecCam(bool moveForward)
+    {
+        if (moveForward)
+            currentSpecIndex = (currentSpecIndex + 1) > AvailableSpecPos.Count ? 0 : currentSpecIndex + 1;
+        else
+            currentSpecIndex = (currentSpecIndex - 1) < 0 ? AvailableSpecPos.Count - 1 : 0;
+
+    }
+
+    void ForceMoveSpecCam(int Index)
+    {
+        deathCamera.transform.position = specPos[AvailableSpecPos[0]].transform.position;
+        deathCamera.transform.rotation = specPos[AvailableSpecPos[0]].transform.rotation;
+    }
 
     #endregion
     public void PlayerDeath(int id)
@@ -236,6 +297,7 @@ public class GameManager : AttributesSync
 
     public void JoinedGame()
     {
+        AvailableSpecPos.Add(user.Index);
         if (currentGamemode == null)
         {
             Debug.Log("No gamemode selected");
@@ -252,6 +314,7 @@ public class GameManager : AttributesSync
                 Debug.LogWarning("IS HERE0");
                 StartCoroutine(WaitForInRoom());
             }
+            UpdateAllAvailableSpecPos();
         }
     }
 
@@ -319,14 +382,17 @@ public class GameManager : AttributesSync
 
     private IEnumerator RespawnLogic()
     {
+        UpdateAllAvailableSpecPos();
         playerController.SetIsDead(true);
         playerController.HidePlayer(true);
+        RemoveSpec();
 
         yield return new WaitForSeconds(5);
 
         playerController.SetIsDead(false);
         playerController.HidePlayer(false);
         playerController.Respawn();
+        AddSpec();
     }
 
     private new void OnDestroy()

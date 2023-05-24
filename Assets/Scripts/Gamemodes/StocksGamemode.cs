@@ -48,14 +48,17 @@ public class StocksGamemode : GameMode
 
     private IEnumerator RespawnLogic()
     {
+        GameManager.Instance.UpdateAllAvailableSpecPos();
         GameManager.Instance.playerController.SetIsDead(true);
         GameManager.Instance.playerController.HidePlayer(true);
+        GameManager.Instance.RemoveSpec();
 
         yield return new WaitForSeconds(5);
 
         GameManager.Instance.playerController.SetIsDead(false);
         GameManager.Instance.playerController.HidePlayer(false);
         GameManager.Instance.playerController.Respawn();
+        GameManager.Instance.AddSpec();
     }
 
     private void UpdateAllDeathSates()

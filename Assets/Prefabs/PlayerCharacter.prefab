@@ -581,6 +581,7 @@ MonoBehaviour:
   surfCharacter: {fileID: 8272961778350456348}
   playerAiming: {fileID: 8272961777276335227}
   shootController: {fileID: 4112002198843539511}
+  specCamHolder: {fileID: 7363728717401501095}
 --- !u!114 &6697983922509652227
 MonoBehaviour:
   m_ObjectHideFlags: 0

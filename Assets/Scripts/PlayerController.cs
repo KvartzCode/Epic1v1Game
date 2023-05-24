@@ -52,6 +52,15 @@ public class PlayerController : AttributesSync
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.F1))
             LockMouse(Cursor.visible);
 
+        if (isDead)
+        {
+            if (Input.GetMouseButtonDown(0))
+                GameManager.Instance.MoveSpecCam(true);
+            else if (Input.GetMouseButtonDown(1))
+                GameManager.Instance.MoveSpecCam(false);
+
+        }
+
         //if (Input.GetKeyDown(KeyCode.R))
         //{
         //    Debug.Log(GameManager.Instance.user.Index);
@@ -77,6 +86,11 @@ public class PlayerController : AttributesSync
         customizeMenu.SetActive(false);
 
         //hud = Instantiate(PlayerHudToSpawn).GetComponent<PlayerHud>();
+    }
+
+    public bool GetIsDead()
+    {
+        return isDead;
     }
 
     public void RevertCamera(Multiplayer multiplayer)
