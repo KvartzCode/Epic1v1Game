@@ -72,7 +72,7 @@ public class PlayerHud : MonoBehaviour
 
     public bool GetIsDead()
     {
-        return isDead;
+        return currentStocks > 0 ? false : true;
     }
     public void RemoveStock()
     {
@@ -133,7 +133,6 @@ public class PlayerHud : MonoBehaviour
                 stock3.enabled = false;
                 break;
             case 0:
-                isDead = true;
                 break;
             default:
                 break;

@@ -389,7 +389,6 @@ public class GameManager : AttributesSync
             }
         }
 
-        Debug.LogWarning("Is hehre");
 
         if (hasGottenGamemode)
         {
@@ -399,8 +398,6 @@ public class GameManager : AttributesSync
 
                 if (!createdGame)
                 {
-                    Debug.LogWarning("Is herererererere");
-                    currentGamemode.Initialize();
                     Debug.LogWarning(Multiplayer.GetUsers().Count);
                     if (Multiplayer.GetUsers().Count + 1 >= currentGamemode.minimumPlayers)
                     {
@@ -439,7 +436,6 @@ public class GameManager : AttributesSync
     {
         GamemodeStarted = true;
         currentGamemode.GameModeStart();
-        playerController.Respawn();
     }
 
     User FindSeccondLowestUser()
@@ -483,7 +479,18 @@ public class GameManager : AttributesSync
         else
             InvokeRemoteMethod(nameof(SynchedStartGame), UserId.AllInclusive);
     }
+    public void ResetGamemode()
+    {
+        InvokeRemoteMethod(nameof(SynchResetGamemode), UserId.AllInclusive);
+    }
 
+    [SynchronizableMethod]
+    void SynchResetGamemode()
+    {
+        currentGamemode.Initialize();
+        if (user.Index == Multiplayer.LowestUserIndex)
+            InvokeRemoteMethod(nameof(SynchedStartGame), UserId.AllInclusive);
+    }
 
     private IEnumerator RespawnLogic()
     {
@@ -493,9 +500,6 @@ public class GameManager : AttributesSync
         RemoveSpec();
 
         yield return new WaitForSeconds(5);
-
-        playerController.SetIsDead(false);
-        playerController.HidePlayer(false);
         playerController.Respawn();
         AddSpec();
     }

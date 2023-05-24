@@ -121,7 +121,8 @@ public class PlayerController : AttributesSync
         //TODO: Disable player velocity
         surfCharacter.SetMultiplier(0);
         surfCharacter.SetVelocity(Vector3.zero);
-
+        SetIsDead(false);
+        HidePlayer(false);
         var spawnPositions = Multiplayer.AvatarSpawnLocations;
         gameObject.transform.position = spawnPositions[Random.Range(0, spawnPositions.Count)].position;
     }

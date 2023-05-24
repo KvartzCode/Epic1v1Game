@@ -6,18 +6,23 @@ using Alteruna;
 public class StocksGamemode : GameMode
 {
     bool[] playerDead = new bool[8];
+    bool gameIsOver;
 
     public override void Initialize()
     {
+        GameManager.Instance.hud.SetStocks(4);
+        gameIsOver = false;
         for (int i = 0; i < playerDead.Length; i++)
         {
             playerDead[i] = false;
         }
+
     }
 
     public override void GameModeStart()
     {
         UpdateAllDeathSates();
+        GameManager.Instance.playerController.Respawn();
     }
 
     public override void GameModeUpdate()
@@ -28,8 +33,14 @@ public class StocksGamemode : GameMode
     public override void GameOver()
     {
         Debug.Log("Game over :)");
+        if (GameManager.Instance.user.Index == Multiplayer.LowestUserIndex)
+            Invoke(nameof(CallRestart), 5);
     }
 
+    void CallRestart()
+    {
+        GameManager.Instance.ResetGamemode();
+    }
 
     public override void PlayerDeath(int id)
     {
@@ -57,9 +68,6 @@ public class StocksGamemode : GameMode
         GameManager.Instance.RemoveSpec();
 
         yield return new WaitForSeconds(5);
-
-        GameManager.Instance.playerController.SetIsDead(false);
-        GameManager.Instance.playerController.HidePlayer(false);
         GameManager.Instance.playerController.Respawn();
         GameManager.Instance.AddSpec();
     }
@@ -71,7 +79,6 @@ public class StocksGamemode : GameMode
 
     private void CheckIfAllDead()
     {
-        Debug.LogError("EEEEEEERERERERERERER");
         List<User> users = Multiplayer.Instance.GetUsers();
         User aliveUser = null;
 
@@ -86,8 +93,6 @@ public class StocksGamemode : GameMode
             }
         }
 
-        Debug.Log("IS HERE");
-
         if (aliveUser == null)
         {
             Debug.LogError("All dead?");
@@ -95,7 +100,8 @@ public class StocksGamemode : GameMode
         }
         else
         {
-            InvokeRemoteMethod(nameof(SynchStartGameOver), UserId.AllInclusive, aliveUser.Index);
+            if (!gameIsOver)
+                InvokeRemoteMethod(nameof(SynchStartGameOver), UserId.AllInclusive, aliveUser.Index);
         }
 
     }
@@ -103,6 +109,7 @@ public class StocksGamemode : GameMode
     [SynchronizableMethod]
     private void SynchStartGameOver(ulong winnerId)
     {
+        gameIsOver = true;
         Debug.Log("Winner is user: " + winnerId);
         GameOver();
     }
