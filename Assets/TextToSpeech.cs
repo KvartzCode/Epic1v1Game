@@ -39,6 +39,8 @@ public class TextToSpeech : AttributesSync
     [SynchronizableMethod]
     public void Speak(string text, int playerID)
     {
+#if PLATFORM_STANDALONE_WIN || UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
+
         TTSPlayerID = playerID;
         wavFileName = Path.Combine(Application.streamingAssetsPath, "dectalk/player" + playerID + ".wav");
         text = "[:phoneme on] " + text;
@@ -60,6 +62,7 @@ public class TextToSpeech : AttributesSync
         process.EnableRaisingEvents = true;
         process.Exited += new System.EventHandler(process_Exited);
         process.Start();
+#endif
     }
 
 

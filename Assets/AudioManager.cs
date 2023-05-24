@@ -238,13 +238,14 @@ public class AudioManager : AttributesSync
 
         AudioSource source = audioObject.AddComponent<AudioSource>();
         source.clip = TTSclip;
-        source.volume = 0.8f;
+        source.volume = 1.2f;
         source.spatialBlend = 1;
+        
 
         // Configure the AudioSource for 3D sound.
         source.rolloffMode = AudioRolloffMode.Linear;
         source.dopplerLevel = 1f;
-        source.maxDistance = 50;
+        source.maxDistance = 83;
 
         source.transform.parent = player.transform; // Attach AudioSource to the player
         source.transform.localPosition = Vector3.zero;
