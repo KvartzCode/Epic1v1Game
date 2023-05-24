@@ -41,6 +41,11 @@ public class PlayerController : AttributesSync
             return;
         }
 
+        transform.gameObject.layer = LayerMask.NameToLayer("LocalPlayer");
+        int children = transform.childCount;
+        for (int i = 0; i < children; ++i)
+            transform.GetChild(i).gameObject.layer = LayerMask.NameToLayer("LocalPlayer");
+
         GameManager.Instance.SetUser(avatar.Possessor);
         GameManager.Instance.playerController = this;
         Init();

@@ -437,7 +437,8 @@ MonoBehaviour:
   player: {fileID: 8272961778350456348}
   spawnPos: {fileID: 4112002198428636212}
   clip: {fileID: 8300000, guid: 67203f654f397e1489cc72e5fc29e3c9, type: 3}
-  cooldown: 0.4
+  rocketCooldown: 0.4
+  railGunCooldown: 1
   sprayDistance: 2
 --- !u!1 &8272961778350456350
 GameObject:
@@ -582,6 +583,7 @@ MonoBehaviour:
   playerAiming: {fileID: 8272961777276335227}
   shootController: {fileID: 4112002198843539511}
   specCamHolder: {fileID: 7363728717401501095}
+  yHardKillFloor: -100
 --- !u!114 &6697983922509652227
 MonoBehaviour:
   m_ObjectHideFlags: 0

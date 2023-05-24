@@ -10,6 +10,7 @@ public class ExplosionHandler : AttributesSync
     public GameObject Rocket;
     public GameObject ExploCosmetic;
     private GameObject exploObject;
+    [SerializeField] GameObject railGunPrefab;
     [SerializeField] private List<GameObject> ExplosionVariations;
     [SerializeField] private List<AudioClip> RandomHitSFX;
     [SerializeField] private List<AudioClip> SpecificSFX;
@@ -88,6 +89,19 @@ public class ExplosionHandler : AttributesSync
         InvokeRemoteMethod(nameof(SpawnSpecificSFXSync), UserId.AllInclusive, ID, PositionInWorldSpace);
     }
 
+    public void SpawnRailGunSfx(Vector3 startPos, Vector3 endPos)
+    {
+        InvokeRemoteMethod(nameof(SpawnRailGunSfxSyncronizable), UserId.AllInclusive, startPos, endPos);
+    }
+
+    [SynchronizableMethod]
+    void SpawnRailGunSfxSyncronizable(Vector3 startPos, Vector3 endPos)
+    {
+        GameObject sfx = Instantiate(railGunPrefab, startPos, railGunPrefab.transform.rotation);
+        sfx.GetComponent<LineRenderer>().SetPosition(0, startPos);
+        sfx.GetComponent<LineRenderer>().SetPosition(1, endPos);
+        Destroy(sfx, 2);
+    }
 
     [SynchronizableMethod]
     void SpawnExplosionSynchronizable(float explosionDamage, float knockbackPower, float explosionRadius, int explosionType, Vector3 PositionInWorldSpace, int userID)
