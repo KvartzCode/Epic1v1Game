@@ -141,8 +141,8 @@ public class PlayerController : AttributesSync
     {
         mainCamera.enabled = !hide;
         GameManager.Instance.deathCamera.enabled = hide;
-        shootController.SetCanShoot(hide);
-        playerAiming.SetCanAim(hide);
+        shootController.SetCanShoot(!hide);
+        playerAiming.SetCanAim(!hide);
 
         //foreach (var c in componentsToHide)
         //{
