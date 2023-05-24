@@ -66,8 +66,7 @@ public class PlayerController : AttributesSync
             if (gameObject.transform.position.y < yHardKillFloor)
             {
                 isDead = true;
-                GameManager.Instance.audioManager.PlayKOSound(1, 1000, transform.position);
-                GameManager.Instance.PlayerDeath(GameManager.Instance.user.Index);
+                KillPlayer();
             }
         }
 
@@ -176,6 +175,11 @@ public class PlayerController : AttributesSync
         //}
     }
 
+    public void KillPlayer()
+    {
+        GameManager.Instance.audioManager.PlayKOSound(1, 1000, transform.position);
+        GameManager.Instance.PlayerDeath(GameManager.Instance.user.Index);
+    }
 
 
     private void OnTriggerEnter(Collider other)
@@ -184,8 +188,7 @@ public class PlayerController : AttributesSync
         {
             if (avatar.IsMe)
             {
-                GameManager.Instance.audioManager.PlayKOSound(1, 1000, transform.position);
-                GameManager.Instance.PlayerDeath(GameManager.Instance.user.Index);
+                KillPlayer();
             }
         }
     }
