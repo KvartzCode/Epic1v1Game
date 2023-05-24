@@ -7414,7 +7414,9 @@ MonoBehaviour:
   Reliability: 1
   LocalMethodBehavior: 1
   TTS: {fileID: 1647607415}
-  soundEffects: []
+  soundEffects:
+  - {fileID: 8300000, guid: 55bf13d7d96790c4e9eb64de17ad94a4, type: 3}
+  - {fileID: 8300000, guid: beae961705c98cf42aaeaf6a8884fa8f, type: 3}
   damageSoundEffects:
   - {fileID: 8300000, guid: af1a19aea576f834abfab23831fb473f, type: 3}
   - {fileID: 8300000, guid: c7a57761e07676f4fbfe3b60b9e5c541, type: 3}
