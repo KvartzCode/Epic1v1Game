@@ -506,7 +506,7 @@ public class GameManager : AttributesSync
 
     public void AddForceOnPlayer(ushort playerId, Vector3 dir, float force, bool useMultiplier, bool checkKo = false)
     {
-        InvokeRemoteMethod(nameof(SynchedAddForceOnPlayer), playerId, dir, force, useMultiplier,checkKo);
+        InvokeRemoteMethod(nameof(SynchedAddForceOnPlayer), playerId, dir, force, useMultiplier, checkKo);
     }
 
     [SynchronizableMethod]
@@ -524,7 +524,7 @@ public class GameManager : AttributesSync
 
         float threshhold = 40;
         Vector3 pos = other.transform.position;
-        float multiplier = other.GetComponent<Fragsurf.Movement.SurfCharacter>().GetMultiplier();
+        float multiplier = applyForce ? other.GetComponent<Fragsurf.Movement.SurfCharacter>().GetMultiplier() : other.GetComponent<UserIdHolder>().GetMultiplier();
 
         //Debug.Log("Force multiplier: " + (force * multiplier).ToString());
 

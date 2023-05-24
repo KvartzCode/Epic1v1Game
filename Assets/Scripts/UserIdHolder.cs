@@ -126,6 +126,10 @@ public class UserIdHolder : AttributesSync
         InvokeRemoteMethod(nameof(UpdateMultiplier), UserId.AllInclusive, multiplier, id);
     }
 
+    public float GetMultiplier()
+    {
+        return _multiplier;
+    }
 
     [SynchronizableMethod]
     private void UpdateMultiplier(float multiplier, int id)
