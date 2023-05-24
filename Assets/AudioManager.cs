@@ -87,6 +87,7 @@ public class AudioManager : AttributesSync
         GameObject player = Alteruna.Multiplayer.Instance.GetAvatar((ushort)playerID).gameObject;
         AudioSource source = CreateAudioSource(soundEffectID, volume, radius, player.transform.position);
         source.transform.parent = player.transform; // Attach AudioSource to the player
+        source.transform.localPosition = Vector3.zero;
         source.spatialBlend = 1f; // 3D sound
         source.dopplerLevel = 1f;
         source.Play();
@@ -178,7 +179,7 @@ public class AudioManager : AttributesSync
     private AudioSource CreateAudioSource(int soundEffectID, float volume, float radius, Vector3 position)
     {
         GameObject audioObject = new GameObject("AudioSource_" + soundEffectID);
-        audioObject.transform.position = position;
+        audioObject.transform.position = Vector3.zero;
 
         AudioSource source = audioObject.AddComponent<AudioSource>();
         source.clip = soundEffects[soundEffectID];
@@ -246,6 +247,7 @@ public class AudioManager : AttributesSync
         source.maxDistance = 500;
 
         source.transform.parent = player.transform; // Attach AudioSource to the player
+        source.transform.localPosition = Vector3.zero;
         source.Play();
         StartCoroutine(DestroyAfterPlaying(source.gameObject));
     }
