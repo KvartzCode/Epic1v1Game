@@ -82,20 +82,24 @@ public class StocksGamemode : GameMode
         List<User> users = Multiplayer.Instance.GetUsers();
         User aliveUser = null;
 
-        foreach (var item in users)
+        for (int i = 0; i < users.Count; i++)
         {
-            if (!playerDead[item.Index])
+            if (users[i] != null)
             {
-                if (aliveUser != null)
-                    return;
+                if (!playerDead[users[i].Index])
+                {
+                    if (aliveUser != null)
+                        return;
 
-                aliveUser = item;
+                    aliveUser = users[i];
+                }
             }
         }
 
         if (aliveUser == null)
         {
             Debug.LogError("All dead?");
+            InvokeRemoteMethod(nameof(SynchStartGameOver), UserId.AllInclusive, aliveUser.Index);
             return;
         }
         else

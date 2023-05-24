@@ -19,6 +19,7 @@ public class PlayerController : AttributesSync
     [SerializeField] PlayerAiming playerAiming;
     [SerializeField] ExplosionShootTest shootController;
     [SerializeField] GameObject specCamHolder;
+    [SerializeField] float yHardKillFloor = -100f;
     GameObject lobbyCanvas;
     GameObject customizeMenu;
 
@@ -60,6 +61,16 @@ public class PlayerController : AttributesSync
                 GameManager.Instance.MoveSpecCam(false);
 
         }
+        else
+        {
+            if (gameObject.transform.position.y < yHardKillFloor)
+            {
+                isDead = true;
+                GameManager.Instance.audioManager.PlayKOSound(1, 1000, transform.position);
+                GameManager.Instance.PlayerDeath(GameManager.Instance.user.Index);
+            }
+        }
+
 
         //if (Input.GetKeyDown(KeyCode.R))
         //{
@@ -131,6 +142,8 @@ public class PlayerController : AttributesSync
     {
         mainCamera.enabled = !hide;
         GameManager.Instance.deathCamera.enabled = hide;
+        shootController.SetCanShoot(hide);
+        playerAiming.SetCanAim(hide);
 
         //foreach (var c in componentsToHide)
         //{
