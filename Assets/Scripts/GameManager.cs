@@ -283,8 +283,35 @@ public class GameManager : AttributesSync
     #endregion
 
 
+    public void GetGamemode()
+    {
+        if (user.Index == Multiplayer.LowestUserIndex)
+        {
+            InvokeRemoteMethod(nameof(SynchedGetGamemode), FindSeccondLowestUser(), user.Index);
+        }
+        else
+        {
+            InvokeRemoteMethod(nameof(SynchedGetGamemode), Multiplayer.LowestUserIndex, user.Index);
+        }
+    }
+
+    [SynchronizableMethod]
+    void SynchedSetGamemode(GameModeType type)
+    {
+        currentGamemodeType = type;
+        SelectGamemode();
+    }
+
+    [SynchronizableMethod]
+    void SynchedGetGamemode(ushort id)
+    {
+        InvokeRemoteMethod(nameof(SynchedSetGamemode), id, currentGamemodeType);
+    }
+
     public void CreatedGame()
     {
+        SelectGamemode();
+
         if (currentGamemode == null)
         {
             Debug.Log("No gamemode selected");
@@ -295,9 +322,28 @@ public class GameManager : AttributesSync
 
     }
 
+    void SelectGamemode()
+    {
+        switch (currentGamemodeType)
+        {
+            case GameModeType.Sandbox:
+                currentGamemode = null;
+                break;
+            case GameModeType.Stocks:
+                currentGamemode = gamemodes.stocks;
+                break;
+            default:
+                break;
+        }
+    }
+
     public void JoinedGame()
     {
-        AvailableSpecPos.Add(user.Index);
+
+        if (!createdGame)
+            GetGamemode();
+
+        StartCoroutine(WaitForInRoomSpecPos());
         if (currentGamemode == null)
         {
             Debug.Log("No gamemode selected");
@@ -312,18 +358,26 @@ public class GameManager : AttributesSync
             if (Multiplayer.GetUsers().Count + 1 >= currentGamemode.minimumPlayers)
             {
                 Debug.LogWarning("IS HERE0");
-                StartCoroutine(WaitForInRoom());
+                StartCoroutine(WaitForInRoomGamemode());
             }
             UpdateAllAvailableSpecPos();
         }
     }
 
-    IEnumerator WaitForInRoom()
+    IEnumerator WaitForInRoomSpecPos()
     {
         while (!Multiplayer.InRoom)
         {
             yield return null;
-            Debug.Log("Here");
+        }
+        yield return new WaitForSeconds(1);
+        AvailableSpecPos.Add(user.Index);
+    }
+    IEnumerator WaitForInRoomGamemode()
+    {
+        while (!Multiplayer.InRoom)
+        {
+            yield return null;
         }
         yield return new WaitForSeconds(1);
         InvokeRemoteMethod(nameof(SynchedCheckIfGamemodeStarted), Multiplayer.LowestUserIndex, user.Index);
