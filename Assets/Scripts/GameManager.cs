@@ -515,10 +515,10 @@ public class GameManager : AttributesSync
         Debug.Log("I GOT A VELOCITY CHANGE");
         player.AddVelocity(dir, force, useMultiplier);
         if (checkKo)
-            CheckKO(dir, player.GetComponent<Collider>(), force, true);
+            CheckKO(dir, player.gameObject, force, true);
     }
 
-    public bool CheckKO(Vector3 direction, Collider other, float force, bool applyForce = true)
+    public bool CheckKO(Vector3 direction, GameObject other, float force, bool applyForce = true)
     {
         // Debug.Log("Entered CheckKO method.");
 

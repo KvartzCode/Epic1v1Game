@@ -67,7 +67,7 @@ public class Explosion : MonoBehaviour
 
             //(direction * explosionPower * forceScale) * //Playerhealth;
             if(_userID != GameManager.Instance.user.Index)
-            if (GameManager.Instance.CheckKO(direction, other, explosionPower * forceScale * 0.05f))
+            if (GameManager.Instance.CheckKO(direction, other.gameObject, explosionPower * forceScale * 0.05f))
             {
                 explosionPower = explosionPower * 3;
             }

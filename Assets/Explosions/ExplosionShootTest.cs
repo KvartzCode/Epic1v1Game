@@ -107,13 +107,12 @@ public class ExplosionShootTest : MonoBehaviour
 
         if (hit.collider != null)
         {
-            Debug.LogError(hit.collider.gameObject.tag, hit.collider);
             PlayerCol pCol = hit.collider.GetComponent<PlayerCol>();
             if (pCol != null)
             {
                 int index = pCol.player.GetComponent<UserIdHolder>().GetUserId();
 
-                if (GameManager.Instance.CheckKO(dir, hit.collider, 600, false))
+                if (GameManager.Instance.CheckKO(dir, pCol.gameObject, 600, false))
                 {
                     GameManager.Instance.audioManager.PlayGlobal3DSoundEffectAtPlayer(2, 1, 100, index);
                 }
