@@ -215,7 +215,7 @@ public class GameManager : AttributesSync
     public void MoveSpecCam(bool moveForward)
     {
         if (moveForward)
-            currentSpecIndex = (currentSpecIndex + 1) > AvailableSpecPos.Count ? 0 : currentSpecIndex + 1;
+            currentSpecIndex = (currentSpecIndex + 1) >= AvailableSpecPos.Count ? 0 : currentSpecIndex + 1;
         else
             currentSpecIndex = (currentSpecIndex - 1) < 0 ? AvailableSpecPos.Count - 1 : 0;
 
