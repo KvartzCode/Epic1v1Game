@@ -38,6 +38,9 @@ public class StocksGamemode : GameMode
         if (GameManager.Instance.hud.GetIsDead())
         {
             InvokeRemoteMethod(nameof(SynchSetPlayerDead), Alteruna.UserId.AllInclusive, id, true);
+            GameManager.Instance.playerController.SetIsDead(true);
+            GameManager.Instance.playerController.HidePlayer(true);
+            GameManager.Instance.RemoveSpec();
             CheckIfAllDead();
         }
         else

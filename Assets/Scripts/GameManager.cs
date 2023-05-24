@@ -41,6 +41,9 @@ public class GameManager : AttributesSync
     bool GamemodeStarted;
     bool createdGame;
 
+    bool hasGottenGamemode;
+    float getGamemodeTimeOutTimer;
+
     //Specstuffs
     GameObject[] specPos = new GameObject[8];
     List<int> AvailableSpecPos = new List<int>();
@@ -67,16 +70,26 @@ public class GameManager : AttributesSync
 
     private void Update()
     {
+
+
         if (Multiplayer.InRoom)
         {
-            if (playerController.GetIsDead())
+            if (playerController != null)
             {
-                if (specPos[AvailableSpecPos[currentSpecIndex]] != null)
+                if (playerController.GetIsDead())
                 {
-                    deathCamera.transform.position = specPos[AvailableSpecPos[currentSpecIndex]].transform.position;
-                    deathCamera.transform.rotation = specPos[AvailableSpecPos[currentSpecIndex]].transform.rotation;
+                    if (specPos[AvailableSpecPos[currentSpecIndex]] != null)
+                    {
+                        deathCamera.transform.position = specPos[AvailableSpecPos[currentSpecIndex]].transform.position;
+                        deathCamera.transform.rotation = specPos[AvailableSpecPos[currentSpecIndex]].transform.rotation;
+                    }
                 }
             }
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.F7))
+                currentGamemodeType = GameModeType.Stocks;
         }
     }
 
@@ -298,6 +311,7 @@ public class GameManager : AttributesSync
     [SynchronizableMethod]
     void SynchedSetGamemode(GameModeType type)
     {
+        Debug.Log("type is: " + type);
         currentGamemodeType = type;
         SelectGamemode();
     }
@@ -305,12 +319,15 @@ public class GameManager : AttributesSync
     [SynchronizableMethod]
     void SynchedGetGamemode(ushort id)
     {
+        Debug.Log("I WILL RETURN" + currentGamemodeType);
         InvokeRemoteMethod(nameof(SynchedSetGamemode), id, currentGamemodeType);
     }
 
     public void CreatedGame()
     {
         SelectGamemode();
+        hasGottenGamemode = false;
+        createdGame = true;
 
         if (currentGamemode == null)
         {
@@ -318,7 +335,6 @@ public class GameManager : AttributesSync
             return;
         }
         currentGamemode.Initialize();
-        createdGame = true;
 
     }
 
@@ -335,33 +351,68 @@ public class GameManager : AttributesSync
             default:
                 break;
         }
+        hasGottenGamemode = true;
     }
 
     public void JoinedGame()
     {
+        StartCoroutine(JoinGame());
+    }
 
-        if (!createdGame)
-            GetGamemode();
-
+    IEnumerator JoinGame()
+    {
         StartCoroutine(WaitForInRoomSpecPos());
-        if (currentGamemode == null)
-        {
-            Debug.Log("No gamemode selected");
-            return;
-        }
-
-
         if (!createdGame)
         {
-            currentGamemode.Initialize();
-            Debug.LogWarning(Multiplayer.GetUsers().Count);
-            if (Multiplayer.GetUsers().Count + 1 >= currentGamemode.minimumPlayers)
+            yield return null;
+            GetGamemode();
+            while (!hasGottenGamemode)
             {
-                Debug.LogWarning("IS HERE0");
-                StartCoroutine(WaitForInRoomGamemode());
+                getGamemodeTimeOutTimer += Time.deltaTime;
+                yield return null;
+                if (getGamemodeTimeOutTimer > 10)
+                {
+                    Debug.LogWarning("TIMED OUT");
+                    break;
+                }
             }
-            UpdateAllAvailableSpecPos();
+
+            getGamemodeTimeOutTimer = 0;
+            if (!hasGottenGamemode)
+            {
+                Multiplayer.CurrentRoom.Leave();
+                Debug.LogError("USER TIMED OUT");
+            }
+            else
+            {
+                Debug.LogWarning("Has gotten gamemode");
+            }
         }
+
+        Debug.LogWarning("Is hehre");
+
+        if (hasGottenGamemode)
+        {
+
+            if (currentGamemode != null)
+            {
+
+                if (!createdGame)
+                {
+                    Debug.LogWarning("Is herererererere");
+                    currentGamemode.Initialize();
+                    Debug.LogWarning(Multiplayer.GetUsers().Count);
+                    if (Multiplayer.GetUsers().Count + 1 >= currentGamemode.minimumPlayers)
+                    {
+                        Debug.LogWarning("IS HERE0");
+                        StartCoroutine(WaitForInRoomGamemode());
+                    }
+                    UpdateAllAvailableSpecPos();
+                }
+            }
+        }
+
+        hasGottenGamemode = false;
     }
 
     IEnumerator WaitForInRoomSpecPos()
