@@ -221,8 +221,7 @@ public class AudioManager : AttributesSync
 
     public void PlayGlobalTTSAtPlayer(string text, int playerID)
     {
-        InvokeRemoteMethod(nameof(PlayGlobalTTSAtPlayerMULT), UserId.All, text, playerID);
-        TTS.Speak(text, -1);
+        InvokeRemoteMethod(nameof(PlayGlobalTTSAtPlayerMULT), UserId.AllInclusive, text, playerID);
     }
     [SynchronizableMethod]
      void PlayGlobalTTSAtPlayerMULT(string text, int playerID)

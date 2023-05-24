@@ -15,7 +15,7 @@ public class TextToSpeech : AttributesSync
 
     private void Start()
     {
-        pathToExe = Path.Combine(Application.streamingAssetsPath, "dectalk/debug.bat");
+        pathToExe = Path.Combine(Application.streamingAssetsPath, "dectalk/say.exe");
         Debug.Log($"pathToExe: {pathToExe}");
         Debug.Log($"pathToWav: {wavFileName}");
     }
@@ -32,22 +32,27 @@ public class TextToSpeech : AttributesSync
         if (Input.GetKeyDown(KeyCode.Y))
         {
             Debug.Log("Y key pressed. Speaking...");
-            InvokeRemoteMethod(nameof(Speak), UserId.AllInclusive, message);
+            GameManager.Instance.audioManager.PlayGlobalTTSAtPlayer("Im stupid idiot",Multiplayer.Instance.Me.Index);
         }
     }
 
     [SynchronizableMethod]
-    public void Speak(string text,int playerID)
+    public void Speak(string text, int playerID)
     {
         TTSPlayerID = playerID;
-        wavFileName = Path.Combine(Application.streamingAssetsPath, "dectalk/player"+playerID+".wav");
+        wavFileName = Path.Combine(Application.streamingAssetsPath, "dectalk/player" + playerID + ".wav");
         text = "[:phoneme on] " + text;
         Debug.Log($"Speaking: {text}");
 
         ProcessStartInfo startInfo = new ProcessStartInfo(pathToExe);
         startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-        startInfo.Arguments = $"\"{text}\"";
-        startInfo.UseShellExecute = true;
+        startInfo.CreateNoWindow = true;  // This prevents the process from creating a window
+        startInfo.Arguments = "-w \"Player" + playerID + ".wav\" " + $"\"{text}\"";
+        Debug.Log("Sending info.. " + "-w \"Player" + playerID + ".wav\" " + $"\"{text}\"");
+        startInfo.UseShellExecute = false;
+
+        // Set the working directory to the dectalk folder
+        startInfo.WorkingDirectory = Path.Combine(Application.streamingAssetsPath, "dectalk");
 
         Debug.Log("Starting process...");
         Process process = new Process();
@@ -56,6 +61,8 @@ public class TextToSpeech : AttributesSync
         process.Exited += new System.EventHandler(process_Exited);
         process.Start();
     }
+
+
 
     private void process_Exited(object sender, System.EventArgs e)
     {
