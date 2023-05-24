@@ -196,7 +196,7 @@ public class AudioManager : AttributesSync
     private AudioSource CreateAudioSource(AudioClip clip, float volume, float radius, Vector3 position)
     {
         GameObject audioObject = new GameObject("AudioSource_" + clip.name);
-        audioObject.transform.position = position;
+        audioObject.transform.position = Vector3.zero;
 
         AudioSource source = audioObject.AddComponent<AudioSource>();
         source.clip = clip;
