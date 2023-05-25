@@ -22,6 +22,7 @@ public class UserIdHolder : AttributesSync
     bool haveCheckedISPlayer;
     bool hasUpdatedMaterial;
 
+    int currentHatID;
     Alteruna.Avatar _avatar;
 
     public void SetUserId(int id)
@@ -41,6 +42,8 @@ public class UserIdHolder : AttributesSync
             Destroy(currentHat);
 
         currentHat = Instantiate(CosmeticManager.Instance.GetHat(hatID), hatPos.transform);
+
+        currentHatID = hatID;
 
         if (userId == GameManager.Instance.user.Index)
         {
@@ -72,6 +75,11 @@ public class UserIdHolder : AttributesSync
 
         }
 
+    }
+
+    public int GetCurrentHatIndex()
+    {
+        return currentHatID;
     }
 
     public void UpdatePlayerMat()
@@ -126,6 +134,10 @@ public class UserIdHolder : AttributesSync
         InvokeRemoteMethod(nameof(UpdateMultiplier), UserId.AllInclusive, multiplier, id);
     }
 
+    public float GetMultiplier()
+    {
+        return _multiplier;
+    }
 
     [SynchronizableMethod]
     private void UpdateMultiplier(float multiplier, int id)
@@ -149,6 +161,7 @@ public class UserIdHolder : AttributesSync
             }
         }
     }
+
     public int GetUserId()
     {
         return userId;

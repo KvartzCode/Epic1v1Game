@@ -27,6 +27,9 @@ public class PlayerHud : MonoBehaviour
     public TeamColor color;
     public GameObject[] hudObj;
 
+    bool isDead;
+    int currentStocks;
+
     private void Awake()
     {
         for (int i = 0; i < hudObj.Length; i++)
@@ -64,6 +67,16 @@ public class PlayerHud : MonoBehaviour
         stock1.sprite = Life;
         stock2.sprite = Life;
         stock3.sprite = Life;
+        SetStocks(4);
+    }
+
+    public bool GetIsDead()
+    {
+        return currentStocks > 0 ? false : true;
+    }
+    public void RemoveStock()
+    {
+        SetStocks(currentStocks - 1);
     }
 
     public Color GetColor(int userId)
@@ -96,6 +109,7 @@ public class PlayerHud : MonoBehaviour
 
     public void SetStocks(int stocks)
     {
+        currentStocks = stocks;
         switch (stocks)
         {
             case 4:
@@ -119,8 +133,8 @@ public class PlayerHud : MonoBehaviour
                 stock3.enabled = false;
                 break;
             case 0:
+                break;
             default:
-                Debug.Log("Game over!");
                 break;
         }
     }

@@ -38,7 +38,7 @@ public class Rocket : MonoBehaviour
         {
             ushort index = System.Convert.ToUInt16(hitId);
             Vector3 dir = transform.position - Alteruna.Multiplayer.Instance.GetAvatar(index).transform.position;
-            ExplosionHandler.Instance.SpawnLocalExplosion(10, 600, 7, 0, playerID, dir, hitId);
+            ExplosionHandler.Instance.SpawnLocalExplosion(15, 600, 7, 0, playerID, dir, hitId);
         }
 
         DestroyRocket();

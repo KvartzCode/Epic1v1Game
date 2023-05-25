@@ -18,6 +18,8 @@ public class PlayerController : AttributesSync
     [SerializeField] SurfCharacter surfCharacter;
     [SerializeField] PlayerAiming playerAiming;
     [SerializeField] ExplosionShootTest shootController;
+    [SerializeField] GameObject specCamHolder;
+    [SerializeField] float yHardKillFloor = -100f;
     GameObject lobbyCanvas;
     GameObject customizeMenu;
 
@@ -35,18 +37,44 @@ public class PlayerController : AttributesSync
         if (!avatar.IsMe)
         {
             enabled = false;
+            GameManager.Instance.SetSpecObj(System.Convert.ToInt32(avatar.Possessor.Index), specCamHolder);
             return;
         }
 
+        transform.gameObject.layer = LayerMask.NameToLayer("LocalPlayer");
+        int children = transform.childCount;
+        for (int i = 0; i < children; ++i)
+            transform.GetChild(i).gameObject.layer = LayerMask.NameToLayer("LocalPlayer");
+
         GameManager.Instance.SetUser(avatar.Possessor);
+        GameManager.Instance.playerController = this;
         Init();
         LockMouse(true);
     }
+
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.F1))
             LockMouse(Cursor.visible);
+
+        if (isDead)
+        {
+            if (Input.GetMouseButtonDown(0))
+                GameManager.Instance.MoveSpecCam(true);
+            else if (Input.GetMouseButtonDown(1))
+                GameManager.Instance.MoveSpecCam(false);
+
+        }
+        else
+        {
+            if (gameObject.transform.position.y < yHardKillFloor)
+            {
+                isDead = true;
+                KillPlayer();
+            }
+        }
+
 
         //if (Input.GetKeyDown(KeyCode.R))
         //{
@@ -71,7 +99,13 @@ public class PlayerController : AttributesSync
         lobbyCanvas.SetActive(false);
         customizeMenu = FindObjectOfType<CustomizeMenu>().gameObject;
         customizeMenu.SetActive(false);
+
         //hud = Instantiate(PlayerHudToSpawn).GetComponent<PlayerHud>();
+    }
+
+    public bool GetIsDead()
+    {
+        return isDead;
     }
 
     public void RevertCamera(Multiplayer multiplayer)
@@ -81,6 +115,10 @@ public class PlayerController : AttributesSync
         mainCamera.transform.rotation = originalCameraStats.rotation;
     }
 
+    public void SetIsDead(bool value)
+    {
+        isDead = value;
+    }
 
     private void LockMouse(bool isLocked)
     {
@@ -92,20 +130,24 @@ public class PlayerController : AttributesSync
         Cursor.visible = !isLocked;
     }
 
-    private void Respawn()
+    public void Respawn()
     {
+        GameManager.Instance.audioManager.PlayLocalDeath();
         //TODO: Disable player velocity
         surfCharacter.SetMultiplier(0);
         surfCharacter.SetVelocity(Vector3.zero);
-
+        SetIsDead(false);
+        HidePlayer(false);
         var spawnPositions = Multiplayer.AvatarSpawnLocations;
         gameObject.transform.position = spawnPositions[Random.Range(0, spawnPositions.Count)].position;
     }
 
-    private void HidePlayer(bool hide)
+    public void HidePlayer(bool hide)
     {
         mainCamera.enabled = !hide;
         GameManager.Instance.deathCamera.enabled = hide;
+        shootController.SetCanShoot(!hide);
+        playerAiming.SetCanAim(!hide);
 
         //foreach (var c in componentsToHide)
         //{
@@ -117,18 +159,19 @@ public class PlayerController : AttributesSync
     {
         isDead = true;
 
+
         //if (Stocks > 0) //TODO: Uncomment when we fix this
         //{
-            Stocks--;
-            //GameManager.Instance.hud.SetStocks(Stocks);
-            HidePlayer(true);
+        Stocks--;
+        //GameManager.Instance.hud.SetStocks(Stocks);
+        HidePlayer(true);
 
-            yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(5);
 
-            HidePlayer(false);
-            Respawn();
-            isDead = false;
-            
+        HidePlayer(false);
+        Respawn();
+        isDead = false;
+
         //}
         //else
         //{
@@ -137,11 +180,22 @@ public class PlayerController : AttributesSync
         //}
     }
 
+    public void KillPlayer()
+    {
+        GameManager.Instance.audioManager.PlayKOSound(1, 1000, transform.position);
+        GameManager.Instance.PlayerDeath(GameManager.Instance.user.Index);
+    }
+
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("DeathZone") && !isDead)
-            StartCoroutine(TriggerDeath());
+        {
+            if (avatar.IsMe)
+            {
+                KillPlayer();
+            }
+        }
     }
 
     private new void OnDestroy()

@@ -1,14 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using Alteruna;
+using UnityEditor;
+using System;
 
 public class MusicPlayer : AttributesSync
 {
     public AudioSource musicPlayer;
     public List<AudioClip> songs;
 
-    int id = -1;
+    List<int> queue;
+    bool shuffle;
+    bool playingMusic;
+
+    int _id = -1;
 
     private static MusicPlayer _instance;
     public static MusicPlayer Instance
@@ -28,18 +35,86 @@ public class MusicPlayer : AttributesSync
 
         musicPlayer = GetComponent<AudioSource>();
 
+        queue = new List<int>();
+
+        for (int i = 0; i < songs.Count; i++)
+        {
+            queue.Add(i);
+        }
+
+        ShuffleQueue();
     }
+
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Multiplayer.Instance.InRoom)
+        {
+            if (GameManager.Instance.user.Index == Multiplayer.Instance.LowestUserIndex)
+            {
+                if (playingMusic && !musicPlayer.loop && !musicPlayer.isPlaying)
+                {
+                    InvokeRemoteMethod(nameof(ChangeSong), Multiplayer.Instance.LowestUserIndex, (_id + 1 < songs.Count) ? _id + 1 : 0);
+                }
+            }
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            ToggleIsPlaying(!musicPlayer.isPlaying);
+        }
+
+        if (Input.GetKeyDown(KeyCode.O))
         {
             Debug.Log("Playing new song...");
-            InvokeRemoteMethod(nameof(ChangeSong), Multiplayer.Instance.LowestUserIndex, Random.Range(0, songs.Count));
+            InvokeRemoteMethod(nameof(ChangeSong), Multiplayer.Instance.LowestUserIndex, (_id + 1 < songs.Count) ? _id + 1 : 0);
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            Debug.Log("Toggled shuffle...");
+            ChangeShuffle(!shuffle);
         }
     }
 
+    void ShuffleQueue()
+    {
+        queue = queue.OrderBy(a => Guid.NewGuid()).ToList();
+    }
 
+    public void ChangeShuffle(bool value)
+    {
+        InvokeRemoteMethod(nameof(SynchEnableShuffle), UserId.AllInclusive, value);
+    }
+
+    [SynchronizableMethod]
+    void SynchEnableShuffle(bool value)
+    {
+        shuffle = value;
+        if (shuffle)
+        {
+            ShuffleQueue();
+        }
+        else
+        {
+            _id = queue[_id];
+        }
+    }
+
+    public void ToggleIsPlaying(bool isPlaying)
+    {
+        InvokeRemoteMethod(nameof(SynchToggleIsPlaying), UserId.AllInclusive, isPlaying);
+    }
+
+    [SynchronizableMethod]
+    void SynchToggleIsPlaying(bool isPlaying)
+    {
+        if (isPlaying)
+            musicPlayer.UnPause();
+        else
+            musicPlayer.Pause();
+    }
 
     public void SynchAll()
     {
@@ -51,7 +126,7 @@ public class MusicPlayer : AttributesSync
     [SynchronizableMethod]
     void GetLowestSynch()
     {
-        InvokeRemoteMethod(nameof(SyncPlayback), UserId.All, musicPlayer.time, System.DateTime.Now.Ticks, id);
+        InvokeRemoteMethod(nameof(SyncPlayback), UserId.All, musicPlayer.time, System.DateTime.Now.Ticks, _id);
     }
 
     [SynchronizableMethod]
@@ -99,6 +174,7 @@ public class MusicPlayer : AttributesSync
             musicPlayer.clip = songs[id];
             musicPlayer.Play();
             musicPlayer.time = pos;
+            _id = id;
         }
 
     }
@@ -106,18 +182,19 @@ public class MusicPlayer : AttributesSync
     [SynchronizableMethod]
     public void ChangeSong(int ID)
     {
+        playingMusic = true;
         Debug.Log("Changed new song to: " + ID);
         if (ID < 0)
         {
+            playingMusic = false;
             musicPlayer.clip = null;
             musicPlayer.Stop();
             return;
         }
 
-
-        musicPlayer.clip = songs[ID];
+        musicPlayer.clip = songs[shuffle ? queue[ID] : ID];
         musicPlayer.Play();
-        id = ID;
+        _id = shuffle ? queue[ID] : ID;
         SynchAll();
 
     }

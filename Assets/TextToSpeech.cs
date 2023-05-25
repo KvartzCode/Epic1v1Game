@@ -7,16 +7,15 @@ using Alteruna;
 
 public class TextToSpeech : AttributesSync
 {
-    public AudioSource audioSource;
     public string message;
     private string pathToExe;
     private string wavFileName;
     private bool processFinished = false;
+    private int TTSPlayerID;
 
     private void Start()
     {
-        pathToExe = Path.Combine(Application.streamingAssetsPath, "dectalk/debug.bat");
-        wavFileName = Path.Combine(Application.streamingAssetsPath, "dectalk/player1.wav");
+        pathToExe = Path.Combine(Application.streamingAssetsPath, "dectalk/say.exe");
         Debug.Log($"pathToExe: {pathToExe}");
         Debug.Log($"pathToWav: {wavFileName}");
     }
@@ -33,20 +32,29 @@ public class TextToSpeech : AttributesSync
         if (Input.GetKeyDown(KeyCode.Y))
         {
             Debug.Log("Y key pressed. Speaking...");
-            InvokeRemoteMethod(nameof(Speak), UserId.AllInclusive, message);
+            GameManager.Instance.audioManager.PlayGlobalTTSAtPlayer(message, Multiplayer.Instance.Me.Index);
         }
     }
 
     [SynchronizableMethod]
-    public void Speak(string text)
+    public void Speak(string text, int playerID)
     {
+#if PLATFORM_STANDALONE_WIN || UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
+
+        TTSPlayerID = playerID;
+        wavFileName = Path.Combine(Application.streamingAssetsPath, "dectalk/player" + playerID + ".wav");
         text = "[:phoneme on] " + text;
         Debug.Log($"Speaking: {text}");
 
         ProcessStartInfo startInfo = new ProcessStartInfo(pathToExe);
         startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-        startInfo.Arguments = $"\"{text}\"";
-        startInfo.UseShellExecute = true;
+        startInfo.CreateNoWindow = true;  // This prevents the process from creating a window
+        startInfo.Arguments = "-w \"Player" + playerID + ".wav\" " + $"\"{text}\"";
+        Debug.Log("Sending info.. " + "-w \"Player" + playerID + ".wav\" " + $"\"{text}\"");
+        startInfo.UseShellExecute = false;
+
+        // Set the working directory to the dectalk folder
+        startInfo.WorkingDirectory = Path.Combine(Application.streamingAssetsPath, "dectalk");
 
         Debug.Log("Starting process...");
         Process process = new Process();
@@ -54,7 +62,10 @@ public class TextToSpeech : AttributesSync
         process.EnableRaisingEvents = true;
         process.Exited += new System.EventHandler(process_Exited);
         process.Start();
+#endif
     }
+
+
 
     private void process_Exited(object sender, System.EventArgs e)
     {
@@ -77,8 +88,7 @@ public class TextToSpeech : AttributesSync
             if (www.error == null)
             {
                 Debug.Log("Audio clip loaded. Playing...");
-                audioSource.clip = www.GetAudioClip();
-                audioSource.Play();
+                GameManager.Instance.audioManager.PlayGlobalTTSAtPlayerLOCAL(www.GetAudioClip(), TTSPlayerID);
             }
             else
             {
