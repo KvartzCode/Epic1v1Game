@@ -55,6 +55,10 @@ namespace UnityEngine.UI
         private void IsOnChanged(bool isOn)
         {
             targetImage.sprite = isOn ? selectedSprite : normalSprite;
+
+            float height = isOn ? 44 : 40;
+            var rectTransform = GetComponent<RectTransform>();
+            rectTransform.sizeDelta = new Vector2(rectTransform.rect.width, height);
         }
 
         private void HandleGraphics()
