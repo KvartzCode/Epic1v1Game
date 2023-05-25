@@ -117,8 +117,6 @@ public class ExplosionShootTest : MonoBehaviour
 
                 GameManager.Instance.AddForceOnPlayer(System.Convert.ToUInt16(index), dir, railgunForce, true, true, 0.5f);
 
-                Debug.Log("Ragunforce: " + railgunForce + " |with multi: " + (railgunForce * 0.7f));
-
                 if (GameManager.Instance.CheckKO(dir, pCol.player.gameObject, railgunForce * 0.7f, false))
                 {
                     GameManager.Instance.audioManager.PlayGlobal3DSoundEffect(2, 1f, 10000, transform.position);

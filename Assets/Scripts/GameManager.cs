@@ -529,8 +529,6 @@ public class GameManager : AttributesSync
 
         //Debug.Log("Force multiplier: " + (force * multiplier).ToString());
 
-        Debug.Log("Force: " + force + " |Multiplier: " + multiplier + " |both: " + (force * multiplier));
-
         if (force * multiplier < threshhold)
         {
             // Debug.Log("Force times multiplier is less than threshold. Returning false.");
