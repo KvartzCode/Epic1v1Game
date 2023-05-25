@@ -504,17 +504,19 @@ public class GameManager : AttributesSync
         AddSpec();
     }
 
-    public void AddForceOnPlayer(ushort playerId, Vector3 dir, float force, bool useMultiplier, bool checkKo = false)
+    public void AddForceOnPlayer(ushort playerId, Vector3 dir, float force, bool useMultiplier, bool checkKo = false, float checkKoMultiplier = 1f)
     {
-        InvokeRemoteMethod(nameof(SynchedAddForceOnPlayer), playerId, dir, force, useMultiplier, checkKo);
+        InvokeRemoteMethod(nameof(SynchedAddForceOnPlayer), playerId, dir, force, useMultiplier, checkKo, checkKoMultiplier);
     }
 
     [SynchronizableMethod]
-    public void SynchedAddForceOnPlayer(Vector3 dir, float force, bool useMultiplier, bool checkKo = false)
+    public void SynchedAddForceOnPlayer(Vector3 dir, float force, bool useMultiplier, bool checkKo = false, float checkKoMultiplier = 1f)
     {
+        if (checkKo)
+            if (CheckKO(dir, player.gameObject, force * checkKoMultiplier, true))
+                force *= 3;
+
         player.AddVelocity(dir, force, useMultiplier);
-       // if (checkKo)
-            //CheckKO(dir, player.gameObject, force, true);
     }
 
     public bool CheckKO(Vector3 direction, GameObject other, float force, bool applyForce = true)
@@ -523,9 +525,11 @@ public class GameManager : AttributesSync
 
         float threshhold = 40;
         Vector3 pos = other.transform.position;
-        float multiplier = applyForce ? other.GetComponent<Fragsurf.Movement.SurfCharacter>().GetMultiplier() : other.GetComponent<UserIdHolder>().GetMultiplier();
+        float multiplier = applyForce ? other.GetComponent<Fragsurf.Movement.SurfCharacter>().GetMultiplier() : (other.GetComponent<UserIdHolder>().GetMultiplier() * 0.01f);
 
         //Debug.Log("Force multiplier: " + (force * multiplier).ToString());
+
+        Debug.Log("Force: " + force + " |Multiplier: " + multiplier + " |both: " + (force * multiplier));
 
         if (force * multiplier < threshhold)
         {
@@ -542,13 +546,16 @@ public class GameManager : AttributesSync
             {
                 //Debug.Log("Raycast hit an object: " + hit.collider.gameObject.name);
                 // Check if the first object the raycast hit is a trigger and has the tag "DeathZone"
-                if (hit.collider.isTrigger && hit.collider.tag == "DeathZone" && applyForce)
+                if (hit.collider.isTrigger && hit.collider.tag == "DeathZone")
                 {
-                    // Debug.Log("Hit object is a trigger and tagged as 'DeathZone'. Returning true.");
-                    other.GetComponent<Fragsurf.Movement.SurfCharacter>().SetVelocity(Vector3.zero);
-                    GameManager.Instance.audioManager.PlayGlobal3DSoundEffect(0, 1.5f, 10000, transform.position);
-                    GameManager.Instance.audioManager.PlayLocal2DSoundEffect(0, 1f, 10000);
-                    GameManager.Instance.SetTimeScale(0.01f, 0.01f, true);
+                    if (applyForce)
+                    {
+                        // Debug.Log("Hit object is a trigger and tagged as 'DeathZone'. Returning true.");
+                        other.GetComponent<Fragsurf.Movement.SurfCharacter>().SetVelocity(Vector3.zero);
+                        GameManager.Instance.audioManager.PlayGlobal3DSoundEffect(0, 1.5f, 10000, transform.position);
+                        GameManager.Instance.audioManager.PlayLocal2DSoundEffect(0, 1f, 10000);
+                        GameManager.Instance.SetTimeScale(0.01f, 0.01f, true);
+                    }
                     return true;
                 }
                 else

@@ -13,6 +13,9 @@ public class ExplosionShootTest : MonoBehaviour
     [SerializeField] float rocketCooldown = 0.4f;
     [SerializeField] float railGunCooldown = 0.4f;
     [SerializeField] float sprayDistance = 4f; // Set the distance of the raycast
+    
+    
+   float railgunForce = 40f;
 
     AudioSource source;
     Vector3 localSpawnPos;
@@ -112,15 +115,15 @@ public class ExplosionShootTest : MonoBehaviour
             {
                 int index = pCol.player.GetComponent<UserIdHolder>().GetUserId();
 
-                GameManager.Instance.AddForceOnPlayer(System.Convert.ToUInt16(index), dir, 100, true, true);
+                GameManager.Instance.AddForceOnPlayer(System.Convert.ToUInt16(index), dir, railgunForce, true, true, 0.5f);
 
-                if (GameManager.Instance.CheckKO(dir, pCol.gameObject, 600, false))
+                Debug.Log("Ragunforce: " + railgunForce + " |with multi: " + (railgunForce * 0.7f));
+
+                if (GameManager.Instance.CheckKO(dir, pCol.player.gameObject, railgunForce * 0.7f, false))
                 {
-                    GameManager.Instance.audioManager.PlayGlobal3DSoundEffect(2, 1.5f, 10000, transform.position);
-                    GameManager.Instance.audioManager.Play2DSoundEffectForSpecificPlayer(2, 1.5f, 1000, index);
+                    GameManager.Instance.audioManager.PlayGlobal3DSoundEffect(2, 1f, 10000, transform.position);
+                    GameManager.Instance.audioManager.Play2DSoundEffectForSpecificPlayer(2, .75f, 1000, index);
                 }
-
-
             }
         }
 

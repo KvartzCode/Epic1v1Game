@@ -440,6 +440,7 @@ MonoBehaviour:
   rocketCooldown: 0.4
   railGunCooldown: 1
   sprayDistance: 2
+  raygunForce: 40
 --- !u!1 &8272961778350456350
 GameObject:
   m_ObjectHideFlags: 0
