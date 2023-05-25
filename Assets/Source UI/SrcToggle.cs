@@ -19,9 +19,9 @@ namespace UnityEngine.UI
     [RequireComponent(typeof(RectTransform))]
     public class SrcToggle : Toggle
     {
+        private bool useCheckBoxOld = false;
         [SerializeField]
         private bool m_useCheckBox = false;
-        private bool isCheckBoxOld = false;
         public bool UseCheckBox {
             get { return m_useCheckBox; }
             set
@@ -36,15 +36,36 @@ namespace UnityEngine.UI
         public Sprite selectedSprite;
 
 
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+
+            onValueChanged.AddListener(IsOnChanged);
+        }
+
+        protected override void OnDisable()
+        {
+            onValueChanged.RemoveListener(IsOnChanged);
+
+            base.OnDisable();
+        }
+
+
+
+        private void IsOnChanged(bool isOn)
+        {
+            targetImage.sprite = isOn ? selectedSprite : normalSprite;
+        }
+
         private void HandleGraphics()
         {
             if (transition != Transition.None)
                 transition = Transition.None;
 
-            if (isCheckBoxOld != UseCheckBox)
+            if (useCheckBoxOld != UseCheckBox)
             {
                 graphic.enabled = UseCheckBox ? true : false;
-                isCheckBoxOld = UseCheckBox;
+                useCheckBoxOld = UseCheckBox;
             }
         }
 
@@ -56,8 +77,7 @@ namespace UnityEngine.UI
 
             isOn = !isOn;
 
-            var test = targetGraphic as Image;
-            targetImage.sprite = isOn ? selectedSprite : normalSprite;
+            IsOnChanged(isOn);
         }
 
         /// <summary>
