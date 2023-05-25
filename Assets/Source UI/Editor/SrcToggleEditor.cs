@@ -47,7 +47,7 @@ namespace UnityEditor.UI
                 toggle.selectedSprite = m_selectedSprite.objectReferenceValue as Sprite;
             }
 
-            EditorGUILayout.Space();
+            EditorGUILayout.Space(20);
 
             base.OnInspectorGUI();
         }
