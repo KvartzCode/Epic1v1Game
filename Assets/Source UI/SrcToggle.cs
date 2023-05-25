@@ -51,8 +51,6 @@ namespace UnityEngine.UI
 
         private void InternalToggle()
         {
-            Debug.Log("called InternalToggle!");
-
             if (!IsActive() || !IsInteractable())
                 return;
 
