@@ -56,9 +56,11 @@ namespace UnityEngine.UI
         {
             targetImage.sprite = isOn ? selectedSprite : normalSprite;
 
-            float height = isOn ? 44 : 40;
             var rectTransform = GetComponent<RectTransform>();
+            float height = isOn ? 44 : 40;
+            float yPos = isOn ? -18 : -20;
             rectTransform.sizeDelta = new Vector2(rectTransform.rect.width, height);
+            rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, yPos);
         }
 
         private void HandleGraphics()
