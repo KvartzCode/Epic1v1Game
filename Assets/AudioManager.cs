@@ -187,7 +187,7 @@ public class AudioManager : AttributesSync
         source.spatialBlend = radius;
 
         // Configure the AudioSource for 3D sound.
-        source.rolloffMode = AudioRolloffMode.Linear;
+        source.rolloffMode = AudioRolloffMode.Logarithmic;
         source.dopplerLevel = 0f;
         source.maxDistance = radius;
 
@@ -205,7 +205,7 @@ public class AudioManager : AttributesSync
         source.spatialBlend = radius;
 
         // Configure the AudioSource for 3D sound.
-        source.rolloffMode = AudioRolloffMode.Linear;
+        source.rolloffMode = AudioRolloffMode.Logarithmic;
         source.dopplerLevel = 0f;
         source.maxDistance = radius;
 
@@ -240,10 +240,10 @@ public class AudioManager : AttributesSync
         source.clip = TTSclip;
         source.volume = 1.2f;
         source.spatialBlend = 1;
-        
+
 
         // Configure the AudioSource for 3D sound.
-        source.rolloffMode = AudioRolloffMode.Linear;
+        source.rolloffMode = AudioRolloffMode.Logarithmic;
         source.dopplerLevel = 1f;
         source.maxDistance = 83;
 
