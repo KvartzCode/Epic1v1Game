@@ -29,9 +29,19 @@ public class GameManager : AttributesSync
     public PlayerHud hud;
     public AudioManager audioManager;
 
+    public GameObject ServerCreatorMenu;
+
+    public GameObject[] levels;
+    public int currentLevelInt = 0;
+    [SerializeField] GameObject spawnedLevel;
+
     public Camera deathCamera;
 
     public GameModeType currentGamemodeType;
+
+    Level currentLevel;
+
+
 
     GameMode currentGamemode;
 
@@ -50,6 +60,8 @@ public class GameManager : AttributesSync
     GameObject deathcamPos;
     int currentSpecIndex;
 
+    int levelToSelect;
+
     private void Awake()
     {
         if (_instance != null && _instance != this)
@@ -64,8 +76,6 @@ public class GameManager : AttributesSync
     private void Start()
     {
         Multiplayer.Instance.RoomLeft.AddListener(EnableMouse);
-
-
     }
 
     private void Update()
@@ -279,7 +289,6 @@ public class GameManager : AttributesSync
     public void SetUser(User user)
     {
         this.user = user;
-        SetUpDeathCameraPos();
     }
 
 
@@ -323,19 +332,59 @@ public class GameManager : AttributesSync
         InvokeRemoteMethod(nameof(SynchedSetGamemode), id, currentGamemodeType);
     }
 
+    public void GetLevel()
+    {
+        InvokeRemoteMethod(nameof(SynchedSetLevel), Multiplayer.Instance.LowestUserIndex, user.Index);
+    }
+
+    [SynchronizableMethod]
+    void SynchedGetLevel(ushort userId)
+    {
+        InvokeRemoteMethod(nameof(SynchedSetLevel), userId, currentLevelInt);
+    }
+
+    [SynchronizableMethod]
+    void SynchedSetLevel(int level)
+    {
+        SelectLevel(level);
+    }
+
     public void CreatedGame()
     {
-        SelectGamemode();
-        hasGottenGamemode = false;
         createdGame = true;
+        StartCoroutine(CreateGameWaitForInRoom());
+    }
 
-        if (currentGamemode == null)
+    IEnumerator CreateGameWaitForInRoom()
+    {
+        while (!Multiplayer.Instance.InRoom)
         {
-            Debug.Log("No gamemode selected");
-            return;
+            yield return null;
         }
-        currentGamemode.Initialize();
 
+        SelectGamemode();
+        SelectLevel(levelToSelect);
+        hasGottenGamemode = false;
+
+        if (currentGamemode != null)
+            currentGamemode.Initialize();
+
+
+    }
+
+    void SelectLevel(int level)
+    {
+        if (spawnedLevel != null)
+        {
+            if (spawnedLevel != levels[level])
+            {
+                Destroy(spawnedLevel);
+                spawnedLevel = Instantiate(levels[level], Vector3.zero, levels[level].transform.rotation);
+            }
+        }
+        currentLevelInt = level;
+        currentLevel = spawnedLevel.GetComponent<Level>();
+        SetLevelData();
     }
 
     void SelectGamemode()
@@ -351,7 +400,16 @@ public class GameManager : AttributesSync
             default:
                 break;
         }
+
         hasGottenGamemode = true;
+    }
+
+    void SetLevelData()
+    {
+        Debug.Log(currentLevel.levelName);
+        deathcamPos = currentLevel.deathCamPos;
+        SetUpDeathCameraPos();
+        Multiplayer.Instance.AvatarSpawnLocations = currentLevel.spawnPoints;
     }
 
     public void JoinedGame()
@@ -361,9 +419,11 @@ public class GameManager : AttributesSync
 
     IEnumerator JoinGame()
     {
+        ServerCreatorMenu.SetActive(false);
         StartCoroutine(WaitForInRoomSpecPos());
         if (!createdGame)
         {
+            GetLevel();
             yield return null;
             GetGamemode();
             while (!hasGottenGamemode)
@@ -383,10 +443,6 @@ public class GameManager : AttributesSync
                 Multiplayer.CurrentRoom.Leave();
                 Debug.LogError("USER TIMED OUT");
             }
-            else
-            {
-                Debug.LogWarning("Has gotten gamemode");
-            }
         }
 
 
@@ -401,7 +457,6 @@ public class GameManager : AttributesSync
                     Debug.LogWarning(Multiplayer.GetUsers().Count);
                     if (Multiplayer.GetUsers().Count + 1 >= currentGamemode.minimumPlayers)
                     {
-                        Debug.LogWarning("IS HERE0");
                         StartCoroutine(WaitForInRoomGamemode());
                     }
                     UpdateAllAvailableSpecPos();
@@ -410,6 +465,11 @@ public class GameManager : AttributesSync
         }
 
         hasGottenGamemode = false;
+    }
+
+    public void LevelToSelect(int level)
+    {
+        levelToSelect = level;
     }
 
     IEnumerator WaitForInRoomSpecPos()
@@ -436,6 +496,15 @@ public class GameManager : AttributesSync
     {
         GamemodeStarted = true;
         currentGamemode.GameModeStart();
+    }
+
+    public void SetStateCreateMenu(bool state)
+    {
+        if (!Multiplayer.InRoom)
+            ServerCreatorMenu.SetActive(state);
+        else if (ServerCreatorMenu.activeSelf)
+            ServerCreatorMenu.SetActive(false);
+
     }
 
     User FindSeccondLowestUser()
