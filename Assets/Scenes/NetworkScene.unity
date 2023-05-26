@@ -149,6 +149,11 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 4487063609659591642, guid: 34169a0d26aeb0a44a979dc84faed8e7,
         type: 3}
+      propertyPath: CRed.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4487063609659591642, guid: 34169a0d26aeb0a44a979dc84faed8e7,
+        type: 3}
       propertyPath: CRed.b
       value: 0.21568628
       objectReference: {fileID: 0}
@@ -176,6 +181,11 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 4487063609659591642, guid: 34169a0d26aeb0a44a979dc84faed8e7,
         type: 3}
+      propertyPath: CBlue.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4487063609659591642, guid: 34169a0d26aeb0a44a979dc84faed8e7,
+        type: 3}
       propertyPath: CBlue.b
       value: 1
       objectReference: {fileID: 0}
@@ -191,6 +201,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4487063609659591642, guid: 34169a0d26aeb0a44a979dc84faed8e7,
         type: 3}
+      propertyPath: CMint.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4487063609659591642, guid: 34169a0d26aeb0a44a979dc84faed8e7,
+        type: 3}
       propertyPath: CMint.b
       value: 0.6
       objectReference: {fileID: 0}
@@ -198,6 +213,11 @@ PrefabInstance:
         type: 3}
       propertyPath: CMint.g
       value: 0.8784314
+      objectReference: {fileID: 0}
+    - target: {fileID: 4487063609659591642, guid: 34169a0d26aeb0a44a979dc84faed8e7,
+        type: 3}
+      propertyPath: CPink.a
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4487063609659591642, guid: 34169a0d26aeb0a44a979dc84faed8e7,
         type: 3}
@@ -212,6 +232,11 @@ PrefabInstance:
     - target: {fileID: 4487063609659591642, guid: 34169a0d26aeb0a44a979dc84faed8e7,
         type: 3}
       propertyPath: CPink.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4487063609659591642, guid: 34169a0d26aeb0a44a979dc84faed8e7,
+        type: 3}
+      propertyPath: CGreen.a
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4487063609659591642, guid: 34169a0d26aeb0a44a979dc84faed8e7,
@@ -231,6 +256,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4487063609659591642, guid: 34169a0d26aeb0a44a979dc84faed8e7,
         type: 3}
+      propertyPath: COrange.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4487063609659591642, guid: 34169a0d26aeb0a44a979dc84faed8e7,
+        type: 3}
       propertyPath: COrange.b
       value: 0.21568628
       objectReference: {fileID: 0}
@@ -246,6 +276,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4487063609659591642, guid: 34169a0d26aeb0a44a979dc84faed8e7,
         type: 3}
+      propertyPath: CPurple.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4487063609659591642, guid: 34169a0d26aeb0a44a979dc84faed8e7,
+        type: 3}
       propertyPath: CPurple.b
       value: 1
       objectReference: {fileID: 0}
@@ -258,6 +293,11 @@ PrefabInstance:
         type: 3}
       propertyPath: CPurple.r
       value: 0.5803922
+      objectReference: {fileID: 0}
+    - target: {fileID: 4487063609659591642, guid: 34169a0d26aeb0a44a979dc84faed8e7,
+        type: 3}
+      propertyPath: CYellow.a
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4487063609659591642, guid: 34169a0d26aeb0a44a979dc84faed8e7,
         type: 3}
