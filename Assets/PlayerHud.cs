@@ -10,7 +10,11 @@ public enum TeamColor
     Red,
     Blue,
     Green,
-    Purple
+    Purple,
+    Yellow,
+    Orange,
+    Mint,
+    Pink,
 }
 public class PlayerHud : MonoBehaviour
 {
@@ -18,7 +22,19 @@ public class PlayerHud : MonoBehaviour
     [SerializeField] private Sprite Blue;
     [SerializeField] private Sprite Green;
     [SerializeField] private Sprite Purple;
+    [SerializeField] private Sprite Yellow;
+    [SerializeField] private Sprite Orange;
+    [SerializeField] private Sprite Mint;
+    [SerializeField] private Sprite Pink;
     [SerializeField] private Sprite Life;
+    [SerializeField] private Color CRed;
+    [SerializeField] private Color CBlue;
+    [SerializeField] private Color CGreen;
+    [SerializeField] private Color CPurple;
+    [SerializeField] private Color CYellow;
+    [SerializeField] private Color COrange;
+    [SerializeField] private Color CMint;
+    [SerializeField] private Color CPink;
     [SerializeField] private Image HudColor;
     [SerializeField] private Image stock1;
     [SerializeField] private Image stock2;
@@ -59,6 +75,18 @@ public class PlayerHud : MonoBehaviour
             case TeamColor.Purple:
                 HudColor.sprite = Purple;
                 break;
+            case TeamColor.Yellow:
+                HudColor.sprite = Yellow;
+                break;
+            case TeamColor.Orange:
+                HudColor.sprite = Orange;
+                break;
+            case TeamColor.Mint:
+                HudColor.sprite = Mint;
+                break;
+            case TeamColor.Pink:
+                HudColor.sprite = Pink;
+                break;
             default:
                 Debug.Log("Undefined TeamColor!");
                 break;
@@ -85,15 +113,29 @@ public class PlayerHud : MonoBehaviour
         switch (color)
         {
             case TeamColor.Red:
-                return Color.red;
+                return CRed;
+
             case TeamColor.Blue:
-                return Color.blue;
+                return CBlue;
 
             case TeamColor.Green:
-                return Color.green;
+                return CGreen;
 
             case TeamColor.Purple:
-                return new Color(195, 0, 255);
+                return CPurple;
+
+            case TeamColor.Yellow:
+                return CYellow;
+
+            case TeamColor.Orange:
+                return COrange;
+
+            case TeamColor.Mint:
+                return CMint;
+
+            case TeamColor.Pink:
+                return CPink;
+
             default:
                 Debug.Log("Undefined TeamColor!");
                 break;
