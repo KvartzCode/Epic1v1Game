@@ -22,7 +22,8 @@ namespace UnityEngine.UI
         private bool useCheckBoxOld = false;
         [SerializeField]
         private bool m_useCheckBox = false;
-        public bool UseCheckBox {
+        public bool UseCheckBox
+        {
             get { return m_useCheckBox; }
             set
             {
@@ -97,12 +98,13 @@ namespace UnityEngine.UI
             InternalToggle();
         }
 
-
+#if UNITY_EDITOR
         protected override void OnValidate()
         {
             HandleGraphics();
 
             base.OnValidate();
         }
+#endif
     }
 }
