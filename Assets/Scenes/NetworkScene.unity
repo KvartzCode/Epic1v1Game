@@ -1112,7 +1112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Multiplayer: {fileID: 0}
-  _uidString: b7e73b61-8363-4fea-93d4-140f92e0c305
+  _uidString: ca3b8b48-0241-468d-beb7-a3f22aa292d3
   Reliability: 1
   LocalMethodBehavior: 1
   sprayDecals:
@@ -2471,7 +2471,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Multiplayer: {fileID: 0}
-  _uidString: e8947108-89b3-4300-aff2-cc078df7c60e
+  _uidString: 7b58fbbd-0ce7-4704-a4c6-879448b04a41
   Reliability: 1
   LocalMethodBehavior: 1
   player: {fileID: 0}
@@ -2514,6 +2514,10 @@ MonoBehaviour:
   player2Mat: {fileID: 2100000, guid: b63a7c61b17c55a44a19b0a6d2e35527, type: 2}
   player3Mat: {fileID: 2100000, guid: 15683d41358a9774c874b2b9b1e95856, type: 2}
   player4Mat: {fileID: 2100000, guid: b4cc8319843634c45b296446ee87e89b, type: 2}
+  player5Mat: {fileID: 2100000, guid: 6b3ac8ddd9f87bc45bf39eed928c00a6, type: 2}
+  player6Mat: {fileID: 2100000, guid: f54d9b0579d50ce4cbb5aa61a9be741a, type: 2}
+  player7Mat: {fileID: 2100000, guid: 226cd267d8d759c4f8bb62ab5ded78e8, type: 2}
+  player8Mat: {fileID: 2100000, guid: 55ef236705b995c4f87364a1a2617740, type: 2}
   hats:
   - {fileID: 3271805046578237308, guid: 5f2b16e49bb01bb47b34aa2d69949efa, type: 3}
   - {fileID: 3271805046578237308, guid: 7e69a43139fda0740b3a095c8c883e3c, type: 3}
@@ -2539,7 +2543,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Multiplayer: {fileID: 745206279}
-  _uidString: f78a06a8-2896-4f87-b458-113c7c230492
+  _uidString: 2a5bcfec-a517-4de8-9fe0-6298718648bf
   Reliability: 1
   LocalMethodBehavior: 1
   TTS: {fileID: 1647607415}
@@ -2631,7 +2635,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Multiplayer: {fileID: 745206279}
-  _uidString: c6bb6baf-5edb-4dac-be94-7c616d03d67a
+  _uidString: e4b50d7e-161d-4e52-8633-a33504620ff0
   Reliability: 1
   LocalMethodBehavior: 1
   message: 
@@ -2648,7 +2652,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Multiplayer: {fileID: 745206279}
-  _uidString: dcc461af-f0ed-4b5c-ac4e-a221cabe8636
+  _uidString: 24784423-93e1-4eb0-9c56-e33adbf272c9
   Reliability: 1
   LocalMethodBehavior: 1
   minimumPlayers: 2
@@ -2977,7 +2981,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Multiplayer: {fileID: 0}
-  _uidString: aeacd11a-bbdf-41d8-93e0-105b97a54565
+  _uidString: f8a4d08b-6215-4feb-b2af-3feddb4a3404
   Reliability: 1
   LocalMethodBehavior: 1
   musicPlayer: {fileID: 1944867429}

@@ -9,6 +9,10 @@ public class CosmeticManager : MonoBehaviour
     [SerializeField] Material player2Mat;
     [SerializeField] Material player3Mat;
     [SerializeField] Material player4Mat;
+    [SerializeField] Material player5Mat;
+    [SerializeField] Material player6Mat;
+    [SerializeField] Material player7Mat;
+    [SerializeField] Material player8Mat;
     [SerializeField] GameObject[] hats;
 
     private int currentHat = 0;
@@ -58,6 +62,14 @@ public class CosmeticManager : MonoBehaviour
                 return player3Mat;
             case 3:
                 return player4Mat;
+            case 4:
+                return player5Mat;
+            case 5:
+                return player6Mat;
+            case 6:
+                return player7Mat;
+            case 7:
+                return player8Mat;
             default:
                 return defaultPlayerMat;
         }
