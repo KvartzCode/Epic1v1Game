@@ -1136,6 +1136,12 @@ MonoBehaviour:
   levelImage: {fileID: 3126855080067519349}
   levelText: {fileID: 3126855079306843350}
   gamemodeText: {fileID: 3126855078458191952}
+  defaultNames:
+  - EPIC GAMING
+  - MAXWELL B)
+  - Trollface
+  - Achievement pyro
+  - '!freeitems'
 --- !u!1 &3126855078898267646
 GameObject:
   m_ObjectHideFlags: 0

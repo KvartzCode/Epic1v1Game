@@ -334,12 +334,13 @@ public class GameManager : AttributesSync
 
     public void GetLevel()
     {
-        InvokeRemoteMethod(nameof(SynchedSetLevel), Multiplayer.Instance.LowestUserIndex, user.Index);
+        InvokeRemoteMethod(nameof(SynchedGetLevel), Multiplayer.Instance.LowestUserIndex, user.Index);
     }
 
     [SynchronizableMethod]
     void SynchedGetLevel(ushort userId)
     {
+        Debug.LogWarning("IS HERE");
         InvokeRemoteMethod(nameof(SynchedSetLevel), userId, currentLevelInt);
     }
 
@@ -374,6 +375,8 @@ public class GameManager : AttributesSync
 
     void SelectLevel(int level)
     {
+
+        Debug.LogError("IS HERE LMAO");
         if (spawnedLevel != null)
         {
             if (spawnedLevel != levels[level])
@@ -384,6 +387,7 @@ public class GameManager : AttributesSync
         }
         currentLevelInt = level;
         currentLevel = spawnedLevel.GetComponent<Level>();
+        Debug.LogError(currentLevel.name);
         SetLevelData();
     }
 
@@ -406,7 +410,6 @@ public class GameManager : AttributesSync
 
     void SetLevelData()
     {
-        Debug.Log(currentLevel.levelName);
         deathcamPos = currentLevel.deathCamPos;
         SetUpDeathCameraPos();
         Multiplayer.Instance.AvatarSpawnLocations = currentLevel.spawnPoints;
@@ -423,7 +426,11 @@ public class GameManager : AttributesSync
         StartCoroutine(WaitForInRoomSpecPos());
         if (!createdGame)
         {
-            GetLevel();
+            while (!Multiplayer.Instance.InRoom)
+            {
+                yield return null;
+            }
+
             yield return null;
             GetGamemode();
             while (!hasGottenGamemode)
@@ -436,6 +443,7 @@ public class GameManager : AttributesSync
                     break;
                 }
             }
+            GetLevel();
 
             getGamemodeTimeOutTimer = 0;
             if (!hasGottenGamemode)

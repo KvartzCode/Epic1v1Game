@@ -11,6 +11,7 @@ public class ServerCreator : MonoBehaviour
     [SerializeField] RawImage levelImage;
     [SerializeField] TextMeshProUGUI levelText;
     [SerializeField] TextMeshProUGUI gamemodeText;
+    [SerializeField] string[] defaultNames;
 
     Level currentLevel;
     int levelIndex = 0;
@@ -57,6 +58,10 @@ public class ServerCreator : MonoBehaviour
 
         manager.LevelToSelect(levelIndex);
         manager.currentGamemodeType = gamemode;
+
+        if (roomname == "")
+            roomname = defaultNames[UnityEngine.Random.Range(0, defaultNames.Length)];
+
         Multiplayer.Instance.CreateRoom(roomname);
         manager.CreatedGame();
 
