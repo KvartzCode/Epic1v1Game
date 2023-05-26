@@ -59,6 +59,9 @@ public class ServerCreator : MonoBehaviour
         manager.LevelToSelect(levelIndex);
         manager.currentGamemodeType = gamemode;
 
+        if (spawnedLevelForComponents != null)
+            Destroy(spawnedLevelForComponents);
+
         if (roomname == "")
             roomname = defaultNames[UnityEngine.Random.Range(0, defaultNames.Length)];
 
