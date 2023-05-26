@@ -179,7 +179,7 @@ public class AudioManager : AttributesSync
     private AudioSource CreateAudioSource(int soundEffectID, float volume, float radius, Vector3 position)
     {
         GameObject audioObject = new GameObject("AudioSource_" + soundEffectID);
-        audioObject.transform.position = Vector3.zero;
+        audioObject.transform.position = position;
 
         AudioSource source = audioObject.AddComponent<AudioSource>();
         source.clip = soundEffects[soundEffectID];
@@ -197,7 +197,7 @@ public class AudioManager : AttributesSync
     private AudioSource CreateAudioSource(AudioClip clip, float volume, float radius, Vector3 position)
     {
         GameObject audioObject = new GameObject("AudioSource_" + clip.name);
-        audioObject.transform.position = Vector3.zero;
+        audioObject.transform.position = position;
 
         AudioSource source = audioObject.AddComponent<AudioSource>();
         source.clip = clip;
