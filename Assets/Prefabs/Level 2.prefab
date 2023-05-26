@@ -11609,6 +11609,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 8041154794546253478}
   m_PrefabAsset: {fileID: 0}
+--- !u!54 &7443056224676807104 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 638639908738879334, guid: fcfe35fcc3dc1374daf19a04419253ab,
+    type: 3}
+  m_PrefabInstance: {fileID: 8041154794546253478}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7749118132126997693 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 296549611758948891, guid: fcfe35fcc3dc1374daf19a04419253ab,
@@ -11627,6 +11633,61 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 199b84863ea84dd488a9fe4b553ba33f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3592294015327263370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7749118132126997693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1576325847, guid: 0ae8d181602a00248a82f64a684a1c88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Multiplayer: {fileID: 0}
+  _uidString: c9b47dc9-8483-42a4-92ba-8418abcbecc5
+  BucketBehaviors:
+  - Name: Min
+    NetLOD: 0
+    Frequency: -1
+    Pending: 0
+    LastUpdated: 0
+    NeverString: Never
+    RealtimeString: Realtime
+  - Name: Low
+    NetLOD: 1
+    Frequency: 0
+    Pending: 0
+    LastUpdated: 0
+    NeverString: Never
+    RealtimeString: Realtime
+  - Name: Mid
+    NetLOD: 2
+    Frequency: 0
+    Pending: 0
+    LastUpdated: 0
+    NeverString: Never
+    RealtimeString: Realtime
+  - Name: High
+    NetLOD: 3
+    Frequency: 0
+    Pending: 0
+    LastUpdated: 0
+    NeverString: Never
+    RealtimeString: Realtime
+  - Name: Max
+    NetLOD: 4
+    Frequency: 500
+    Pending: 0
+    LastUpdated: 0
+    NeverString: Never
+    RealtimeString: Realtime
+  SyncEveryNUpdates: 2
+  FullSyncEveryNSync: 4
+  SendData: 1
+  AllowCollisionToAssumeOwner: 1
+  Rigidbody: {fileID: 7443056224676807104}
 --- !u!1001 &8041154794605440457
 PrefabInstance:
   m_ObjectHideFlags: 0
