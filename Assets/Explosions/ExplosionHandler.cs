@@ -100,7 +100,7 @@ public class ExplosionHandler : AttributesSync
         GameObject sfx = Instantiate(railGunPrefab, startPos, railGunPrefab.transform.rotation);
         sfx.GetComponent<LineRenderer>().SetPosition(0, startPos);
         sfx.GetComponent<LineRenderer>().SetPosition(1, endPos);
-        Destroy(sfx, 2);
+        Destroy(sfx, 4);
     }
 
     [SynchronizableMethod]
