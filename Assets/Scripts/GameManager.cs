@@ -370,13 +370,13 @@ public class GameManager : AttributesSync
         if (currentGamemode != null)
             currentGamemode.Initialize();
 
-
+        yield return new WaitUntil(() => playerController != null);
+        playerController.Respawn();
     }
 
     void SelectLevel(int level)
     {
 
-        Debug.LogError("IS HERE LMAO");
         if (spawnedLevel != null)
         {
             if (spawnedLevel != levels[level])
@@ -387,7 +387,6 @@ public class GameManager : AttributesSync
         }
         currentLevelInt = level;
         currentLevel = spawnedLevel.GetComponent<Level>();
-        Debug.LogError(currentLevel.name);
         SetLevelData();
     }
 
