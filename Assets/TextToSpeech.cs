@@ -18,8 +18,8 @@ public class TextToSpeech : AttributesSync
         pathToExe = Path.Combine(Application.streamingAssetsPath, "dectalk/say.exe");
         Debug.Log($"pathToExe: {pathToExe}");
         Debug.Log($"pathToWav: {wavFileName}");
+        message = "My name is " + System.Environment.UserName + ". I live at 308 Negra Arroyo Lane, Albuquerque, New Mexico, 87104. My eye pee adress is 21. Haha, just kidding that's not actually my iris piss adress. Damn daniel.";
     }
-
     private void Update()
     {
         if (processFinished)

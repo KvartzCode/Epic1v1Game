@@ -182,7 +182,7 @@ public class PlayerController : AttributesSync
 
     public void KillPlayer()
     {
-        GameManager.Instance.audioManager.PlayKOSound(1, 1000, transform.position);
+        GameManager.Instance.audioManager.PlayKOSound(1.5f, 10000, transform.position);
         GameManager.Instance.PlayerDeath(GameManager.Instance.user.Index);
     }
 

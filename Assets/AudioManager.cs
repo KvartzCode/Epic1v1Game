@@ -18,6 +18,8 @@ public class AudioManager : AttributesSync
     [SerializeField]
     private AudioClip[] deadSoundEffects;
 
+    private int funnyMultiplier = 100;
+
     public void PlayGlobal3DSoundEffect(int soundEffectID, float volume, float radius, Vector3 position)
     {
         InvokeRemoteMethod(nameof(PlayGlobal3DSoundEffectMULT), UserId.All, soundEffectID, volume, radius, position);
@@ -189,7 +191,7 @@ public class AudioManager : AttributesSync
         // Configure the AudioSource for 3D sound.
         source.rolloffMode = AudioRolloffMode.Logarithmic;
         source.dopplerLevel = 0f;
-        source.maxDistance = radius;
+        source.maxDistance = radius * funnyMultiplier;
 
         return source;
     }
@@ -207,7 +209,7 @@ public class AudioManager : AttributesSync
         // Configure the AudioSource for 3D sound.
         source.rolloffMode = AudioRolloffMode.Logarithmic;
         source.dopplerLevel = 0f;
-        source.maxDistance = radius;
+        source.maxDistance = radius * funnyMultiplier;
 
         return source;
     }
@@ -238,14 +240,14 @@ public class AudioManager : AttributesSync
 
         AudioSource source = audioObject.AddComponent<AudioSource>();
         source.clip = TTSclip;
-        source.volume = 1.2f;
+        source.volume = 3f;
         source.spatialBlend = 1;
 
 
         // Configure the AudioSource for 3D sound.
         source.rolloffMode = AudioRolloffMode.Logarithmic;
         source.dopplerLevel = 1f;
-        source.maxDistance = 83;
+        source.maxDistance = 800 * funnyMultiplier;
 
         source.transform.parent = player.transform; // Attach AudioSource to the player
         source.transform.localPosition = Vector3.zero;
