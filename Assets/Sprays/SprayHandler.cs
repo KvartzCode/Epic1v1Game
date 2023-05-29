@@ -27,13 +27,6 @@ public class SprayHandler : AttributesSync
         else
             _instance = this;
     }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            //InvokeRemoteMethod(nameof(SynchedSetUserSpray), UserId.AllInclusive, Multiplayer.Instance.Me.Index, localImageURL);
-        }
-    }
 
     public Material GetMat(int index)
     {

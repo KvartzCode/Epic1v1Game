@@ -41,15 +41,16 @@ public class GameManager : AttributesSync
 
     LevelData currentLevelData;
 
-
-
-    GameMode currentGamemode;
-
     [SerializeField] Gamemodes gamemodes;
+    GameMode currentGamemode;
 
     bool Initialized;
     bool GamemodeStarted;
     bool createdGame;
+
+    int respawnIndex = -1;
+    int previousSpawnPoint = -1;
+    int prePreviousSpawnPoint = -1;
 
     bool hasGottenGamemode;
     float getGamemodeTimeOutTimer;
@@ -371,7 +372,8 @@ public class GameManager : AttributesSync
             currentGamemode.Initialize();
 
         yield return new WaitUntil(() => playerController != null);
-        playerController.Respawn();
+        GetNewRespawnIndex();
+        playerController.Respawn(respawnIndex);
     }
 
     void SelectLevel(int level)
@@ -568,6 +570,64 @@ public class GameManager : AttributesSync
             InvokeRemoteMethod(nameof(SynchedStartGame), UserId.AllInclusive);
     }
 
+    #region Respawn
+
+    public void Respawn()
+    {
+        if (user.Index == Multiplayer.Instance.LowestUserIndex)
+        {
+            GetNewRespawnIndex();
+            RespawnPlayer();
+        }
+        else
+            InvokeRemoteMethod(nameof(SynchedGetRespawnIndex), Multiplayer.Instance.LowestUserIndex, user.Index);
+
+    }
+
+
+    void RespawnPlayer()
+    {
+        playerController.Respawn(respawnIndex);
+    }
+
+    [SynchronizableMethod]
+    void SynchedRespawnPlayer(int spawnIndex)
+    {
+        respawnIndex = spawnIndex;
+        RespawnPlayer();
+    }
+
+    [SynchronizableMethod]
+    void SynchedGetRespawnIndex(ushort playerIndex)
+    {
+        GetNewRespawnIndex();
+        InvokeRemoteMethod(nameof(SynchedRespawnPlayer), playerIndex, respawnIndex);
+    }
+
+    void GetNewRespawnIndex()
+    {
+        if (currentLevelData.spawnPoints.Count <= 2)
+        {
+            respawnIndex = (respawnIndex + 1) >= currentLevelData.spawnPoints.Count ? 0 : respawnIndex++;
+            return;
+        }
+
+        for (int i = 0; i < 100; i++)
+        {
+            int r = Random.Range(0, currentLevelData.spawnPoints.Count);
+            if (r != previousSpawnPoint && r != prePreviousSpawnPoint)
+            {
+                prePreviousSpawnPoint = previousSpawnPoint;
+                previousSpawnPoint = r;
+                respawnIndex = r;
+                return;
+            }
+
+        }
+
+    }
+
+
     private IEnumerator RespawnLogic()
     {
         UpdateAllAvailableSpecPos();
@@ -576,10 +636,10 @@ public class GameManager : AttributesSync
         RemoveSpec();
 
         yield return new WaitForSeconds(5);
-        playerController.Respawn();
+        Respawn();
         AddSpec();
     }
-
+    #endregion
     public void AddForceOnPlayer(ushort playerId, Vector3 dir, float force, bool useMultiplier, bool checkKo = false, float checkKoMultiplier = 1f)
     {
         InvokeRemoteMethod(nameof(SynchedAddForceOnPlayer), playerId, dir, force, useMultiplier, checkKo, checkKoMultiplier);

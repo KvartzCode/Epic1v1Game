@@ -26,7 +26,7 @@ public class StocksGamemode : GameMode
     public override void GameModeStart()
     {
         UpdateAllDeathSates();
-        GameManager.Instance.playerController.Respawn();
+        GameManager.Instance.Respawn();
     }
 
     public override void GameModeUpdate()
@@ -80,7 +80,7 @@ public class StocksGamemode : GameMode
         GameManager.Instance.RemoveSpec();
 
         yield return new WaitForSeconds(5);
-        GameManager.Instance.playerController.Respawn();
+        GameManager.Instance.Respawn();
         GameManager.Instance.AddSpec();
     }
 

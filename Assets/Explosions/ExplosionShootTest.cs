@@ -68,7 +68,7 @@ public class ExplosionShootTest : MonoBehaviour
                 Ray ray = new Ray(transform.position, transform.forward);
                 RaycastHit hit;
 
-                int layerMask = 1 << LayerMask.NameToLayer("Player");
+                int layerMask = (1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("LocalPlayer"));
                 layerMask = ~layerMask;
 
                 if (Physics.Raycast(ray, out hit, sprayDistance, layerMask))
@@ -140,7 +140,7 @@ public class ExplosionShootTest : MonoBehaviour
         RaycastHit hit;
 
 
-        int layerMask = 1 << LayerMask.NameToLayer("Rocket");
+        int layerMask = (1 << LayerMask.NameToLayer("Rocket") | 1 << LayerMask.NameToLayer("LocalPlayer"));
         layerMask = ~layerMask;
         Vector3 endRayPosition;
         if (Physics.Raycast(ray, out hit, 1000, layerMask, QueryTriggerInteraction.Ignore))

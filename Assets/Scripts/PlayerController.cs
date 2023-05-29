@@ -130,7 +130,7 @@ public class PlayerController : AttributesSync
         Cursor.visible = !isLocked;
     }
 
-    public void Respawn()
+    public void Respawn(int spawnIndex)
     {
         GameManager.Instance.audioManager.PlayLocalDeath();
         //TODO: Disable player velocity
@@ -139,7 +139,7 @@ public class PlayerController : AttributesSync
         SetIsDead(false);
         HidePlayer(false);
         var spawnPositions = Multiplayer.AvatarSpawnLocations;
-        gameObject.transform.position = spawnPositions[Random.Range(0, spawnPositions.Count)].position;
+        gameObject.transform.position = spawnPositions[spawnIndex].position;
     }
 
     public void HidePlayer(bool hide)
@@ -152,31 +152,6 @@ public class PlayerController : AttributesSync
         //foreach (var c in componentsToHide)
         //{
         //    //c.enabled = !hide;
-        //}
-    }
-
-    private IEnumerator TriggerDeath()
-    {
-        isDead = true;
-
-
-        //if (Stocks > 0) //TODO: Uncomment when we fix this
-        //{
-        Stocks--;
-        //GameManager.Instance.hud.SetStocks(Stocks);
-        HidePlayer(true);
-
-        yield return new WaitForSeconds(5);
-
-        HidePlayer(false);
-        Respawn();
-        isDead = false;
-
-        //}
-        //else
-        //{
-        //    HidePlayer(true);
-        //    //TODO: DEATH
         //}
     }
 
