@@ -13,9 +13,9 @@ public class ExplosionShootTest : MonoBehaviour
     [SerializeField] float rocketCooldown = 0.4f;
     [SerializeField] float railGunCooldown = 0.4f;
     [SerializeField] float sprayDistance = 4f; // Set the distance of the raycast
-    
-    
-   float railgunForce = 40f;
+
+
+    float railgunForce = 40f;
 
     AudioSource source;
     Vector3 localSpawnPos;
@@ -84,6 +84,7 @@ public class ExplosionShootTest : MonoBehaviour
 
     private void RailGunLogic()
     {
+        GameManager.Instance.hud.StartRailGunBar(railGunCooldown);
         railGunTimer = 0;
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;

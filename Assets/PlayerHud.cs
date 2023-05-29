@@ -39,9 +39,12 @@ public class PlayerHud : MonoBehaviour
     [SerializeField] private Image stock1;
     [SerializeField] private Image stock2;
     [SerializeField] private Image stock3;
+    [SerializeField] private Image railGunBar;
     [SerializeField] private TextMeshProUGUI Procentile;
     public TeamColor color;
     public GameObject[] hudObj;
+
+    Animator railgunAnim;
 
     bool isDead;
     int currentStocks;
@@ -52,6 +55,7 @@ public class PlayerHud : MonoBehaviour
         {
             hudObj[i].SetActive(false);
         }
+        railgunAnim = railGunBar.GetComponent<Animator>();
     }
 
     public void StartRound()
@@ -149,6 +153,11 @@ public class PlayerHud : MonoBehaviour
         Procentile.text = currentPercent + "%";
     }
 
+    public void StartRailGunBar(float time)
+    {
+        railgunAnim.SetFloat("Time", 1 / time);
+        railgunAnim.SetTrigger("Start");
+    }
     public void SetStocks(int stocks)
     {
         currentStocks = stocks;
