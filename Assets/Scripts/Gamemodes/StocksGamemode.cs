@@ -36,21 +36,18 @@ public class StocksGamemode : GameMode
 
     public override void GameOver()
     {
-        if (spawnedEndscreen != null)
-            spawnedEndscreen.SetActive(true);
-        else
-            spawnedEndscreen = Instantiate(endScreen, new Vector3(1000, 1000, 1000), endScreen.transform.rotation);
+        spawnedEndscreen = Instantiate(endScreen, new Vector3(1000, 1000, 1000), endScreen.transform.rotation);
 
 
         spawnedEndscreen.GetComponent<StocksEndScreenManager>().SetWinner(winner);
 
-            Invoke(nameof(CallRestart), 10);
+        Invoke(nameof(CallRestart), 10);
     }
 
     void CallRestart()
     {
         if (spawnedEndscreen != null)
-            spawnedEndscreen.SetActive(false);
+            Destroy(spawnedEndscreen);
 
 
         if (GameManager.Instance.user.Index == Multiplayer.LowestUserIndex)
