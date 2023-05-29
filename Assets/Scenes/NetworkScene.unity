@@ -7688,6 +7688,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 55bf13d7d96790c4e9eb64de17ad94a4, type: 3}
   - {fileID: 8300000, guid: beae961705c98cf42aaeaf6a8884fa8f, type: 3}
   - {fileID: 8300000, guid: dbf2f8de804d4c64e9feadae71f7095e, type: 3}
+  - {fileID: 8300000, guid: f7ed84856fc26ea49aeab2fc40b9834f, type: 3}
   damageSoundEffects:
   - {fileID: 8300000, guid: 00a27ba71af34f2428b0e48197d616bb, type: 3}
   - {fileID: 8300000, guid: af1a19aea576f834abfab23831fb473f, type: 3}
