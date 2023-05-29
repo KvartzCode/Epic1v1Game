@@ -18,12 +18,10 @@ public class ServerCreator : MonoBehaviour
     string roomname = "";
     GameModeType gamemode = GameModeType.Sandbox;
 
-    GameObject spawnedLevelForComponents;
-
     private IEnumerator Start()
     {
         yield return null;
-        currentLevel = GameManager.Instance.levels[levelIndex].GetComponent<Level>();
+        currentLevel = GameManager.Instance.levels[levelIndex];
         UpdateUi();
     }
 
@@ -43,11 +41,7 @@ public class ServerCreator : MonoBehaviour
 
         levelIndex = forward ? ((levelIndex + 1) < count ? (levelIndex + 1) : 0) : ((levelIndex - 1) < 0 ? (count - 1) : (levelIndex - 1));
 
-        if (spawnedLevelForComponents != null)
-            Destroy(spawnedLevelForComponents);
-
-        spawnedLevelForComponents = Instantiate(GameManager.Instance.levels[levelIndex], Vector3.one * 1000, Quaternion.identity);
-        currentLevel = spawnedLevelForComponents.GetComponent<Level>();
+        currentLevel = GameManager.Instance.levels[levelIndex];
         UpdateUi();
     }
 
@@ -58,9 +52,6 @@ public class ServerCreator : MonoBehaviour
 
         manager.LevelToSelect(levelIndex);
         manager.currentGamemodeType = gamemode;
-
-        if (spawnedLevelForComponents != null)
-            Destroy(spawnedLevelForComponents);
 
         if (roomname == "")
             roomname = defaultNames[UnityEngine.Random.Range(0, defaultNames.Length)];
@@ -78,16 +69,11 @@ public class ServerCreator : MonoBehaviour
     void UpdateUi()
     {
         if (currentLevel == null)
-        {
-            if (spawnedLevelForComponents != null)
-                Destroy(spawnedLevelForComponents);
+            currentLevel = GameManager.Instance.levels[levelIndex];
+        
 
-            spawnedLevelForComponents = Instantiate(GameManager.Instance.levels[levelIndex], Vector3.one * 1000, Quaternion.identity);
-            currentLevel = spawnedLevelForComponents.GetComponent<Level>();
-        }
-
-        levelText.text = currentLevel.levelName;
-        levelImage.texture = currentLevel.levelImage;
+        levelText.text = currentLevel.Name;
+        levelImage.texture = currentLevel.Image;
         gamemodeText.text = gamemode.ToString();
     }
 }

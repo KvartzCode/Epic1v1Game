@@ -31,7 +31,7 @@ public class GameManager : AttributesSync
 
     public GameObject ServerCreatorMenu;
 
-    public GameObject[] levels;
+    public Level[] levels;
     public int currentLevelInt = 0;
     [SerializeField] GameObject spawnedLevel;
 
@@ -39,7 +39,7 @@ public class GameManager : AttributesSync
 
     public GameModeType currentGamemodeType;
 
-    Level currentLevel;
+    LevelData currentLevelData;
 
 
 
@@ -382,11 +382,11 @@ public class GameManager : AttributesSync
             if (spawnedLevel != levels[level])
             {
                 Destroy(spawnedLevel);
-                spawnedLevel = Instantiate(levels[level], Vector3.zero, levels[level].transform.rotation);
+                spawnedLevel = Instantiate(levels[level].Prefab, Vector3.zero, levels[level].Prefab.transform.rotation);
             }
         }
         currentLevelInt = level;
-        currentLevel = spawnedLevel.GetComponent<Level>();
+        currentLevelData = spawnedLevel.GetComponent<LevelData>();
         SetLevelData();
     }
 
@@ -409,9 +409,9 @@ public class GameManager : AttributesSync
 
     void SetLevelData()
     {
-        deathcamPos = currentLevel.deathCamPos;
+        deathcamPos = currentLevelData.deathCamPos;
         SetUpDeathCameraPos();
-        Multiplayer.Instance.AvatarSpawnLocations = currentLevel.spawnPoints;
+        Multiplayer.Instance.AvatarSpawnLocations = currentLevelData.spawnPoints;
     }
 
     public void JoinedGame()
