@@ -58,7 +58,7 @@ public class SprayHandler : AttributesSync
     {
 
         InvokeRemoteMethod(nameof(SynchedSpray), UserId.AllInclusive, userId, pos, reverseForward);
-        GameManager.Instance.audioManager.PlayGlobal3DSoundEffectAtPlayer(1, 1, 200, Multiplayer.Instance.Me.Index);
+        GameManager.Instance.audioManager.PlayGlobal3DSoundEffectAtPlayer(1, 0.6f, 40, Multiplayer.Instance.Me.Index);
     }
 
     [SynchronizableMethod]
