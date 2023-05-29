@@ -1,14 +1,13 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
-
-public class Level : MonoBehaviour
+[CreateAssetMenu(fileName = "Level", menuName = "ScriptableObjects/Level")]
+public class Level : ScriptableObject
 {
-    public string levelName;
-    public Texture2D levelImage;
-    public GameObject deathCamPos;
-    public List<Transform> spawnPoints;
+    public string Name;
+    public Texture2D Image;
+    public GameObject Prefab;
+    public GameModeType[] AvailableGamemodes;
 }
