@@ -126,7 +126,7 @@ public class UserIdHolder : AttributesSync
     private void Update()
     {
         if (updateText)
-            text.gameObject.transform.LookAt(GameManager.Instance.player.transform);
+            text.gameObject.transform.LookAt(GameManager.Instance.GetListener());
     }
 
     public void SetMultiplier(float multiplier, int id)

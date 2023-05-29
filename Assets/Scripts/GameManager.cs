@@ -31,6 +31,8 @@ public class GameManager : AttributesSync
 
     public GameObject ServerCreatorMenu;
 
+
+
     [SerializeField] AudioListener listener;
     Transform listenerFollowPoint;
 
@@ -280,6 +282,12 @@ public class GameManager : AttributesSync
     {
         listenerFollowPoint = playerCam.transform;
     }
+
+    public Transform GetListener()
+    {
+        return listener.transform;
+    }
+
     #endregion
 
     public void PlayerDeath(int id)
