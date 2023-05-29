@@ -120,8 +120,8 @@ public class ExplosionShootTest : MonoBehaviour
 
                 if (GameManager.Instance.CheckKO(dir, pCol.player.gameObject, railgunForce * 0.7f, false))
                 {
-                    GameManager.Instance.audioManager.PlayGlobal3DSoundEffect(2, 1f, 1000, transform.position);
-                    GameManager.Instance.audioManager.Play2DSoundEffectForSpecificPlayer(2, .5f, 1000, index);
+                    GameManager.Instance.audioManager.PlayGlobal3DSoundEffect(2, 1f, 100, transform.position);
+                    GameManager.Instance.audioManager.Play2DSoundEffectForSpecificPlayer(2, .4f, 100, index);
                 }
             }
         }

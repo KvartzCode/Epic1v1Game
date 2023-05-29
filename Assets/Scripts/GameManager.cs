@@ -626,8 +626,8 @@ public class GameManager : AttributesSync
                     {
                         // Debug.Log("Hit object is a trigger and tagged as 'DeathZone'. Returning true.");
                         other.GetComponent<Fragsurf.Movement.SurfCharacter>().SetVelocity(Vector3.zero);
-                        GameManager.Instance.audioManager.PlayGlobal3DSoundEffect(0, 5f, 100000, transform.position);
-                        GameManager.Instance.audioManager.PlayLocal2DSoundEffect(0, 1f, 100 * 3);
+                        GameManager.Instance.audioManager.PlayGlobal3DSoundEffect(0, 1.5f, 10000, transform.position);
+                        GameManager.Instance.audioManager.PlayLocal2DSoundEffect(0, 1f, 100);
                         GameManager.Instance.SetTimeScale(0.01f, 0.01f, true);
                     }
                     return true;

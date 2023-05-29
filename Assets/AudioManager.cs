@@ -19,7 +19,7 @@ public class AudioManager : AttributesSync
     private AudioClip[] deadSoundEffects;
 
     private int funnyMultiplier = 100;
-
+    [SerializeField] private AnimationCurve audioRolloff;
     public void PlayGlobal3DSoundEffect(int soundEffectID, float volume, float radius, Vector3 position)
     {
         InvokeRemoteMethod(nameof(PlayGlobal3DSoundEffectMULT), UserId.All, soundEffectID, volume, radius, position);
@@ -189,9 +189,10 @@ public class AudioManager : AttributesSync
         source.spatialBlend = radius;
 
         // Configure the AudioSource for 3D sound.
-        source.rolloffMode = AudioRolloffMode.Logarithmic;
+        source.rolloffMode = AudioRolloffMode.Custom;
+        source.SetCustomCurve(AudioSourceCurveType.CustomRolloff, audioRolloff);
         source.dopplerLevel = 0f;
-        source.maxDistance = radius * funnyMultiplier;
+        source.maxDistance = radius;
 
         return source;
     }
@@ -207,9 +208,10 @@ public class AudioManager : AttributesSync
         source.spatialBlend = radius;
 
         // Configure the AudioSource for 3D sound.
-        source.rolloffMode = AudioRolloffMode.Logarithmic;
+        source.rolloffMode = AudioRolloffMode.Custom;
+        source.SetCustomCurve(AudioSourceCurveType.CustomRolloff, audioRolloff);
         source.dopplerLevel = 0f;
-        source.maxDistance = radius * funnyMultiplier;
+        source.maxDistance = radius;
 
         return source;
     }
@@ -245,9 +247,10 @@ public class AudioManager : AttributesSync
 
 
         // Configure the AudioSource for 3D sound.
-        source.rolloffMode = AudioRolloffMode.Logarithmic;
+        source.rolloffMode = AudioRolloffMode.Custom;
+        source.SetCustomCurve(AudioSourceCurveType.CustomRolloff,audioRolloff);
         source.dopplerLevel = 1f;
-        source.maxDistance = 800 * funnyMultiplier;
+        source.maxDistance = 300;
 
         source.transform.parent = player.transform; // Attach AudioSource to the player
         source.transform.localPosition = Vector3.zero;

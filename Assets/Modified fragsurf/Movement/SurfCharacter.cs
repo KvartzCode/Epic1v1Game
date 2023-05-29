@@ -387,7 +387,7 @@ namespace Fragsurf.Movement
         public void AddDamage(float damagePercentile)
         {
             multiplier = ((multiplier * 100f) + damagePercentile) * 0.01f;
-            GameManager.Instance.audioManager.PlayDamageSound(1f, 150, transform.position);
+            GameManager.Instance.audioManager.PlayDamageSound(0.7f, 100, transform.position);
             GameManager.Instance.SynchedUpdateMultiplier();
         }
 
