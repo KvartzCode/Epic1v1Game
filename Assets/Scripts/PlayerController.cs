@@ -132,6 +132,7 @@ public class PlayerController : AttributesSync
 
     public void Respawn(int spawnIndex)
     {
+        GameManager.Instance.ListenerFollowPlayer();
         GameManager.Instance.audioManager.PlayLocalDeath();
         //TODO: Disable player velocity
         surfCharacter.SetMultiplier(0);

@@ -31,11 +31,15 @@ public class GameManager : AttributesSync
 
     public GameObject ServerCreatorMenu;
 
+    [SerializeField] AudioListener listener;
+    Transform listenerFollowPoint;
+
     public Level[] levels;
     public int currentLevelInt = 0;
     [SerializeField] GameObject spawnedLevel;
 
     public Camera deathCamera;
+    public Camera playerCam;
 
     public GameModeType currentGamemodeType;
 
@@ -95,12 +99,21 @@ public class GameManager : AttributesSync
                         deathCamera.transform.rotation = specPos[AvailableSpecPos[currentSpecIndex]].transform.rotation;
                     }
                 }
+
+                if (listenerFollowPoint != null)
+                {
+                    Debug.LogWarning("Following: " + listenerFollowPoint.gameObject.name);
+                    listener.gameObject.transform.position = listenerFollowPoint.position;
+                    listener.gameObject.transform.rotation = listenerFollowPoint.rotation;
+                }
+
+
+
+
             }
-        }
-        else
-        {
-            if (Input.GetKeyDown(KeyCode.F7))
-                currentGamemodeType = GameModeType.Stocks;
+
+
+
         }
     }
 
@@ -252,8 +265,26 @@ public class GameManager : AttributesSync
     }
 
     #endregion
+
+    #region Audio Listener
+    public void ListenerFollowSpec()
+    {
+        if (deathCamera != null)
+            listenerFollowPoint = deathCamera.transform;
+        else
+            ListenerFollowPlayer();
+
+    }
+
+    public void ListenerFollowPlayer()
+    {
+        listenerFollowPoint = playerCam.transform;
+    }
+    #endregion
+
     public void PlayerDeath(int id)
     {
+        ListenerFollowSpec();
         if (GamemodeStarted)
         {
             currentGamemode.PlayerDeath(id);
@@ -363,7 +394,7 @@ public class GameManager : AttributesSync
         {
             yield return null;
         }
-
+        ListenerFollowPlayer();
         SelectGamemode();
         SelectLevel(levelToSelect);
         hasGottenGamemode = false;
@@ -431,7 +462,7 @@ public class GameManager : AttributesSync
             {
                 yield return null;
             }
-
+            ListenerFollowPlayer();
             yield return null;
             GetGamemode();
             while (!hasGottenGamemode)
