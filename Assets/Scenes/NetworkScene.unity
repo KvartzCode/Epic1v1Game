@@ -9629,7 +9629,7 @@ PrefabInstance:
     - target: {fileID: 2093504433423656070, guid: 0d11653250ab33b4e97da89884253b02,
         type: 3}
       propertyPath: MaxPlayers
-      value: 4
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2093504433423656070, guid: 0d11653250ab33b4e97da89884253b02,
         type: 3}
