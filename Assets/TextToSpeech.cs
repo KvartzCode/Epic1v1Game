@@ -32,7 +32,7 @@ public class TextToSpeech : AttributesSync
         if (Input.GetKeyDown(KeyCode.Y))
         {
             Debug.Log("Y key pressed. Speaking...");
-            GameManager.Instance.audioManager.PlayGlobalTTSAtPlayer(message, Multiplayer.Instance.Me.Index);
+            GameManager.Instance.audioManager.PlayGlobalTTSAtPlayer(GUIUtility.systemCopyBuffer, Multiplayer.Instance.Me.Index);
         }
     }
 
